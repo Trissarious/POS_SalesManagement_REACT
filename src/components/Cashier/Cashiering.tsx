@@ -20,18 +20,29 @@ export default function Cashiering() {
 
  return (
     <div>
-        {
-        products.map(product => 
-            <tr key={product?.productid}>
-                <td>{product?.productid}</td>
-                <td>{product?.productname}</td>
-                <td>{product?.quantity}</td>
-                <td>{product?.price}</td>
-            </tr>
-            )
-        }
-
-        <h1>{product?.productname}dsads</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {
+            products.map(product => 
+                <tr key={product?.productid}>
+                    <td>{product?.productid}</td>
+                    <td>{product?.productname}</td>
+                    <td>{product?.quantity}</td>
+                    <td>{product?.price}</td>
+                </tr>
+                )
+             }
+            </tbody>
+        </table>
+        
     </div>
  );
 }
