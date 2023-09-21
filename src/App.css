@@ -1,5 +1,5 @@
 .App {
-  background-color: #DDDDDD;
+  /* background-color: #DDDDDD; */
 }
 
 .navbar {
@@ -20,6 +20,7 @@
   height: 90vh;
   margin: 0;
 }
+
 
 
 .button-container {
@@ -57,4 +58,8 @@
 button:hover{
   background-color: #0e2146;
   transform: scale(1.0.5);
+}
+
+table, th, td {
+  border: 1px solid black;
 }
