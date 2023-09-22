@@ -2,12 +2,10 @@ import { Outlet, Link } from 'react-router-dom';
 
 export default function Navbar() {
 return (
-    <header>
-        <div className="navbar">
-        <ul>
-            <li>s</li>
-        </ul>
-        </div>
-    </header>
+    <nav className="navbar navbar-custom">
+    <div className="container-fluid">
+      <a className="navbar-brand"></a>
+    </div>
+  </nav>
 );
 }

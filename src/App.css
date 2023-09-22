@@ -2,9 +2,9 @@
   /* background-color: #DDDDDD; */
 }
 
-.navbar {
-  background-color: #1D7D81; /* Background color for the navbar */
-  overflow: hidden; /* Hide overflowing content */
+.navbar-custom {
+  background-color: #1D7D81;
+  overflow: hidden; 
 }
 
 .navbar ul {
@@ -20,7 +20,6 @@
   height: 90vh;
   margin: 0;
 }
-
 
 
 .button-container {
@@ -60,6 +59,15 @@ button:hover{
   transform: scale(1.0.5);
 }
 
-table, th, td {
+table, th, td, thead, tr {
   border: 1px solid black;
+  font-size: 30px;
+  margin: auto;
+  max-width: max-content;
+}
+
+
+hr {
+  clear: both;
+  visibility: hidden;
 }

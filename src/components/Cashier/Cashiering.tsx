@@ -25,9 +25,9 @@ export default function Cashiering() {
     <div className='cashiering-body'>
     <div className="container-fluid">
         <div className="row content">
-
         {/* Customer Details */}
-        <div className="col-sm-8">
+        <div className="col-lg-8">
+            <div className='customer-details'> 
             <h3>Customer Name</h3>
             <TextField
                 required
@@ -58,10 +58,13 @@ export default function Cashiering() {
                 variant="filled"
                 inputProps={{style: {fontSize: 15}}}
             />
+            <hr></hr>
+        </div>
         </div>
 
         {/* Display user cashier */}
-        <div className="col-sm-4">
+        <div className="col-lg-4">
+        <div className='cashier-details'>
         <h3>Cashier Details</h3>
         <TextField
                 required
@@ -74,9 +77,11 @@ export default function Cashiering() {
                 inputProps={{style: {fontSize: 15}}}
             />
         </div>
+        </div>
 
         {/* DISPLAYS PRODUCT TABLE */}
-        <div className="col-sm-9">
+        <div className="col-lg-8">
+            <br></br>
             <table>
                 <thead>
                     <tr>
@@ -100,6 +105,24 @@ export default function Cashiering() {
                 </tbody>
             </table>
         </div>
+
+         {/* Display Cashiering */}
+         <div className="col-lg-4">
+            <div className='cashiering'>
+                    
+            <TextField
+                    required
+                    id="filled-required"
+                    label=""
+                    fullWidth
+                    defaultValue=""
+                    size='small'
+                    variant="filled"
+                    inputProps={{style: {fontSize: 15}}}
+            />
+            </div>
+        </div>          
+
         </div>
     </div>
     </div>
