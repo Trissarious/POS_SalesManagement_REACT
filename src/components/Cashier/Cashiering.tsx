@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
 import { Outlet, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -20,10 +20,21 @@ export default function Cashiering() {
         }).catch(err => console.log(err))
     })
 
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+          backgroundColor: theme.palette.common.black,
+          fontSize: 15,
+          color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+          fontSize: 15,
+        },
+      }));
+
  return (
 
     <div className='cashiering-body'>
-    <div className="container-fluid">
+    <div className="container">
         <div className="row content">
         {/* Customer Details */}
         <div className="col-lg-8">
@@ -78,32 +89,36 @@ export default function Cashiering() {
             />
         </div>
         </div>
-
+        </div>
         {/* DISPLAYS PRODUCT TABLE */}
+        <div className='container'> 
         <div className="col-lg-8">
-            <br></br>
-            <table>
-                <thead>
-                    <tr>
-                        <th><h1>ID</h1></th>
-                        <th><h1>Product Name</h1></th>
-                        <th><h1>Quantity</h1></th>
-                        <th><h1>Price</h1></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        products.map(product => 
-                            <tr key={product?.productid}>
-                                <td>{product?.productid}</td>
-                                <td>{product?.productname}</td>
-                                <td>{product?.quantity}</td>
-                                <td>{product?.price}</td>
-                            </tr>
-                            )
-                    }
-                </tbody>
-            </table>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                <TableRow>
+                    <StyledTableCell>Product ID</StyledTableCell>
+                    <StyledTableCell align="right">Product Name</StyledTableCell>
+                    <StyledTableCell align="right">Quantity</StyledTableCell>
+                    <StyledTableCell align="right">Price</StyledTableCell>
+                    <StyledTableCell align="right"> Actions </StyledTableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
+                {products.map((product) => (
+                    <TableRow key={product?.productid}>
+                    <StyledTableCell component="th" scope="row">
+                        {product?.productid}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{product?.productname}</StyledTableCell>
+                    <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
+                    <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
+                    <StyledTableCell align="right"><Button>Add</Button></StyledTableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+            </TableContainer>
         </div>
 
          {/* Display Cashiering */}
