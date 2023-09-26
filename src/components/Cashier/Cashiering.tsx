@@ -6,20 +6,36 @@ import { RestProduct } from '../REST/REST Product/RestProduct';
 import ProductService from '../REST/REST Product/ProductService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
+export type Product = {
+    productid: number
+    productname: string
+    quantity: number
+    price: number
+  }
 const url = 'http://localhost:8080/product/getAllProduct';
 
 export default function Cashiering() {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product, error] = RestProduct();
     const [products, setProduct] = useState([product])
+    const [cart, setCart] = useState([])
+    const [productname, setProductname] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [price, setPrice] = useState('');
 
+    //FETCH PRODUCT TABLE
     useEffect(() => {
-        axios.get(url).then(res => {
-            setProduct(res.data)
-        }).catch(err => console.log(err))
-    })
+        const fetchData = async () => {
+        try {
+            const response = await axios.get(url); 
+            setProduct(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+        };
+        fetchData();}, []);
 
+    // STYLING THE PRODUCT TABLE 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
           backgroundColor: theme.palette.common.black,
@@ -31,8 +47,13 @@ export default function Cashiering() {
         },
       }));
 
- return (
+      //ADD TO CART
+      const addProductToCart = async(products: any) => {
+        console.log(products);
+      };
+ 
 
+ return (
     <div className='cashiering-body'>
     <div className="container">
         <div className="row content">
@@ -93,8 +114,8 @@ export default function Cashiering() {
         {/* DISPLAYS PRODUCT TABLE */}
         <div className='container'> 
         <div className="col-lg-8">
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableContainer component={Paper} sx={{maxHeight: 550}}>
+            <Table sx={{ minWidth: 700}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
                     <StyledTableCell>Product ID</StyledTableCell>
@@ -113,7 +134,7 @@ export default function Cashiering() {
                     <StyledTableCell align="right">{product?.productname}</StyledTableCell>
                     <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
                     <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
-                    <StyledTableCell align="right"><Button>Add</Button></StyledTableCell>
+                    <StyledTableCell align="right"> <button onClick={() => addProductToCart(products)}>Add to Cart</button></StyledTableCell>
                     </TableRow>
                 ))}
                 </TableBody>
