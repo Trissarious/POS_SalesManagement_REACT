@@ -6,7 +6,7 @@ import { RestProduct } from '../REST/REST Product/RestProduct';
 import ProductService from '../REST/REST Product/ProductService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export type Product = {
+export interface Product {
     productid: number
     productname: string
     quantity: number
@@ -18,7 +18,7 @@ export default function Cashiering() {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product, error] = RestProduct();
     const [products, setProduct] = useState([product])
-    const [cart, setCart] = useState([])
+    const [cart, setCart] = useState([product])
     const [productname, setProductname] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
@@ -48,11 +48,12 @@ export default function Cashiering() {
       }));
 
       //ADD TO CART
-      const addProductToCart = async(products: any) => {
-        console.log(products);
-      };
+      const addProductToCart = async(product: any) => {
+       console.log(product);
+       setCart([...cart, product]);
+    };
  
-
+     
  return (
     <div className='cashiering-body'>
     <div className="container">
@@ -134,7 +135,7 @@ export default function Cashiering() {
                     <StyledTableCell align="right">{product?.productname}</StyledTableCell>
                     <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
                     <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
-                    <StyledTableCell align="right"> <button onClick={() => addProductToCart(products)}>Add to Cart</button></StyledTableCell>
+                    <StyledTableCell align="right"> <button className='btn btn-success btn-lg' onClick={() => addProductToCart(product)}>Add to Cart</button></StyledTableCell>
                     </TableRow>
                 ))}
                 </TableBody>
@@ -145,20 +146,30 @@ export default function Cashiering() {
          {/* Display Cashiering */}
          <div className="col-lg-4">
             <div className='cashiering'>
-                    
-            <TextField
-                    required
-                    id="filled-required"
-                    label=""
-                    fullWidth
-                    defaultValue=""
-                    size='small'
-                    variant="filled"
-                    inputProps={{style: {fontSize: 15}}}
-            />
+                <button>Go to Cart ({cart.length})</button>
+                    <Table sx={{}} aria-label="customized table">
+                        <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Product ID</StyledTableCell>
+                            <StyledTableCell align="right">Product Name</StyledTableCell>
+                            <StyledTableCell align="right">Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Price</StyledTableCell>
+                            <StyledTableCell align="right"> Actions </StyledTableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                            <StyledTableCell component="th" scope="row">
+                            </StyledTableCell>
+                            <StyledTableCell align="right"></StyledTableCell>
+                            <StyledTableCell align="right"></StyledTableCell>
+                            <StyledTableCell align="right"></StyledTableCell>
+                            <StyledTableCell align="right"> <button className='btn btn-danger btn-lg' >Remove</button></StyledTableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
             </div>
         </div>          
-
         </div>
     </div>
     </div>
