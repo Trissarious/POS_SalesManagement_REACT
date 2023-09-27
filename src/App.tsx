@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
             <Routes>
               <Route path= '/' element={<CashierMainPage />}/>
-              <Route path = "/cashiering"  element = {Cashiering()}></Route>
+              <Route path = "/cashiering"  element = {<Cashiering/>}></Route>
             </Routes>
         </BrowserRouter> 
     </div>

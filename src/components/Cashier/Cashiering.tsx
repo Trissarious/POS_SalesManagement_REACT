@@ -14,11 +14,12 @@ export interface Product {
   }
 const url = 'http://localhost:8080/product/getAllProduct';
 
-export default function Cashiering() {
+export default function GetProducts() {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product, error] = RestProduct();
     const [products, setProduct] = useState([product])
     const [cart, setCart] = useState([product])
+    const [total_amount, setTotal_Amount] = useState(0);
     const [productname, setProductname] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
@@ -50,10 +51,22 @@ export default function Cashiering() {
       //ADD TO CART
       const addProductToCart = async(product: any) => {
        console.log(product);
-       setCart([...cart, product]);
+       const productExist = cart.find((item) => item?.productid === product?.productid)
+       if(productExist) {
+        setCart(cart.map((item) => item?.productid === product?.productid ?
+        {...productExist, quantity: productExist.quantity + 1, total_amount: productExist.price + productExist.quantity}: item));
+       } else {
+        setCart([...cart, {...product, quantity: 1, total_amount    }]);
+       }
+
     };
- 
-     
+    
+    const removeProduct = async(product:any) =>{
+        const newCart =cart.filter(cart => cart?.productid !== product.productid);
+        setCart(newCart);
+      }
+
+
  return (
     <div className='cashiering-body'>
     <div className="container">
@@ -63,7 +76,6 @@ export default function Cashiering() {
             <div className='customer-details'> 
             <h3>Customer Name</h3>
             <TextField
-                required
                 fullWidth
                 id="filled-required"
                 defaultValue=""
@@ -73,7 +85,6 @@ export default function Cashiering() {
             />
             <h3>Customer Number</h3>
             <TextField
-                required
                 fullWidth
                 id="filled-required"
                 size='small'
@@ -83,7 +94,6 @@ export default function Cashiering() {
             />
             <h3>Customer Email</h3>
             <TextField
-                required
                 id="filled-required"
                 fullWidth
                 defaultValue=""
@@ -146,28 +156,64 @@ export default function Cashiering() {
          {/* Display Cashiering */}
          <div className="col-lg-4">
             <div className='cashiering'>
-                <button>Go to Cart ({cart.length})</button>
-                    <Table sx={{}} aria-label="customized table">
+                <h1 className='center-cart-h1'>Cart Items({cart.length})</h1>
+                    <Table className='table table-responsive table-dark table-hover'>
                         <TableHead>
                         <TableRow>
-                            <StyledTableCell>Product ID</StyledTableCell>
+                            <StyledTableCell>ID</StyledTableCell>
                             <StyledTableCell align="right">Product Name</StyledTableCell>
-                            <StyledTableCell align="right">Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Total Quantity</StyledTableCell>
                             <StyledTableCell align="right">Price</StyledTableCell>
-                            <StyledTableCell align="right"> Actions </StyledTableCell>
+                            <StyledTableCell align="center">Actions </StyledTableCell>
+                            <StyledTableCell align="left"> </StyledTableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                            <StyledTableCell component="th" scope="row">
-                            </StyledTableCell>
-                            <StyledTableCell align="right"></StyledTableCell>
-                            <StyledTableCell align="right"></StyledTableCell>
-                            <StyledTableCell align="right"></StyledTableCell>
-                            <StyledTableCell align="right"> <button className='btn btn-danger btn-lg' >Remove</button></StyledTableCell>
-                            </TableRow>
+                            {cart.map((product) => (
+                                <TableRow key={product?.productid}>
+                                <StyledTableCell component="th" scope="row">
+                                    {product?.productid}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{product?.productname}</StyledTableCell>
+                                <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
+                                <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
+                                <StyledTableCell align="right"> 
+                                    {/* <button onClick={() => decreaseQuantity(product)}>-</button> */}
+                                    <button className='btn btn-success' onClick={() => addProductToCart(product)}>+</button>
+                                </StyledTableCell>
+                                <StyledTableCell align="right"> <button className='btn btn-danger btn-lg' onClick={() => removeProduct(product)}>Remove</button></StyledTableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
+                    <hr></hr>                
+                    <div>
+                        <h1>Total Amount: ₱{total_amount}</h1>
+                            
+                        <h3>Tender
+                            <TextField
+                                required
+                                id="filled-required"
+                                fullWidth
+                                defaultValue=""
+                                size='small'
+                                variant="filled"
+                                inputProps={{style: {fontSize: 15}}}
+                            /> </h3>
+                           
+                        <h3>Change 
+                            <TextField
+                                    required
+                                    id="filled-required"
+                                    fullWidth
+                                    defaultValue=""
+                                    size='small'
+                                    variant="filled"
+                                    inputProps={{style: {fontSize: 15}}}
+                                />
+                        </h3>
+                            
+                    </div>
             </div>
         </div>          
         </div>
