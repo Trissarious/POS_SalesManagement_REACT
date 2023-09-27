@@ -5,33 +5,17 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState<string>('');
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-  };
-
-  const handleSearch = () => {
-    onSearch(query);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={query}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-      />
-      <button onClick={handleSearch}>Search</button>
-    </div>
+            <div className = "title">
+                <h1>Search Bar test</h1>
+            </div>
+            <div className="input_wrapper">
+                <input type="text"/>
+                <button>Search</button>
+            </div>
+        </div>
   );
 };
 
