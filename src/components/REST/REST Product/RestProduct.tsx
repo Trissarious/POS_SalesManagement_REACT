@@ -5,8 +5,8 @@ import axios from "axios";
 export interface Product{
     productid: number,
     productname: string,
-    quantity: string,
-    price: string,
+    quantity: number,
+    price: number,
 }
 
 

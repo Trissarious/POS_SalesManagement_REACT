@@ -2,39 +2,68 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { Outlet, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { RestProduct } from '../REST/REST Product/RestProduct';
+import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import ProductService from '../REST/REST Product/ProductService';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { RestTransaction } from '../REST/REST Transaction/RestTransaction';
+import { toast, ToastContainer } from 'react-toastify';
 
-export interface Product {
-    productid: number
-    productname: string
-    quantity: number
-    price: number
-  }
-const url = 'http://localhost:8080/product/getAllProduct';
+
+<title>Cashiering</title>
+const get_product = 'http://localhost:8080/product/getAllProduct';
+const post_transaction = 'http://localhost:8080/transaction/postTransaction';
 
 export default function GetProducts() {
-    <title>Cashiering</title>
-    const [deleteByID, getProductByID, editProduct, addProduct, product, error] = RestProduct();
+    //PRODUCT VARIABLES
+    const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
     const [cart, setCart] = useState([product])
     const [total_amount, setTotal_Amount] = useState(0);
+
+    //TRANSACTION VARIABLES
+    const [deleteByIDTransaction,getTransactionByid,editTransaction,addTransaction,transaction] = RestTransaction();
+    const [transactions, setTransactions] = useState([transaction]);
+    const [total_quantity, setTotal_quantity] = useState('');
+    const [total_price, setTotal_Price] = useState('');
+    const [tendered_bill, setTendered_bill] = useState('');
+    const [balance, setBalance] = useState('');
+    const [customer_name, setCustomer_name] = useState('');
+    const [customer_num, setCustomer_num] = useState('');
+    const [customer_email, setCustomer_email] = useState('');
     const [productname, setProductname] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [price, setPrice] = useState('');
+    const [username, setUsername] = useState('');
+
 
     //FETCH PRODUCT TABLE
-    useEffect(() => {
+    useEffect(() => {   
         const fetchData = async () => {
         try {
-            const response = await axios.get(url); 
+            const response = await axios.get(get_product); 
             setProduct(response.data);
         } catch (error) {
             console.error(error);
         }
         };
         fetchData();}, []);
+
+    //RECORD A TRANSACTION
+    const record_transaction = async () => {
+        axios.post(post_transaction,{
+            total_quantity: total_quantity,
+            total_price: total_price,
+            tendered_bill: tendered_bill,
+            balance: balance,
+            customer_name: customer_name,
+            customer_num: customer_num,
+            customer_email: customer_email,
+            productname: productname,
+            username: username
+        }).then(res => {
+            console.log(transaction)
+            }).catch(err=>console.log(err))
+    }
+
+    const notify = () => toast("Transaction Complete");
 
     // STYLING THE PRODUCT TABLE 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -49,20 +78,20 @@ export default function GetProducts() {
       }));
 
       //ADD TO CART
-      const addProductToCart = async(product: any) => {
-       console.log(product);
+      const addProductToCart = async(product: Product) => {
        const productExist = cart.find((item) => item?.productid === product?.productid)
        if(productExist) {
         setCart(cart.map((item) => item?.productid === product?.productid ?
-        {...productExist, quantity: productExist.quantity + 1, total_amount: productExist.price + productExist.quantity}: item));
+        {...productExist, quantity: productExist.quantity + 1, total_amount: productExist.price * productExist.quantity}: item));
        } else {
-        setCart([...cart, {...product, quantity: 1, total_amount    }]);
+        setCart([...cart, {...product, quantity: 1}]);
        }
 
     };
     
-    const removeProduct = async(product:any) =>{
-        const newCart =cart.filter(cart => cart?.productid !== product.productid);
+    //REMOVE BUTTON 
+    const removeProduct = async(product:Product) =>{
+        const newCart = cart.filter(cart => cart?.productid !== product.productid);
         setCart(newCart);
       }
 
@@ -76,6 +105,8 @@ export default function GetProducts() {
             <div className='customer-details'> 
             <h3>Customer Name</h3>
             <TextField
+                value={customer_name}
+                onChange={(e) => setCustomer_name(e.target.value)}
                 fullWidth
                 id="filled-required"
                 defaultValue=""
@@ -85,6 +116,8 @@ export default function GetProducts() {
             />
             <h3>Customer Number</h3>
             <TextField
+                value={customer_num}
+                onChange={(e) => setCustomer_num(e.target.value)}
                 fullWidth
                 id="filled-required"
                 size='small'
@@ -94,6 +127,8 @@ export default function GetProducts() {
             />
             <h3>Customer Email</h3>
             <TextField
+                value={customer_email}
+                onChange={(e) => setCustomer_email(e.target.value)}
                 id="filled-required"
                 fullWidth
                 defaultValue=""
@@ -108,9 +143,11 @@ export default function GetProducts() {
         {/* Display user cashier */}
         <div className="col-lg-4">
         <div className='cashier-details'>
-        <h3>Cashier Details</h3>
+        <h3>Cashier</h3>
         <TextField
                 required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 id="filled-required"
                 label=""
                 fullWidth
@@ -145,7 +182,13 @@ export default function GetProducts() {
                     <StyledTableCell align="right">{product?.productname}</StyledTableCell>
                     <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
                     <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
-                    <StyledTableCell align="right"> <button className='btn btn-success btn-lg' onClick={() => addProductToCart(product)}>Add to Cart</button></StyledTableCell>
+                    <StyledTableCell align="right"> 
+                    <button className='btn btn-success btn-lg'onClick={() => {
+                            if (product) {
+                            addProductToCart(product);
+                            }
+                        }}>Add to Cart</button>
+                    </StyledTableCell>
                     </TableRow>
                 ))}
                 </TableBody>
@@ -156,45 +199,84 @@ export default function GetProducts() {
          {/* Display Cashiering */}
          <div className="col-lg-4">
             <div className='cashiering'>
-                <h1 className='center-cart-h1'>Cart Items({cart.length})</h1>
+                <h1 className='center-cart-h1'>Cart Items</h1>
                     <Table className='table table-responsive table-dark table-hover'>
                         <TableHead>
                         <TableRow>
                             <StyledTableCell>ID</StyledTableCell>
                             <StyledTableCell align="right">Product Name</StyledTableCell>
-                            <StyledTableCell align="right">Total Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Quantity</StyledTableCell>
                             <StyledTableCell align="right">Price</StyledTableCell>
                             <StyledTableCell align="center">Actions </StyledTableCell>
                             <StyledTableCell align="left"> </StyledTableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                            {cart.map((product) => (
-                                <TableRow key={product?.productid}>
+                            {cart.map((item) => (
+                                <TableRow key={item?.productid}>
                                 <StyledTableCell component="th" scope="row">
-                                    {product?.productid}
+                                    {item?.productid}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{product?.productname}</StyledTableCell>
-                                <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
-                                <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
+                                <StyledTableCell align="right">{item?.productname}</StyledTableCell>
+                                <StyledTableCell align="right">{item?.quantity}</StyledTableCell>
+                                <StyledTableCell align="right">₱{item?.price}</StyledTableCell>
                                 <StyledTableCell align="right"> 
                                     {/* <button onClick={() => decreaseQuantity(product)}>-</button> */}
-                                    <button className='btn btn-success' onClick={() => addProductToCart(product)}>+</button>
+                                    <button className='btn btn-success' onClick={() => {
+                                        if (item) {
+                                        addProductToCart(item);
+                                        }
+                                    }}>+</button>
                                 </StyledTableCell>
-                                <StyledTableCell align="right"> <button className='btn btn-danger btn-lg' onClick={() => removeProduct(product)}>Remove</button></StyledTableCell>
+                                <StyledTableCell align="right"> <button className='btn btn-danger btn-lg' onClick={() => {
+                                    if (item) {
+                                        removeProduct(item)
+                                    }
+                                   }}>Remove</button>
+                                </StyledTableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                     <hr></hr>                
                     <div>
-                        <h1>Total Amount: ₱{total_amount}</h1>
-                            
+                        <h1>Total Amount<TextField
+                                required
+                                value={total_price}
+                                onChange={(e) => setTotal_Price(e.target.value)}
+                                id="filled-required"
+                                fullWidth
+                                size='small'
+                                variant="filled"
+                                inputProps={{
+                                    readOnly: true,
+                                    style: {fontSize: 20}}}
+                            /></h1>
+                        
+                        <h3>Total Quantity
+                            <TextField
+                                required
+                                value={total_quantity}
+                                onChange={(e) => setTotal_quantity(e.target.value)}
+                                id="filled-required"
+                                fullWidth
+                                type='number'
+                                defaultValue=""
+                                size='small'
+                                variant="filled"
+                                inputProps={{
+                                    readOnly: true,
+                                    style: {fontSize: 15}}}
+                            /> </h3>
+
                         <h3>Tender
                             <TextField
                                 required
+                                value={tendered_bill}
+                                onChange={(e) => setTendered_bill(e.target.value)}
                                 id="filled-required"
                                 fullWidth
+                                type='number'
                                 defaultValue=""
                                 size='small'
                                 variant="filled"
@@ -206,12 +288,16 @@ export default function GetProducts() {
                                     required
                                     id="filled-required"
                                     fullWidth
+                                    type='number'
                                     defaultValue=""
                                     size='small'
+                                    value={balance}
+                                    onChange={(e) => setBalance(e.target.value)}
                                     variant="filled"
-                                    inputProps={{style: {fontSize: 15}}}
+                                    inputProps={{readOnly: true ,style: {fontSize: 15}}}
                                 />
                         </h3>
+                        <button className='btn-lg' onClick={record_transaction}>PAY NOW</button>
                             
                     </div>
             </div>
