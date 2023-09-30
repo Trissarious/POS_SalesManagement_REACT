@@ -56,9 +56,12 @@ export default function GetProducts() {
             customer_num: customer_num,
             customer_email: customer_email,
             date_time: date_time,
-            account:{
-                userid:userid
-                }
+            product: {
+                productid: productid
+            }
+            // account:{
+            //     userid:userid
+            //     }
         }).then(res => {
             console.log(res.data)
             alert('Transaction Complete')
@@ -143,14 +146,14 @@ export default function GetProducts() {
         </div>
         </div>
 
-        {/* Display user cashier */}
+        {/* Display user cashier
         <div className="col-lg-4">
         <div className='cashier-details'>
         <h3>Cashier</h3>
         <TextField
                 required
-                value={userid}
-                onChange={(e) => setUserid(e.target.value)}
+                value={productid}
+                onChange={(e) => setProductid(e.target.value)}
                 id="filled-required"
                 label=""
                 fullWidth
@@ -160,7 +163,19 @@ export default function GetProducts() {
                 inputProps={{style: {fontSize: 15}}}
             />
         </div>
-        </div>
+        </div> */}
+
+
+    <select onChange={(e) => setProductid(e.target.value)}>
+          <option value="">Select a product</option>
+          {products.map((product) => (
+            <option key={product?.productid} value={product?.productid}>
+              {product?.productname}
+            </option>
+          ))}
+        </select>
+
+
         </div>
         {/* DISPLAYS PRODUCT TABLE */}
         <div className='container'> 

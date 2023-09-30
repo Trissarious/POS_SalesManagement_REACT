@@ -31,7 +31,8 @@ export default function Cart() {
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
     const [userid, setUserid] = useState('');
-    const [productname, setProductname] = useState('');
+    const [productid, setProductid] = useState('');
+    const [selectedProduct, setSelectedProduct] = useState('')
      //FETCH PRODUCT TABLE
      useEffect(() => {   
         const fetchData = async () => {
@@ -56,12 +57,38 @@ export default function Cart() {
             customer_email: customer_email,
             date_time: date_time,
             userid: userid,
-            productname: productname,
+            productid: productid,
         }).then(res => {
             console.log(transaction)
             alert('Success')
             }).catch(err=>console.log(err))
     }
+
+     // Handle adding a product to the cart
+     const addToCart = () => {
+
+            axios.post(post_transaction, {
+                total_quantity: total_quantity,
+                total_price: total_price,
+                tendered_bill: tendered_bill,
+                balance: balance,
+                customer_name: customer_name,
+                customer_num: customer_num,
+                customer_email: customer_email,
+                date_time: date_time,
+                product: {
+                    productid: productid
+                }
+            })
+                .then(() => {
+                    // Refresh the cart
+                    axios.get('/api/cart')
+                        .then((response) => setCart(response.data))
+                        .catch((error) => console.error(error));
+                })
+                .catch((error) => console.error(error));
+        
+    };
 
     return (
         <div>
@@ -127,6 +154,7 @@ export default function Cart() {
             <h3>total_quantity</h3>
             <TextField
                 value={total_quantity}
+                type='number'
                 onChange={(e) => setTotal_quantity(e.target.value)}
                 fullWidth
                 id="filled-required"
@@ -136,17 +164,15 @@ export default function Cart() {
                 inputProps={{style: {fontSize: 15}}}
             />
 
-            <h3>Product</h3>
-            <TextField
-                value={productname}
-                onChange={(e) => setProductname(e.target.value)}
-                fullWidth
-                id="filled-required"
-                defaultValue=""
-                variant="filled"
-                size='small'
-                inputProps={{style: {fontSize: 15}}}
-            />
+            <select onChange={(e) => setSelectedProduct(e.target.value)}>
+                    <option value="">Select a product</option>
+                    {products.map((product) => (
+                        <option key={product?.productid} value={product?.productid}>
+                        {product?.productname}
+                        </option>
+                    ))}
+                    </select>
+
             <h3>Tendered Bill</h3>
             <TextField
                 value={tendered_bill}
@@ -181,7 +207,7 @@ export default function Cart() {
                 inputProps={{style: {fontSize: 15}}}
             />
 
-        <button className='btn-lg' onClick={record_transaction}>PAY NOW</button>
+        <button className='btn-lg' onClick={addToCart}>PAY NOW</button>
         </div>
     )
 }
