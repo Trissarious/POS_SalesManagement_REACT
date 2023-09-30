@@ -18,11 +18,9 @@ export default function GetProducts() {
     const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
     const [cart, setCart] = useState([product])
-    const [total_amount, setTotal_Amount] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     //TRANSACTION VARIABLES
-    const [deleteByIDTransaction,getTransactionByid,editTransaction,addTransaction,transaction] = RestTransaction();
-    const [transactions, setTransactions] = useState([transaction]);
     const [total_quantity, setTotal_quantity] = useState('');
     const [total_price, setTotal_Price] = useState('');
     const [tendered_bill, setTendered_bill] = useState('');
@@ -30,8 +28,9 @@ export default function GetProducts() {
     const [customer_name, setCustomer_name] = useState('');
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
-    const [productname, setProductname] = useState('');
-    const [username, setUsername] = useState('');
+    const [date_time, setDate_time] = useState('');
+    const [productid, setProductid] = useState('');
+    const [userid, setUserid] = useState('');
 
 
     //FETCH PRODUCT TABLE
@@ -56,14 +55,16 @@ export default function GetProducts() {
             customer_name: customer_name,
             customer_num: customer_num,
             customer_email: customer_email,
-            productname: productname,
-            username: username
+            date_time: date_time,
+            account:{
+                userid:userid
+                }
         }).then(res => {
-            console.log(transaction)
+            console.log(res.data)
+            alert('Transaction Complete')
             }).catch(err=>console.log(err))
     }
 
-    const notify = () => toast("Transaction Complete");
 
     // STYLING THE PRODUCT TABLE 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -77,24 +78,26 @@ export default function GetProducts() {
         },
       }));
 
-      //ADD TO CART
-      const addProductToCart = async(product: Product) => {
-       const productExist = cart.find((item) => item?.productid === product?.productid)
-       if(productExist) {
-        setCart(cart.map((item) => item?.productid === product?.productid ?
-        {...productExist, quantity: productExist.quantity + 1, total_amount: productExist.price * productExist.quantity}: item));
-       } else {
-        setCart([...cart, {...product, quantity: 1}]);
-       }
+    //ADD TO CART
+    const addProductToCart = async(product: Product) => {
+        const productExist = cart.find((item) => item?.productid === product?.productid)
+        if(productExist) {
+         setCart(cart.map((item) => item?.productid === product?.productid ?
+         {...productExist, quantity: productExist.quantity + 1}: item));
+        } else {
+         setCart([...cart, {...product, quantity: 1}]);
+        }
+ 
+     };
 
-    };
-    
+
     //REMOVE BUTTON 
     const removeProduct = async(product:Product) =>{
         const newCart = cart.filter(cart => cart?.productid !== product.productid);
         setCart(newCart);
       }
 
+      
 
  return (
     <div className='cashiering-body'>
@@ -146,8 +149,8 @@ export default function GetProducts() {
         <h3>Cashier</h3>
         <TextField
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={userid}
+                onChange={(e) => setUserid(e.target.value)}
                 id="filled-required"
                 label=""
                 fullWidth
@@ -221,7 +224,6 @@ export default function GetProducts() {
                                 <StyledTableCell align="right">{item?.quantity}</StyledTableCell>
                                 <StyledTableCell align="right">₱{item?.price}</StyledTableCell>
                                 <StyledTableCell align="right"> 
-                                    {/* <button onClick={() => decreaseQuantity(product)}>-</button> */}
                                     <button className='btn btn-success' onClick={() => {
                                         if (item) {
                                         addProductToCart(item);
@@ -246,10 +248,10 @@ export default function GetProducts() {
                                 onChange={(e) => setTotal_Price(e.target.value)}
                                 id="filled-required"
                                 fullWidth
+                                defaultValue={product?.price}
                                 size='small'
                                 variant="filled"
                                 inputProps={{
-                                    readOnly: true,
                                     style: {fontSize: 20}}}
                             /></h1>
                         
@@ -261,7 +263,6 @@ export default function GetProducts() {
                                 id="filled-required"
                                 fullWidth
                                 type='number'
-                                defaultValue=""
                                 size='small'
                                 variant="filled"
                                 inputProps={{
@@ -277,7 +278,6 @@ export default function GetProducts() {
                                 id="filled-required"
                                 fullWidth
                                 type='number'
-                                defaultValue=""
                                 size='small'
                                 variant="filled"
                                 inputProps={{style: {fontSize: 15}}}
@@ -289,7 +289,6 @@ export default function GetProducts() {
                                     id="filled-required"
                                     fullWidth
                                     type='number'
-                                    defaultValue=""
                                     size='small'
                                     value={balance}
                                     onChange={(e) => setBalance(e.target.value)}

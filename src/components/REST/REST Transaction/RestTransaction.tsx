@@ -11,12 +11,13 @@ export interface Transaction{
     customer_name: string,
     customer_num: string,
     customer_email: string,
-    productname: number,
-    username: number 
+    date_time: string,
+    productid: number
+    userid: number,
 }
 
 
-export const RestTransaction = ():[ (transactionid:number|undefined)=> void,(transactionid:number|undefined)=>void,(transaction:Transaction)=>void,(transaction:Transaction)=>void, Transaction|undefined, string] => {
+export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid:number)=>void,(transaction:Transaction)=>void,(transaction:Transaction)=>void, Transaction|undefined, string] => {
     const [transaction, setTransaction] = useState<Transaction>();
     const [error, setError] = useState("");
 
@@ -30,11 +31,13 @@ export const RestTransaction = ():[ (transactionid:number|undefined)=> void,(tra
             customer_name: transaction.customer_name,
             customer_num: transaction.customer_num,
             customer_email: transaction.customer_email,
-            productname: transaction.productname,
-            username: transaction.username
+            date_time: transaction.date_time,
+            productid: transaction.productid,
+            userid: transaction.userid,
         }).then((response) => {
             setTransaction(response.data);
             console.log(response.data);
+            alert('success')
         })
         .catch((error) => {
             setError(error.message);
@@ -51,8 +54,8 @@ export const RestTransaction = ():[ (transactionid:number|undefined)=> void,(tra
             customer_name: transaction.customer_name,
             customer_num: transaction.customer_num,
             customer_email: transaction.customer_email,
-            productname: transaction.productname,
-            username: transaction.username
+            productid: transaction.productid,
+            userid: transaction.userid,
         }).then((response) => {
             setTransaction(response.data);
             console.log(response.data);

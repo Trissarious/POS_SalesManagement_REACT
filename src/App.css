@@ -27,11 +27,32 @@
   display: flex;
 }
 
+.buttons-nav {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
 .button-container {
   text-align: center;
 }
 
-.button1  {
+.goto-cart {
+  background-color: #213458;
+  color: #DDDDDD;
+  height: 50px;
+  text-decoration: none;
+  font-family: 'Poppins';
+  font-weight: 500;
+  font-size: 20px;
+  width: 300px;
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.button1 {
   background-color: #213458;
   color: #DDDDDD;
   height: 80px;
