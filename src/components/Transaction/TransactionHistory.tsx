@@ -1,5 +1,5 @@
 import React from 'react';
-import './TransactionHistory.css';
+import './TransactionH.css';
 
 const TransactionHistory: React.FC = () => {
     const transactions = [

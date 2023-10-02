@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Navbar from './components/Global Configuration/NavBar';
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
+import TransactionHistory from './components/Transaction/TransactionHistory';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
               <Route path= '/' element={<CashierMainPage />}/>
               <Route path = "/cashiering"  element = {Cashiering()}></Route>
             </Routes>
-        </BrowserRouter> 
+      </BrowserRouter> 
     </div>
   );
 }
