@@ -12,10 +12,11 @@ function App() {
   
   return (
     <div className="App">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
       <Navbar/>
       <BrowserRouter>
             <Routes>
-              <Route path= '/' element={<CashierMainPage />}/>
+              <Route path= '/cashier-main' element={<CashierMainPage />}/>
               <Route path = "/cashiering"  element = {<Cashiering/>}></Route>
               <Route path = "/cart"  element = {<Cart/>}></Route>
             </Routes>

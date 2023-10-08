@@ -12,21 +12,18 @@ const initialSelectedProducts: any[] | (() => any[]) = [];
 const url = 'http://localhost:8080/product/getAllProduct';
 const post_transaction = 'http://localhost:8080/transaction/postTransaction';
 
-export default function Cart() {
+export default function Cashiering() {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
-    const [cart, setCart] = useState([product]);
-    const [total_amount, setTotal_Amount] = useState(0);
-    const [productname, setProductname] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [price, setPrice] = useState('');
+    const [cart, setCart] = useState([product])
     const [selectedProducts, setSelectedProducts] = useState(initialSelectedProducts);
+
     //TRANSACTION VARIABLES
     const [total_quantity, setTotal_quantity] = useState(0);
-    const [total_price, setTotal_Price] = useState('');
     const [tendered_bill, setTendered_bill] = useState('');
-    const [balance, setBalance] = useState('');
+    const [balance, setBalance] = useState(0);
+    const [total_price, setTotal_Price] = useState(0);
     const [customer_name, setCustomer_name] = useState('');
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
@@ -84,15 +81,26 @@ export default function Cart() {
         }};
 
     // Add to cart table
-    const addProductToCart = async(product: Product) => {
-       const productExist = cart.find((item) => item?.productid === product?.productid)
-        if(productExist) {
-            setCart(cart.map((item) => item?.productid === product?.productid ?
-            {...productExist, quantity: productExist.quantity + 1, total_amount: productExist.price * productExist.quantity}: item));
+    const addProductToCart = async (product: Product) => {
+        const productExist = cart.find((item) => item?.productid === product?.productid);
+      
+        if (productExist) {
+          const updatedProduct = {
+            ...productExist,
+            quantity: productExist.quantity + 1,
+            subtotal: (productExist.quantity + 1) * productExist.price, // Calculate subtotal
+          };
+          setCart(cart.map((item) => (item?.productid === product?.productid ? updatedProduct : item)));
         } else {
-            setCart([...cart, {...product, quantity: 1}]);
-       }};
-
+          const newProduct = {
+            ...product,
+            quantity: 1,
+            subtotal: product.price, // Calculate subtotal for the initial quantity
+          };
+          setCart([...cart, newProduct]);
+        }
+      };
+      
     // Removes the item from the cart
     const removeProduct = async(product:Product) =>{
         const newCart =cart.filter(cart => cart?.productid !== product.productid);
@@ -111,11 +119,7 @@ export default function Cart() {
                   ? {
                       ...productExist,
                       quantity: productExist.quantity - 1,
-                      total_amount: productExist.price * (productExist.quantity - 1),
-                    }
-                  : item
-              )
-            );
+                      total_amount: productExist.price * (productExist.quantity - 1), }: item));
           } else {
             // If the product quantity is 1, remove the product from the cart
             setCart(cart.filter((item) => item?.productid !== product?.productid));
@@ -123,69 +127,74 @@ export default function Cart() {
         }
       };
 
+    const calculateTotalPrice = () => {
+        let totalPrice = 0;
+        for (const item of cart) {
+          const quantity = parseFloat(item?.quantity);
+          const price = parseFloat(item?.price);
+          if (!isNaN(quantity) && !isNaN(price)) {totalPrice += quantity * price;}}
+        return totalPrice;
+    }; useEffect(() => {
+        const total_price = calculateTotalPrice();
+        setTotal_Price(total_price);
+    }, [cart]);  
+
+    const calculateChange = () => {
+        const totalPrice = (total_price);
+        const tenderedBill = parseFloat(tendered_bill);
+        // Check if both values are valid numbers
+        if (!isNaN(totalPrice) && !isNaN(tenderedBill)) {
+            return tenderedBill - totalPrice;
+        }
+        // Return 0 if any of the values is not a valid number
+        return 0;}; useEffect(() => {
+        const balance = calculateChange();
+        setBalance(balance);}); 
+
+    // Function to calculate the total quantity
+    const calculateTotalQuantity = () => {
+        let total_quantity = 0;
+        for (const item of cart) {
+        if (item?.quantity) {
+            total_quantity += item.quantity;
+        }}
+        return total_quantity;
+    }; useEffect(() => { const total_quantity = calculateTotalQuantity(); setTotal_quantity(total_quantity);}); 
+
+     // Function to get the current date and time in the current time zone
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    // Format the date and time as desired
+    const formattedDateTime = now.toLocaleString(); // You can customize the format using options
+    return formattedDateTime;
+  };
+
+  // Update the date_time value with the current date and time at regular intervals
+  useEffect(() => {
+    const updateDateTime = () => {
+      const currentDateTime = getCurrentDateTime();
+      setDate_time(currentDateTime);
+    };
+
+    // Update the date_time initially
+    updateDateTime();
+
+    // Set up an interval to update the date_time every second (or as desired)
+    const intervalId = setInterval(updateDateTime, 1000); // Update every 1 second
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
  return (
     <div className='cashiering-body'>
     <div className="container">
-        <div className="row content">
-        {/* Customer Details */}
-        <div className="col-lg-8">
-            <div className='customer-details'> 
-            <h3>Customer Name</h3>
-            <TextField
-                fullWidth
-                value={customer_name}
-                onChange={(e) => setCustomer_name(e.target.value)}
-                id="filled-required"
-                variant="filled"
-                size='small'
-                inputProps={{style: {fontSize: 15}}}
-            />
-            <h3>Customer Number</h3>
-            <TextField
-                fullWidth
-                value={customer_num}
-                onChange={(e) => setCustomer_num(e.target.value)}
-                id="filled-required"
-                size='small'
-                variant="filled"
-                inputProps={{style: {fontSize: 15}}}
-            />
-            <h3>Customer Email</h3>
-            <TextField
-                value={customer_email}
-                onChange={(e) => setCustomer_email(e.target.value)}
-                id="filled-required"
-                fullWidth
-                size='small'
-                variant="filled"
-                inputProps={{style: {fontSize: 15}}}
-            />
-            <hr></hr>
-        </div>
-        </div>
-
-        {/* Display user cashier */}
-        <div className="col-lg-4">
-        <div className='cashier-details'>
-        <h3>Date TIME</h3>
-        <TextField
-                required
-                id="filled-required"
-                label=""
-                fullWidth
-                value={date_time}
-                size='small'
-                variant="filled"
-                inputProps={{style: {fontSize: 15}}}
-            />
-        </div>
-        </div>
-        </div>
         {/* DISPLAYS PRODUCT TABLE */}
-        <div className='container'> 
-        <div className="col-lg-8">
-        <TableContainer component={Paper} sx={{maxHeight: 550}}>
+        <div className='container-product   '> 
+        <div className="col-lg-7">
+        <TableContainer component={Paper} sx={{maxHeight: 800}}>
             <Table sx={{ minWidth: 700}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
@@ -220,27 +229,28 @@ export default function Cart() {
                              style={{ display: 'none' }}
                          ></input>
                      </label>
-                   
                     </StyledTableCell>
                     </TableRow>
                 ))}
                 </TableBody>
             </Table>
             </TableContainer>
+            <hr></hr>
         </div>
 
          {/* Display Cashiering */}
-         <div className="col-lg-4">
-            <div className='cashiering'>
-                    <Table className='table table-responsive table-dark table-hover'>
+         <div className="col-lg-5">
+            <TableContainer component={Paper} sx={{maxHeight: 400 }}>
+                    <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 300}}>
                         <TableHead>
                         <TableRow>
                             <StyledTableCell>ID</StyledTableCell>
                             <StyledTableCell align="right">Product Name</StyledTableCell>
-                            <StyledTableCell align="right">Total Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Price</StyledTableCell>
                             <StyledTableCell align="right">Total Price</StyledTableCell>
-                            <StyledTableCell align="right">Actions </StyledTableCell>
-                            <StyledTableCell align="right"> </StyledTableCell>
+                            <StyledTableCell align="center">Actions </StyledTableCell>
+                            <StyledTableCell align="left"> </StyledTableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -251,17 +261,18 @@ export default function Cart() {
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{item?.productname}</StyledTableCell>
                                 <StyledTableCell align="right">{item?.quantity}</StyledTableCell>
-                                <StyledTableCell align="right">₱ </StyledTableCell>
+                                <StyledTableCell align="right">₱{item?.price}</StyledTableCell>
+                                <StyledTableCell align="right">₱{item?.subtotal}</StyledTableCell>
                                 <StyledTableCell align='right'>
                                       <button className='btn btn-success' onClick={() => {
                                         if(item) {
                                             decreaseQuantity(item)
-                                        }}}>-</button>
+                                        }}}> - </button>
                                       <button className='btn btn-success' onClick={() => {
                                         if (item) {
                                         addProductToCart(item);
                                         }
-                                    }}>+</button>
+                                    }}> + </button>
                                 </StyledTableCell>
                                 <StyledTableCell align="right"> 
                                 <button className='btn btn-danger btn-lg' 
@@ -275,52 +286,106 @@ export default function Cart() {
                             ))}
                         </TableBody>
                     </Table>
-                    <hr></hr>                
-                    <div>
-                        <h1>Total Amount: ₱{total_amount}</h1>
-                        <h3>Total Amount:
-                            <TextField
+                    </TableContainer>
+            </div>          
+        </div>
+        <div className="row content">
+        {/* Customer Details */}
+        <div className="col-lg-7">
+            <div className='customer-details'> 
+            <h3>Customer Name</h3>
+            <TextField
+                fullWidth
+                value={customer_name}
+                onChange={(e) => setCustomer_name(e.target.value)}
+                id="filled-required"
+                variant="filled"
+                size='small'
+                inputProps={{style: {fontSize: 15, backgroundColor: '#f7f5f5'}}}
+            />
+            <h3>Customer Number</h3>
+            <TextField
+                fullWidth
+                value={customer_num}
+                onChange={(e) => setCustomer_num(e.target.value)}
+                id="filled-required"
+                size='small'
+                variant="filled"
+                inputProps={{style: {fontSize: 15, backgroundColor: '#f7f5f5'}}}
+            />
+            <h3>Customer Email</h3>
+            <TextField
+                value={customer_email}
+                onChange={(e) => setCustomer_email(e.target.value)}
+                id="filled-required"
+                fullWidth
+                size='small'
+                variant="filled"
+                inputProps={{style: {fontSize: 15, backgroundColor: '#f7f5f5'}}}
+            />
+            <h3>Date TIME</h3>
+        <TextField
+                required
+                id="filled-required"
+                label=""
+                fullWidth
+                value={date_time}
+                size='small'
+                variant="filled"
+                inputProps={{style: {fontSize: 15, backgroundColor: '#f7f5f5'}}}
+            />
+        </div>
+        </div>
+
+                <div className="col-lg-4">
+                    <div> 
+                        <h1> Total Amount
+                        <TextField
                                 value={total_price}
-                                onChange={(e) => setTotal_Price(e.target.value)}
+                                required
+                                size='small'
+                                id="filled-required"
+                                fullWidth
+                                variant="filled"
+                                inputProps={{readOnly: true,style: {fontSize: 25, fontWeight: 'bold',  backgroundColor: '#f7f5f5'}}}
+                            /></h1>
+                        <h3>Total Quantity
+                            <TextField
+                                value={total_quantity}
                                 required
                                 id="filled-required"
                                 fullWidth
                                 size='small'
                                 variant="filled"
-                                inputProps={{style: {fontSize: 15}}}
-                            /> </h3>   
-
+                                inputProps={{style: {fontSize: 15,  backgroundColor: '#f7f5f5'}}}
+                            /> </h3>
                         <h3>Tender
                             <TextField
                                 value={tendered_bill}
                                 onChange={(e) => setTendered_bill(e.target.value)}
                                 required
+                                type='number'
                                 id="filled-required"
                                 fullWidth
                                 size='small'
                                 variant="filled"
-                                inputProps={{style: {fontSize: 15}}}
-                            /> </h3>
-                           
+                                inputProps={{style: {fontSize: 15,  backgroundColor: '#f7f5f5'}}}
+                            /> </h3>  
                         <h3>Change 
                             <TextField
                                     value={balance}
-                                    onChange={(e) => setBalance(e.target.value)}
                                     required
                                     id="filled-required"
                                     fullWidth
                                     size='small'
                                     variant="filled"
-                                    inputProps={{style: {fontSize: 15}}}
+                                    inputProps={{style: {fontSize: 15,  backgroundColor: '#f7f5f5'}}}
                                 />
                         </h3>
-
-                        <button className='btn-lg' onClick={record_transaction}>PAY NOW</button>     
-                            
-                    </div>
-            </div>
-        </div>          
+                </div>
         </div>
+        <button  className='button-record-transaction' onClick={record_transaction}>PAY NOW</button>     
+        </div>  
     </div>
     </div>
  );

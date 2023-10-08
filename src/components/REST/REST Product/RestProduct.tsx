@@ -10,7 +10,7 @@ export interface Product{
 }
 
 
-export const RestProduct = ():[ (productid:number|undefined)=> void,(productid:number|undefined)=>void,(product:Product)=>void,(product:Product)=>void, Product|undefined, string] => {
+export const RestProduct = ():[ (productid:number)=> void,(productid:number)=>void,(product:Product)=>void,(product:Product)=>void, Product|any, string] => {
     const [product, setProduct] = useState<Product>();
     const [error, setError] = useState("");
 
