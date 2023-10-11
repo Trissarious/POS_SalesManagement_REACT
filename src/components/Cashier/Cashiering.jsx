@@ -1,18 +1,16 @@
 
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
-import { Outlet, Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
-import ProductService from '../REST/REST Product/ProductService';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { channel } from 'diagnostics_channel';
+import { useReactToPrint } from 'react-to-print';
 
-const initialSelectedProducts: any[] | (() => any[]) = [];
+const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
 const post_transaction = 'http://localhost:8080/transaction/postTransaction';
 
-export default function Cart() {
+export default function Cashiering() {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
@@ -28,6 +26,7 @@ export default function Cart() {
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
+
 
     //Fetch Product Table from Database
     useEffect(() => {
@@ -73,7 +72,7 @@ export default function Cart() {
       }));
 
     // Function to add a selected product ID to the state
-    const addProductToSelection = (productid: any) => {
+    const addProductToSelection = (productid) => {
         // Check if the productid is not already in selectedProducts
         if (!selectedProducts.includes(productid)) {
             // If it's not selected, select it
@@ -81,7 +80,7 @@ export default function Cart() {
         }};
 
     // Add to cart table
-    const addProductToCart = async (product: Product) => {
+    const addProductToCart = async (product) => {
         const productExist = cart.find((item) => item?.productid === product?.productid);
       
         if (productExist) {
@@ -102,13 +101,13 @@ export default function Cart() {
       };
       
     // Removes the item from the cart
-    const removeProduct = async(product:Product) =>{
+    const removeProduct = async(product) =>{
         const newCart =cart.filter(cart => cart?.productid !== product.productid);
         setCart(newCart);
         setSelectedProducts(selectedProducts.filter((id) => id !== product.productid));
     }
 
-    const decreaseQuantity = async (product: Product) => {
+    const decreaseQuantity = async (product) => {
         const productExist = cart.find((item) => item?.productid === product?.productid);
         if (productExist) {
           // If the product quantity is greater than 1, decrease it by 1
@@ -162,7 +161,7 @@ export default function Cart() {
     }; useEffect(() => { const total_quantity = calculateTotalQuantity(); setTotal_quantity(total_quantity);}); 
 
      // Function to get the current date and time in the current time zone
-  const getCurrentDateTime = () => {
+    const getCurrentDateTime = () => {
     const now = new Date();
     // Format the date and time as desired
     const formattedDateTime = now.toLocaleString(); // You can customize the format using options
@@ -170,15 +169,14 @@ export default function Cart() {
   };
 
   // Update the date_time value with the current date and time at regular intervals
-  useEffect(() => {
-    const updateDateTime = () => {
-      const currentDateTime = getCurrentDateTime();
-      setDate_time(currentDateTime);
+     useEffect(() => {
+        const updateDateTime = () => {
+        const currentDateTime = getCurrentDateTime();
+        setDate_time(currentDateTime);
     };
 
     // Update the date_time initially
     updateDateTime();
-
     // Set up an interval to update the date_time every second (or as desired)
     const intervalId = setInterval(updateDateTime, 1000); // Update every 1 second
 
@@ -188,11 +186,13 @@ export default function Cart() {
     };
   }, []);
 
+
+
  return (
     <div className='cashiering-body'>
     <div className="container">
         {/* DISPLAYS PRODUCT TABLE */}
-        <div className='container-product   '> 
+        <div className='container-product'> 
         <div className="col-lg-7">
         <TableContainer component={Paper} sx={{maxHeight: 800}}>
             <Table sx={{ minWidth: 700}} aria-label="customized table">
@@ -323,7 +323,7 @@ export default function Cart() {
                 variant="filled"
                 inputProps={{style: {fontSize: 15, backgroundColor: '#f7f5f5'}}}
             />
-            <h3>Date TIME</h3>
+            <h3>Date and Time</h3>
         <TextField
                 required
                 id="filled-required"
@@ -339,7 +339,7 @@ export default function Cart() {
 
                 <div className="col-lg-4">
                     <div> 
-                        <h1> Total Amount
+                        <h2> Total Amount
                         <TextField
                                 value={total_price}
                                 required
@@ -348,7 +348,7 @@ export default function Cart() {
                                 fullWidth
                                 variant="filled"
                                 inputProps={{readOnly: true,style: {fontSize: 25, fontWeight: 'bold',  backgroundColor: '#f7f5f5'}}}
-                            /></h1>
+                            /></h2>
                         <h3>Total Quantity
                             <TextField
                                 value={total_quantity}
@@ -379,14 +379,28 @@ export default function Cart() {
                                     fullWidth
                                     size='small'
                                     variant="filled"
-                                    inputProps={{style: {fontSize: 15,  backgroundColor: '#f7f5f5'}}}
+                                    inputProps={{style: {fontSize: 20, fontWeight: 'bold', backgroundColor: '#f7f5f5'}}}
                                 />
                         </h3>
                 </div>
         </div>
-        <button  className='button-record-transaction' onClick={record_transaction}>PAY NOW</button>     
+
+        
+        <div>
+            
+        </div>
+            {/* If the Total Amount is equal to zero, show a message */}
+            {
+                total_price !== 0 ? 
+                    <button className='button-record-transaction' onClick={record_transaction}>PAY NOW</button>     
+                : <h1>Please add a product to the cart</h1>
+                
+            }
+            
+                
         </div>  
     </div>
+        <div className="footer"></div>
     </div>
  );
 }

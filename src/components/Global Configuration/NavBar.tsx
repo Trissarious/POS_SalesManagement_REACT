@@ -4,7 +4,11 @@ export default function Navbar() {
 return (
     <nav className="navbar navbar-custom">
     <div className="container-fluid">
-     <a href='/cashier-main'>POS SALES MANAGEMENT SYSTEM</a>
+     <Link 
+        style={{ color: '#FFF', textDecoration: 'none', fontFamily: 'Poppins', fontSize: 20 }} 
+        to='/cashier-main'>
+          <li className='navbar-title'>POS SALES MANAGEMENT SYSTEM</li>
+      </Link>
     </div>
   </nav>
 );

@@ -1,16 +1,11 @@
 .App {
-  /* background-color: #DDDDDD; */    
-}
-
-.navbar-custom {
-  background-color: #1D7D81;
-  overflow: hidden; 
-}
-
-.navbar ul {
-  list-style-type: none;
-  color: #1D7D81;
-  display: block;
+  background-color: #1D7D814D;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  font-family: 'Poppins';
 }
 
 .center-bod {
@@ -23,7 +18,7 @@
 
 .container {
   background-color: #1D7D814D;
-  opacity: 30;
+  opacity: 30;  
 }
 
 .buttons-nav {
@@ -54,16 +49,21 @@
 .button-record-transaction {
   background-color: #213458;
   color: #DDDDDD;
-  height: 80px;
+  height: 60px;
   text-decoration: none;
   font-family: 'Poppins';
   font-weight: 500;
-  font-size: 33px;
-  width: 600px;
+  font-size: 25px;
   position: relative;
   margin-bottom: 20px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+
+.button-record-transaction:active {
+  background-color: red; /* Change to the desired color */
+  color: white; /* Text color (if needed) */
 }
 
 .button-label {
@@ -96,4 +96,14 @@ table, th, td, thead, tr {
   font-size: 30px;
   margin: auto;
   max-width: max-content;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4.3%;
+  color: white;
+  text-align: center;
 }
