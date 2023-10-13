@@ -1,0 +1,22 @@
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
+  
+  .transaction-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .transaction-table th,
+  .transaction-table td {
+    border: 1px solid #ddd; /* Add a border to table cells */
+    padding: 8px;
+    text-align: center; /* Center the text */
+  }
+  
+  .transaction-table th {
+    background-color: #f2f2f2;
+  }
+  
