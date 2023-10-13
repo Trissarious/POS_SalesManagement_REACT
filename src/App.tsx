@@ -7,6 +7,11 @@ import Navbar from './components/Global Configuration/NavBar';
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
 import Cart from './components/Cashier/Cart';
+import SalesManagerDashboard from './components/SalesManager/SalesManagerDashboard';
+import SalesSummary from './components/SalesManager/SalesSummary';
+import ItemPage from './components/SalesManager/ItemPage';
+import TransactionHistory from './components/Cashier/TransactionHistory';
+import TransactionDetails from './components/Cashier/TransactionDetails';
 
 function App() {
 
@@ -19,7 +24,12 @@ function App() {
             <Routes>
               <Route path= "/cashier-main" element={<CashierMainPage />}/>
               <Route path = "/cashiering"  element = {<Cashiering/>}></Route>
+              <Route path = "/transactionhistory"  element = {<TransactionHistory/>}></Route>
+              <Route path="/transactions/:id" element={<TransactionDetails />} />
               <Route path = "/cart"  element = {<Cart/>}></Route>
+              <Route path = "/salesmanagerdb"  element = {<SalesManagerDashboard/>}></Route>
+              <Route path = "/salessummary"  element = {<SalesSummary/>}></Route>
+              <Route path = "/itempage"  element = {<ItemPage/>}></Route>
             </Routes>
         </BrowserRouter> 
     </div>

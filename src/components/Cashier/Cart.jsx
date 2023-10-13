@@ -1,6 +1,6 @@
 
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react';
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -54,6 +54,7 @@ export default function Cashiering()  {
           })
             .then(res => {
               console.log(res.data);
+              handlePrint()
               alert('Transaction Complete');
             })
             .catch(err => console.log(err));
@@ -197,10 +198,29 @@ export default function Cashiering()  {
     handleReactToPrint();
   }
 
-
+   //SEARCH BAR FILTERING
+    const [searchQuery, setSearchQuery] = useState('');
+    const filteredProducts = products.filter((product) =>
+        product?.productname.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
  return (
     <div className='cashiering-body'>
     <div className="container">
+                {/*Search Bar */}
+                <input
+                    type="text"
+                    placeholder="Search products"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                        width: '100%', // Adjust the width as needed
+                        height: '40px', // Adjust the height as needed
+                        margin: '10px 0', // Adjust the margins as needed (top and bottom)
+                        padding: '5px', // Add padding for better appearance
+                        fontSize: '16px', // Adjust the font size as needed
+                    }}                    
+                />        
         {/* DISPLAYS PRODUCT TABLE */}
         <div className='container-product'> 
         <div className="col-lg-7">
@@ -216,7 +236,7 @@ export default function Cashiering()  {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                     <TableRow key={product?.productid}>
                     <StyledTableCell component="th" scope="row">
                         {product?.productid}
@@ -251,20 +271,21 @@ export default function Cashiering()  {
          {/* Display Cashiering */}
          <div className="col-lg-5">
             <TableContainer component={Paper} sx={{maxHeight: 400 }}>
-                    <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 300}}>
-                    {/* <ComponentToPrint
+            <div style={{display: "none"}}>
+                    <ComponentToPrint
                         ref={componentRef}
                         cart={cart}
                         customer_name={customer_name}
+                        customer_num={customer_num}
                         customer_email={customer_email}
                         date_time={date_time}
-                        total_amount={total_price}
+                        total_price={total_price}
                         total_quantity={total_quantity}
-                        change={balance}
-                    /> */}
-                    <div style={{display: "none"}}>
-                        <ComponentToPrint cart={cart} total_price={total_price} ref={componentRef}/>
+                        balan={balance}
+                    />
                     </div>
+                    <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 300}}>
+                    
                         <TableHead>
                         <TableRow>
                             <StyledTableCell>ID</StyledTableCell>
@@ -416,9 +437,8 @@ export default function Cashiering()  {
                     <button className='button-record-transaction' onClick={record_transaction}>PAY NOW</button>     
                 : <h1>Please add a product to the cart</h1>
             }
-                
         </div>  
-        <button className='button-record-transaction' onClick={handlePrint}>Print</button> 
+        
     </div>
         <div className="footer"></div>
     </div>
