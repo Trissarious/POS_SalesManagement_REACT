@@ -1,0 +1,39 @@
+/* Add this CSS code to your external stylesheet or within your component's CSS file */
+.transaction-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.transaction-table th,
+.transaction-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+/* Apply custom width to the specific headers */
+.transaction-table th:nth-child(1) { /* Target the first header (Transaction ID) */
+  width: 550px; /* Adjust the width to your preference */
+}
+
+.transaction-table th:nth-child(2) { /* Target the second header (Date & Time) */
+  width: 625px; /* Adjust the width to your preference */
+}
+
+.transaction-table th:nth-child(3) { /* Target the second header (Date & Time) */
+  width: 125px; /* Adjust the width to your preference */
+}
+
+.transaction-table th:nth-child(4) { /* Target the second header (Date & Time) */
+  width: 125px; /* Adjust the width to your preference */
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
+}
+
+.transaction-container {
+  margin-right:  10px;
+  max-height: 715px; /* Adjust the max-height as needed */
+  overflow-y: auto;
+}

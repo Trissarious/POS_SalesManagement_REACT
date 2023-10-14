@@ -1,0 +1,59 @@
+/* TransactionDetails.css */
+.table-container {
+    margin: 20px;
+    max-height: 715px; /* Adjust the max-height as needed */
+    overflow-y: auto;
+    display: flex;
+}
+
+.table {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* Style the tables inside .table divs if needed */
+.table table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table table th,
+.table table td {
+    text-align: center;
+    padding: 11px;
+    
+    
+}
+
+/* Style the table headers */
+.table table th {
+    background-color: #f2f2f2;
+}
+
+/* Style the table rows */
+.table table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.refund-button, .return-button {
+    padding: 15px 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Adjust the font size as needed */
+    margin-right: 1px;
+}
+
+.return-button {
+    background-color: #dc3545;
+    margin-left: 70px;
+    font-size: 20px; /* Adjust the font size as needed */
+}
+
