@@ -6,7 +6,6 @@ import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
-import './Cart.css';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
@@ -206,7 +205,6 @@ export default function Cashiering()  {
     );
     
  return (
-    <div className='cashiering-body'>
     <div className="container">
                 {/*Search Bar */}
                 <input
@@ -215,11 +213,11 @@ export default function Cashiering()  {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{
-                        width: '100%', // Adjust the width as needed
-                        height: '40px', // Adjust the height as needed
-                        margin: '10px 0', // Adjust the margins as needed (top and bottom)
-                        padding: '5px', // Add padding for better appearance
-                        fontSize: '16px', // Adjust the font size as needed
+                        width: '100%', 
+                        height: '40px', 
+                        margin: '10px 0', 
+                        padding: '5px', 
+                        fontSize: '16px', 
                     }}                    
                 />        
         {/* DISPLAYS PRODUCT TABLE */}
@@ -452,9 +450,8 @@ export default function Cashiering()  {
                 : <h1>Please add a product to the cart</h1>
             }
         </div>  
-        
-    </div>
         <div className="footer"></div>
+        
     </div>
  );
 }
