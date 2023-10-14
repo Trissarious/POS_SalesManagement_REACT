@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './TransactionDetails.css'
 
@@ -49,6 +49,26 @@ const TransactionDetails = () => {
             });
     }, [id]);
 
+    const handleRefundClick = () => {
+        // Show a confirmation dialog
+        const confirmed = window.confirm('Are you sure you want to refund?');
+        if (confirmed) {
+            // Perform the refund action here
+            // You can add your refund logic and another confirmation dialog
+            // after successfully processing the refund
+            axios.delete(`http://localhost:8080/transaction/deleteTransaction/${id}`)
+              .then(() => {
+                  window.confirm(`Transaction ${id} has been refunded and deleted.`);
+                  // Optionally, you can navigate the user back to the transaction history or another page
+                  window.location.href = '/transactionhistory'; // You can use the appropriate URL
+              })
+              .catch((error) => {
+                  console.error(error);
+                  window.alert(`Failed to refund transaction ${id}.`);
+              });
+        }
+    };
+    
     return (
         <div className='table-container'>
             <div className='table'>
@@ -119,7 +139,9 @@ const TransactionDetails = () => {
                 </tbody>
             </table>
             <div className="buttons-container">
-                    <button className="refund-button">Refund</button>
+            <button className="refund-button" onClick={handleRefundClick}>
+            Refund
+          </button>
                     <button className="return-button">Return</button>
                 </div>
         </div>
