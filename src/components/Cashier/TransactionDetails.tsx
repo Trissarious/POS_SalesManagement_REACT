@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './TransactionDetails.css'
 
 interface Product {
     productid: number;
@@ -49,7 +50,8 @@ const TransactionDetails = () => {
     }, [id]);
 
     return (
-        <div>
+        <div className='table-container'>
+            <div className='table'>
             <h2>Transaction Details</h2>
             {transactionDetails && (
                 <table>
@@ -93,6 +95,8 @@ const TransactionDetails = () => {
                     </tbody>
                 </table>
             )}
+            </div>
+            <div className='table'>
             <h2>Products Purchased</h2>
             <table>
                 <thead>
@@ -114,6 +118,11 @@ const TransactionDetails = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="buttons-container">
+                    <button className="refund-button">Refund</button>
+                    <button className="return-button">Return</button>
+                </div>
+        </div>
         </div>
     );
 };

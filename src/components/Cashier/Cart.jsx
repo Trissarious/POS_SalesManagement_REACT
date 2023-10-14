@@ -6,6 +6,7 @@ import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
+import './Cart.css';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
@@ -224,6 +225,7 @@ export default function Cashiering()  {
         {/* DISPLAYS PRODUCT TABLE */}
         <div className='container-product'> 
         <div className="col-lg-7">
+        {filteredProducts.length > 0 ? (   
         <TableContainer component={Paper} sx={{maxHeight: 800}}>
             <Table sx={{ minWidth: 700}} aria-label="customized table">
                 <TableHead>
@@ -265,6 +267,18 @@ export default function Cashiering()  {
                 </TableBody>
             </Table>
             </TableContainer>
+            ) : (
+            <div className="no-products-found" style={{ 
+            background: 'white', 
+            padding: '100px', /* Increase the padding to expand the background */
+            margin: '1px', /* Add margins for spacing */
+            textAlign: 'center',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            }}>
+            No products found
+            </div>
+            )}
             <hr></hr>
         </div>
 
