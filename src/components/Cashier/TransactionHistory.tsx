@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './CSS FIles//TransactionHistory.css';
+import './CSS FIles/TransactionHistory.css';
 import './CSS FIles//Images Cashierieng/ViewIcon.png'
 
 interface Transaction {
@@ -72,7 +72,8 @@ const TransactionHistory = () => {
                     }}
                 />
             </div>
-
+            <div className="transaction-table-container"> {/* Add this div */}        
+            
             {searchInput && filteredTransactions.length === 0 ? (
                 <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No transactions found.</p>
             ) : (
@@ -117,6 +118,7 @@ const TransactionHistory = () => {
                 </table>
             )}
         </div>
+       </div> 
     );
 };
 
