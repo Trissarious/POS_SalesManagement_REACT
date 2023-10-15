@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { IconButton, Drawer, List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import { Link } from 'react-router-dom';
-//import { Bar } from 'react-chartjs-2';
 
 export default function SalesManagerDashboard() {
   // State to control the open/closed state of the Drawer
@@ -36,33 +35,41 @@ export default function SalesManagerDashboard() {
     <div>
       {/* Hamburger icon to open the Drawer */}
       <IconButton
-        edge="end" // Position the icon to the right
+        edge="end" 
         color="inherit"
         aria-label="open drawer"
         onClick={openDrawer}
         sx={{
           position: 'fixed',
-          top: '1rem',
-          right: '2rem', // Adjust the right property to add margin
-          fontSize: '6rem', // Adjust the font size to resize the icon
-          zIndex: 999, // Ensure the icon appears above other content
+          top: '.5rem',
+          right: '2rem', 
+          fontSize: '6rem', 
+          zIndex: 999, 
         }}
       >
-        <MenuIcon /> {/* Place the MenuIcon component here */}
+        <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
       </IconButton>
 
       {/* Drawer component */}
-      <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '250px' }}>
+      <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem' }}>
         <List>
-          {/* Renamed ListItem buttons */}
           <ListItem button component={Link} to="/salessummary">
-            <ListItemText primary="Sales Summary" sx={{ fontSize: '1.5rem' }} /> {/* Adjust font size */}
+            <h2 
+              style={{fontFamily: 'Poppins'}}
+            
+            >Sales Summary</h2>
           </ListItem>
           <ListItem button component={Link} to="/itempage">
-            <ListItemText primary="Item Page" sx={{ fontSize: '1.5rem' }} /> {/* Adjust font size */}
+          <h2 
+              style={{fontFamily: 'Poppins'}}
+            
+            >Item Page</h2>
           </ListItem>
-          <ListItem button sx={{ fontSize: '1.5rem' }}> {/* Adjust font size */}
-            <ListItemText primary="Logout" />
+          <ListItem>
+          <h2
+              style={{fontFamily: 'Poppins'}}
+            
+            >Log Out</h2>
           </ListItem>
         </List>
       </Drawer>
@@ -122,7 +129,7 @@ export default function SalesManagerDashboard() {
               textAlign: 'center',
             }}
           >
-            500 {/* Replace with the actual integer */}
+            500
           </Box>
         </div>
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './TransactionHistory.css';
+import './CSS FIles//TransactionHistory.css';
+import './CSS FIles//Images Cashierieng/ViewIcon.png'
 
 interface Transaction {
     transactionid: number;
@@ -54,19 +55,20 @@ const TransactionHistory = () => {
 
     return (
         <div className="transaction-container">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <h1 style={{ marginLeft: '95px', marginBottom: '10px', marginTop: '30px' }}>All Transactions</h1>
+            <div style={{ display: 'flex', alignItems: 'center', color: '#213458'}}>
+                <h1 style={{fontSize: 30,marginLeft: '50px', marginBottom: '10px', marginTop: '30px', fontWeight: 'bolder' }}>All Transactions</h1>
                 <input
                     type="text"
                     placeholder="Search Transaction ID"
                     onChange={(e) => handleSearch(e.target.value)}
                     style={{ 
-                        marginLeft: '860px', 
+                        marginLeft: '1000px', 
                         marginTop: '20px',
-                        width: '20%', // Adjust the width as needed
-                        height: '40px', // Adjust the height as needed
+                        marginRight: '20px',
+                        height: '40px',
                         padding: '10px',
-                        fontSize: '16px', // Adjust the font size as needed
+                        fontSize: '16px',
+                        fontWeight: 'bolder'
                     }}
                 />
             </div>
@@ -74,44 +76,38 @@ const TransactionHistory = () => {
             {searchInput && filteredTransactions.length === 0 ? (
                 <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No transactions found.</p>
             ) : (
-                <table className="transaction-table">
+                <table className="transaction-table" style={{maxWidth: '90%'}}>
                     <thead>
                         <tr>
                             <th>Transaction ID</th>
-                            <th>Date & Time</th>
-                            <th></th>
-                            <th></th>
+                            <th style={{maxWidth:200}}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {searchInput
                             ? filteredTransactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td>{transaction.transactionid}</td>
-                                <td>{transaction.date_time}</td>
+                                <td>Transaction {transaction.transactionid}</td>
                                 <td>
                                     <Link to={`/transactions/${transaction.transactionid}`}>
                                         View
                                     </Link>
-                                </td>
-                                <td>
                                     <button onClick={() => handleDeleteTransaction(transaction.transactionid)}>
                                         Delete
                                     </button>
                                 </td>
+
                             </tr>
                             ))
                             : transactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td>{transaction.transactionid}</td>
-                                <td>{transaction.date_time}</td>
+                                <td>Transaction {transaction.transactionid} <br></br> {transaction.date_time}</td>
                                 <td>
                                     <Link to={`/transactions/${transaction.transactionid}`}>
-                                        View
+                                        <img src='/CSS FIles/Images Cashierieng/ViewIcon.png'/>
+                                            View
                                     </Link>
-                                </td>
-                                <td>
-                                    <button onClick={() => handleDeleteTransaction(transaction.transactionid)}>
+                                    <button className='btn btn-danger btn-lg'onClick={() => handleDeleteTransaction(transaction.transactionid)}>
                                         Delete
                                     </button>
                                 </td>

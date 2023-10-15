@@ -6,7 +6,7 @@ import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
-import './Cashiering.css';
+import './CSS FIles/Cashiering.css';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
@@ -278,14 +278,15 @@ export default function Cashiering()  {
             </Table>
             </TableContainer>
             ) : (
-            <div className="no-products-found" style={{ 
-            background: 'white', 
-            padding: '100px', /* Increase the padding to expand the background */
-            margin: '1px', /* Add margins for spacing */
-            textAlign: 'center',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            }}>
+            <div className="no-products-found" 
+                style={{ 
+                    background: 'white', 
+                    padding: '100px', /* Increase the padding to expand the background */
+                    margin: '1px', /* Add margins for spacing */
+                    textAlign: 'center',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                }}>
             No products found
             </div>
             )}

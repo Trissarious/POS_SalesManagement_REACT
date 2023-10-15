@@ -1,10 +1,6 @@
 import React from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useReactToPrint } from 'react-to-print';
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {
   const {

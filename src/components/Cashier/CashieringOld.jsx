@@ -1,8 +1,8 @@
 
-import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
-import { Product, RestProduct } from '../REST/REST Product/RestProduct';
+import { RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';

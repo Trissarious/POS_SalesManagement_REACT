@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import the Link component
-import './LoginCashier.css'; // You should create a CSS file for styling
+import { Link } from 'react-router-dom';
+import './CSS FIles/LoginCashier.css';  
+import { TextField } from '@mui/material';
 
 const StartingScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Simulate login logic (replace this with your actual logic)
     if (username === 'yourUsername' && password === 'yourPassword') {
-      // The Link component will handle the navigation
-      // No need to use useHistory in this approach
     } else {
       alert('Invalid credentials. Please try again.');
     }
@@ -22,32 +20,48 @@ const StartingScreen = () => {
 
   return (
     <div className="starting-screen">
-      <div className="centered-content">
-        <h1>Login as Cashier</h1>
-        <div className="input-container">
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="input-container">
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <Link to="/cashier-main">
-          <button onClick={handleLogin}>Login</button>
-        </Link>
-        <div className="forgot-password">
-          <span onClick={handleForgotPassword}>Forgot Password?</span>
-        </div>
+    <div className="centered-content">
+      <h1 className='h1-login-sales'>Login as Cashier</h1>
+      <div className="input-container">
+        <TextField
+          type="text"
+          label="Username"
+          variant="filled"
+          fullWidth
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+          InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+        />
+      </div>
+      <div className="input-container">
+        <TextField
+          type="password"
+          fullWidth
+          label="Password"
+          value={password}
+          variant='filled'
+          onChange={(e) => setPassword(e.target.value)}
+          inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+          InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+        />
+      </div>
+      <Link to="/cashier-main">
+        <button className='btn-login-salesmanager' 
+          onClick={handleLogin}>
+        Login</button>
+      </Link>
+      <br></br>
+      <Link to="/cashier-main">
+        <button className='btn-register' 
+          onClick={handleLogin}>
+        Don't Have An Account? </button>
+      </Link>
+      <div className="forgot-password">
+        <span onClick={handleForgotPassword}>Forgot Password?</span>
       </div>
     </div>
+  </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link} from 'react-router-dom';
 import axios from 'axios';
-import './TransactionDetails.css'
+import './CSS FIles/TransactionDetails.css'; 
 
 interface Product {
     productid: number;
