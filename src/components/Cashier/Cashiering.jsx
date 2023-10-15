@@ -1,16 +1,18 @@
 
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react';
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from './ComponentToPrint';
+import './Cashiering.css';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
 const post_transaction = 'http://localhost:8080/transaction/postTransaction';
 
-export default function Cashiering() {
+export default function Cashiering()  {
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
@@ -27,7 +29,6 @@ export default function Cashiering() {
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
 
-
     //Fetch Product Table from Database
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +42,18 @@ export default function Cashiering() {
         fetchData();}, []);
 
         const record_transaction = async () => {
-          axios.post(post_transaction, {
+            if (!tendered_bill) {
+                alert('Tendered bill cannot be empty. Please enter a valid amount.');
+                return;
+              }   
+
+              if (parseFloat(tendered_bill) < total_price) {
+                alert('Insufficient amount. Please enter an amount equal to or greater than the total price.');
+                return;
+              }
+              const isReadyToPay = window.confirm('Are you sure you want to proceed with the payment?');
+              if (isReadyToPay) {
+            axios.post(post_transaction, {
             total_quantity: total_quantity,
             total_price: total_price,
             tendered_bill: tendered_bill,
@@ -54,11 +66,12 @@ export default function Cashiering() {
           })
             .then(res => {
               console.log(res.data);
+              handlePrint()
               alert('Transaction Complete');
             })
             .catch(err => console.log(err));
         }
-
+    }
     // Styling the Product Table
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -187,14 +200,43 @@ export default function Cashiering() {
   }, []);
 
 
+  const componentRef = useRef();
 
+  const handleReactToPrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const handlePrint = () => {
+    handleReactToPrint();
+  }
+
+   //SEARCH BAR FILTERING
+    const [searchQuery, setSearchQuery] = useState('');
+    const filteredProducts = products.filter((product) =>
+        product?.productname.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
  return (
-    <div className='cashiering-body'>
     <div className="container">
+                {/*Search Bar */}
+                <input
+                    type="text"
+                    placeholder="Search products"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                        width: '100%', 
+                        height: '40px', 
+                        margin: '10px 0', 
+                        padding: '5px', 
+                        fontSize: '16px', 
+                    }}                    
+                />        
         {/* DISPLAYS PRODUCT TABLE */}
         <div className='container-product'> 
         <div className="col-lg-7">
-        <TableContainer component={Paper} sx={{maxHeight: 800}}>
+        {filteredProducts.length > 0 ? (   
+        <TableContainer component={Paper} sx={{maxHeight: 700}}>
             <Table sx={{ minWidth: 700}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
@@ -206,7 +248,7 @@ export default function Cashiering() {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                     <TableRow key={product?.productid}>
                     <StyledTableCell component="th" scope="row">
                         {product?.productid}
@@ -235,13 +277,38 @@ export default function Cashiering() {
                 </TableBody>
             </Table>
             </TableContainer>
+            ) : (
+            <div className="no-products-found" style={{ 
+            background: 'white', 
+            padding: '100px', /* Increase the padding to expand the background */
+            margin: '1px', /* Add margins for spacing */
+            textAlign: 'center',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            }}>
+            No products found
+            </div>
+            )}
             <hr></hr>
         </div>
 
          {/* Display Cashiering */}
          <div className="col-lg-5">
-            <TableContainer component={Paper} sx={{maxHeight: 400 }}>
-                    <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 300}}>
+            <TableContainer component={Paper} sx={{maxHeight: 300 }}>
+            <div style={{display: "none"}}>
+                    <ComponentToPrint
+                        ref={componentRef}
+                        cart={cart}
+                        customer_name={customer_name}
+                        customer_num={customer_num}
+                        customer_email={customer_email}
+                        date_time={date_time}
+                        total_price={total_price}
+                        total_quantity={total_quantity}
+                        balan={balance}
+                    />
+                    </div>
+                    <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 'auto'}}>
                         <TableHead>
                         <TableRow>
                             <StyledTableCell>ID</StyledTableCell>
@@ -384,8 +451,6 @@ export default function Cashiering() {
                         </h3>
                 </div>
         </div>
-
-        
         <div>
             
         </div>
@@ -394,13 +459,10 @@ export default function Cashiering() {
                 total_price !== 0 ? 
                     <button className='button-record-transaction' onClick={record_transaction}>PAY NOW</button>     
                 : <h1>Please add a product to the cart</h1>
-                
             }
-            
-                
         </div>  
-    </div>
         <div className="footer"></div>
+        
     </div>
  );
 }

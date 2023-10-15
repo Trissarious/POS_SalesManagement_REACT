@@ -6,7 +6,7 @@ return (
     <div className="container-fluid">
      <Link 
         style={{ color: '#FFF', textDecoration: 'none', fontFamily: 'Poppins', fontSize: 20 }} 
-        to='/cashier-main'>
+        to='/'>
           <li className='navbar-title'>POS SALES MANAGEMENT SYSTEM</li>
       </Link>
     </div>
