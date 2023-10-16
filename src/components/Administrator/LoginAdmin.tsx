@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './LoginAdmin.css';
 import { TextField } from '@mui/material';
 
-const StartingScreen = () => {
+const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -49,23 +49,24 @@ const StartingScreen = () => {
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
         />
       </div>
-      <Link to="/salesmanagerdb">
+      <Link to="/adminmainpage">
         <button className='btn-login-salesmanager' 
           onClick={handleLogin}>
         Login</button>
       </Link>
       <br></br>
-      <Link to="/salesmanagerdb">
-        <button className='btn-register' 
-          onClick={handleLogin}>
+      <Link to="/createaccountadmin">
+        <button className='btn-register'>
         Don't Have An Account? </button>
       </Link>
-      <div className="forgot-password">
-        <span onClick={handleForgotPassword}>Forgot Password?</span>
-      </div>
+      <Link to="/forgotpassword"> {/* Add this Link */}
+          <div className="forgot-password">
+            <span>Forgot Password?</span>
+          </div>
+        </Link>
     </div>
   </div>
   );
 };
 
-export default StartingScreen;
+export default LoginAdmin;

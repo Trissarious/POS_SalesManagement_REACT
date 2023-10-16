@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import { Link } from 'react-router-dom'; 
 import './LoginSalesManager.css'; 
 
-const StartingScreen = () => {
+const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -65,4 +65,4 @@ const StartingScreen = () => {
   );
 };
 
-export default StartingScreen;
+export default LoginSalesManager;
