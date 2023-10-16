@@ -1,6 +1,7 @@
 .transaction-table-container {
-  overflow: auto;  /* Add this style for scroll bar when needed */
-  max-height: 630px;  /* Set a max height to limit the size of the scrollable area */
+  overflow: auto; 
+  max-height: 630px; 
+  width: 1500px;
 }
 
 .transaction-table {
@@ -35,4 +36,5 @@
   width: max-content;
   margin-left: auto;
   margin-right: auto;
+  height: 90vh;
 }

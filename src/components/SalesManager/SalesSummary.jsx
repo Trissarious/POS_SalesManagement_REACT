@@ -1,5 +1,5 @@
-import { Button, Typography } from '@mui/material';
-import { Outlet, Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
+
 
 
 export default function SalesSummary() {

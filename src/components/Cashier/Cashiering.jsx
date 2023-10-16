@@ -306,7 +306,7 @@ export default function Cashiering()  {
                         date_time={date_time}
                         total_price={total_price}
                         total_quantity={total_quantity}
-                        balan={balance}
+                        balance={balance}
                     />
                     </div>
                     <Table className='table table-responsive table-dark table-hover' sx={{ minWidth: 'auto'}}>

@@ -31,7 +31,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
                     
                     <TableHead>
                     <TableRow>
-                        <StyledTableCell>ID</StyledTableCell>
+                        <StyledTableCell>#</StyledTableCell>
                         <StyledTableCell align="right">Product Name</StyledTableCell>
                         <StyledTableCell align="right">Quantity</StyledTableCell>
                         <StyledTableCell align="right">Price</StyledTableCell>
@@ -59,7 +59,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
                 <h3 className='px-2'>Customer Email: {customer_email}</h3>
                 <h3 className='px-2'>Date: {date_time}</h3>
                 <h2 className='px-2'>Total Quantity: {total_quantity}</h2>
-                <h2 className='px-2'>Total Amount: ${total_price}</h2>
+                <h2 className='px-2'>Total Amount: ₱{total_price}</h2>
+                <h2 className='px-2'>Change: ₱{balance}</h2>
     </div>
     
   );

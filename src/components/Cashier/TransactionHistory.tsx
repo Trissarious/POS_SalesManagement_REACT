@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './CSS FIles/TransactionHistory.css';
 import './CSS FIles//Images Cashierieng/ViewIcon.png'
+import { ClassNames } from '@emotion/react';
 
 interface Transaction {
     transactionid: number;
@@ -104,11 +105,10 @@ const TransactionHistory = () => {
                             <tr key={transaction.transactionid}>
                                 <td>Transaction {transaction.transactionid} <br></br> {transaction.date_time}</td>
                                 <td>
-                                    <Link to={`/transactions/${transaction.transactionid}`}>
-                                        <img src='/CSS FIles/Images Cashierieng/ViewIcon.png'/>
+                                    <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}` }>
                                             View
                                     </Link>
-                                    <button className='btn btn-danger btn-lg'onClick={() => handleDeleteTransaction(transaction.transactionid)}>
+                                    <button className='btn btn-danger btn-lg' onClick={() => handleDeleteTransaction(transaction.transactionid)}>
                                         Delete
                                     </button>
                                 </td>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './StartingScreen.css'; // You should create a CSS file for styling
 
 const StartingScreen = () => {
