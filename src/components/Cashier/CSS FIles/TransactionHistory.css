@@ -1,7 +1,11 @@
+.transaction-table-container {
+  overflow: auto;  /* Add this style for scroll bar when needed */
+  max-height: 630px;  /* Set a max height to limit the size of the scrollable area */
+}
+
 .transaction-table {
   border-collapse: collapse;
   width: 100%;
-
 }
 
 .transaction-table th,
@@ -12,24 +16,23 @@
   background-color: #fafafa88;
 }
 
-.transaction-table th:nth-child(1) { 
-  width: 550px; 
+.transaction-table th:nth-child(1) {
+  width: 550px;
   background-color: #1D7D814D;
 }
 
-.transaction-table th:nth-child(2) { 
-  width: 625px; 
+.transaction-table th:nth-child(2) {
+  width: 625px;
   background-color: #1D7D814D;
 }
-
 
 .transaction-container {
-   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #1D7D814D;
-    width: max-content;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1D7D814D;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
 }
