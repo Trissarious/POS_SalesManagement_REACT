@@ -50,17 +50,12 @@ const TransactionDetails = () => {
     }, [id]);
 
     const handleRefundClick = () => {
-        // Show a confirmation dialog
         const confirmed = window.confirm('Are you sure you want to refund?');
         if (confirmed) {
-            // Perform the refund action here
-            // You can add your refund logic and another confirmation dialog
-            // after successfully processing the refund
             axios.delete(`http://localhost:8080/transaction/deleteTransaction/${id}`)
               .then(() => {
                   window.confirm(`Transaction ${id} has been refunded and deleted.`);
-                  // Optionally, you can navigate the user back to the transaction history or another page
-                  window.location.href = '/transactionhistory'; // You can use the appropriate URL
+                  window.location.href = '/transactionhistory'; 
               })
               .catch((error) => {
                   console.error(error);
@@ -78,7 +73,7 @@ const TransactionDetails = () => {
                     <tbody>
                         <tr>
                             <th>Transaction ID</th>
-                            <td>{transactionDetails.transactionid}</td>
+                            <td style={{fontWeight: 'bold', color: 'green'}}>{transactionDetails.transactionid}</td>
                         </tr>
                         <tr>
                             <th>Total Quantity</th>
@@ -86,15 +81,15 @@ const TransactionDetails = () => {
                         </tr>
                         <tr>
                             <th>Total Price</th>
-                            <td>{transactionDetails.total_price}</td>
+                            <td>{transactionDetails.total_price.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th>Tendered Bill</th>
-                            <td>{transactionDetails.tendered_bill}</td>
+                            <td>{transactionDetails.tendered_bill.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th>Balance</th>
-                            <td>{transactionDetails.balance}</td>
+                            <td>{transactionDetails.balance.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th>Customer Name</th>
@@ -123,17 +118,15 @@ const TransactionDetails = () => {
                     <tr>
                         <th>Product ID</th>
                         <th>Product Name</th>
-                        <th>Quantity</th>
                         <th>Price</th>
                     </tr>
                 </thead>
                 <tbody>
                     {products.map((product) => (
                         <tr key={product.productid}>
-                            <td>{product.productid}</td>
+                            <td style={{fontWeight: 'bold', color: 'red'}}>{product.productid}</td>
                             <td>{product.productname}</td>
-                            <td>{product.quantity}</td>
-                            <td>{product.price}</td>
+                            <td>{product.price.toFixed(2)}</td>
                         </tr>
                     ))}
                 </tbody>

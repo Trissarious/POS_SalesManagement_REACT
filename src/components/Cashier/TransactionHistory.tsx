@@ -56,7 +56,7 @@ const TransactionHistory = () => {
 
     return (
         <div className="transaction-container">
-            <div style={{ display: 'flex', alignItems: 'center', color: '#213458'}}>
+            <div style={{ display: 'flex', color: '#213458', marginBottom: 50}}>
                 <h1 style={{fontSize: 30,marginLeft: '50px', marginBottom: '10px', marginTop: '30px', fontWeight: 'bolder' }}>All Transactions</h1>
                 <input
                     type="text"
@@ -73,8 +73,8 @@ const TransactionHistory = () => {
                     }}
                 />
             </div>
-            <div className="transaction-table-container"> {/* Add this div */}        
             
+            <div className="transaction-table-container">      
             {searchInput && filteredTransactions.length === 0 ? (
                 <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No transactions found.</p>
             ) : (
@@ -89,7 +89,7 @@ const TransactionHistory = () => {
                         {searchInput
                             ? filteredTransactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td>Transaction {transaction.transactionid}</td>
+                                <td style={{fontWeight: 50}}>Transaction {transaction.transactionid}</td>
                                 <td>
                                     <Link to={`/transactions/${transaction.transactionid}`}>
                                         View
@@ -103,7 +103,10 @@ const TransactionHistory = () => {
                             ))
                             : transactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td>Transaction {transaction.transactionid} <br></br> {transaction.date_time}</td>
+                                <td style={{color: '#213458'}}>
+                                    <div style={{fontWeight: 'bold', fontSize: 30}}> Transaction {transaction.transactionid}</div> 
+                                    <div style={{fontSize: 20}}>{transaction.date_time}</div>
+                                </td>
                                 <td>
                                     <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}` }>
                                             View

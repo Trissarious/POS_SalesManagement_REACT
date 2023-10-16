@@ -18,6 +18,7 @@ export default function Cashiering()  {
     const [products, setProduct] = useState([product])
     const [cart, setCart] = useState([product])
     const [selectedProducts, setSelectedProducts] = useState(initialSelectedProducts);
+    const [initialProductQuantities, setInitialProductQuantities] = useState({});
 
     //TRANSACTION VARIABLES
     const [total_quantity, setTotal_quantity] = useState(0);
@@ -29,17 +30,27 @@ export default function Cashiering()  {
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
 
+    
     //Fetch Product Table from Database
     useEffect(() => {
         const fetchData = async () => {
-        try {
-            const response = await axios.get(url); 
-            setProduct(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const response = await axios.get(url); 
+                setProduct(response.data);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchData();}, []);
+
+        const decreaseProductQuantityInDatabase = async (productId) => {
+            try {
+              // Make an HTTP request to update the product quantity in the database
+              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productId}`);
+            } catch (error) {
+              console.error(error);
+            }
+          };
 
         const record_transaction = async () => {
             if (!tendered_bill) {
@@ -53,21 +64,27 @@ export default function Cashiering()  {
               }
               const isReadyToPay = window.confirm('Are you sure you want to proceed with the payment?');
               if (isReadyToPay) {
-            axios.post(post_transaction, {
-            total_quantity: total_quantity,
-            total_price: total_price,
-            tendered_bill: tendered_bill,
-            balance: balance,
-            customer_name: customer_name,
-            customer_num: customer_num,
-            customer_email: customer_email,
-            date_time: date_time,
-            product: selectedProducts.map((productid) => ({ productid: productid }))
-          })
+                // Iterate over selected products and decrease their quantity in the database
+                for (const productid of selectedProducts) {
+                    decreaseProductQuantityInDatabase(productid);
+                }
+                // Axios post to create record transaction
+                axios.post(post_transaction, {
+                total_quantity: total_quantity,
+                total_price: total_price,
+                tendered_bill: tendered_bill,
+                balance: balance,
+                customer_name: customer_name,
+                customer_num: customer_num,
+                customer_email: customer_email,
+                date_time: date_time,
+                product: selectedProducts.map((productid) => ({ productid: productid }))
+            })
             .then(res => {
               console.log(res.data);
               handlePrint()
               alert('Transaction Complete');
+              window.location.reload();
             })
             .catch(err => console.log(err));
         }
@@ -84,34 +101,67 @@ export default function Cashiering()  {
         },
       }));
 
+
+      // Fetch product quantities from the database during the initial product fetch
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(url);
+                const data = response.data;
+                setProduct(data);
+
+                // Store the initial product quantities
+                const initialQuantities = {};
+                data.forEach(product => {
+                    initialQuantities[product.productid] = product.quantity;
+                });
+                setInitialProductQuantities(initialQuantities);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+
     // Function to add a selected product ID to the state
     const addProductToSelection = (productid) => {
-        // Check if the productid is not already in selectedProducts
         if (!selectedProducts.includes(productid)) {
-            // If it's not selected, select it
             setSelectedProducts([...selectedProducts, productid]);
-        }};
-
+            // Check if the quantity of the selected product is not zero
+            if (initialProductQuantities[productid] === 0) {
+                alert('Cannot add to the cart. Please restock.');
+                // Remove the product from selectedProducts
+                setSelectedProducts(selectedProducts.filter(id => id !== productid));
+            }
+        }
+    };
     // Add to cart table
     const addProductToCart = async (product) => {
         const productExist = cart.find((item) => item?.productid === product?.productid);
-      
-        if (productExist) {
-          const updatedProduct = {
+  
+    if (productExist) {
+        const updatedProduct = {
             ...productExist,
             quantity: productExist.quantity + 1,
-            subtotal: (productExist.quantity + 1) * productExist.price, // Calculate subtotal
-          };
-          setCart(cart.map((item) => (item?.productid === product?.productid ? updatedProduct : item)));
-        } else {
-          const newProduct = {
+            subtotal: (productExist.quantity + 1) * productExist.price,
+        };
+        // Check if the product quantity is not zero before updating the cart
+        if (initialProductQuantities[productExist.productid] > 0) {
+            setCart(cart.map((item) => (item?.productid === product?.productid ? updatedProduct : item)));
+        }
+    } else {
+        const newProduct = {
             ...product,
             quantity: 1,
-            subtotal: product.price, // Calculate subtotal for the initial quantity
-          };
-          setCart([...cart, newProduct]);
-        }
-      };
+            subtotal: product.price,
+        };
+        // Check if the product quantity is not zero before adding it to the cart
+        if (initialProductQuantities[newProduct.productid] > 0) {
+            setCart([...cart, newProduct]);
+        } 
+    }
+};
       
     // Removes the item from the cart
     const removeProduct = async(product) =>{
@@ -163,7 +213,6 @@ export default function Cashiering()  {
         const balance = calculateChange();
         setBalance(balance);}); 
 
-    // Function to calculate the total quantity
     const calculateTotalQuantity = () => {
         let total_quantity = 0;
         for (const item of cart) {
@@ -255,7 +304,7 @@ export default function Cashiering()  {
                     </StyledTableCell>
                     <StyledTableCell align="right">{product?.productname}</StyledTableCell>
                     <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
-                    <StyledTableCell align="right">₱{product?.price}</StyledTableCell>
+                    <StyledTableCell align="right">₱{product?.price.toFixed(2)}</StyledTableCell>
                     <StyledTableCell align="right"> 
                     <label className="button-label">ADD
                          <input
@@ -281,8 +330,8 @@ export default function Cashiering()  {
             <div className="no-products-found" 
                 style={{ 
                     background: 'white', 
-                    padding: '100px', /* Increase the padding to expand the background */
-                    margin: '1px', /* Add margins for spacing */
+                    padding: '100px', 
+                    margin: '1px', 
                     textAlign: 'center',
                     fontSize: '18px',
                     fontWeight: 'bold',
@@ -329,8 +378,8 @@ export default function Cashiering()  {
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{item?.productname}</StyledTableCell>
                                 <StyledTableCell align="right">{item?.quantity}</StyledTableCell>
-                                <StyledTableCell align="right">₱{item?.price}</StyledTableCell>
-                                <StyledTableCell align="right">₱{item?.subtotal}</StyledTableCell>
+                                <StyledTableCell align="right">₱{item?.price.toFixed(2)}</StyledTableCell>
+                                <StyledTableCell align="right">₱{item?.subtotal.toFixed(2)}</StyledTableCell>
                                 <StyledTableCell align='right'>
                                       <button className='btn btn-success' onClick={() => {
                                         if(item) {
@@ -409,13 +458,13 @@ export default function Cashiering()  {
                     <div> 
                         <h2> Total Amount
                         <TextField
-                                value={total_price}
+                                value={total_price.toFixed(2)}
                                 required
                                 size='small'
                                 id="filled-required"
                                 fullWidth
                                 variant="filled"
-                                inputProps={{readOnly: true,style: {fontSize: 25, fontWeight: 'bold',  backgroundColor: '#f7f5f5'}}}
+                                inputProps={{readOnly: true,style: {color: 'green', fontSize: 25, fontWeight: 'bold',  backgroundColor: '#f7f5f5'}}}
                             /></h2>
                         <h3>Total Quantity
                             <TextField
@@ -441,13 +490,13 @@ export default function Cashiering()  {
                             /> </h3>  
                         <h3>Change 
                             <TextField
-                                    value={balance}
+                                    value={balance.toFixed(2)}
                                     required
                                     id="filled-required"
                                     fullWidth
                                     size='small'
                                     variant="filled"
-                                    inputProps={{style: {fontSize: 20, fontWeight: 'bold', backgroundColor: '#f7f5f5'}}}
+                                    inputProps={{style: {color: 'red', fontSize: 20, fontWeight: 'bold', backgroundColor: '#f7f5f5'}}}
                                 />
                         </h3>
                 </div>
