@@ -12,7 +12,6 @@ interface Transaction {
 
 const TransactionHistory = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [isTransactionDeleted, setTransactionDeleted] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:8080/transaction/getAllTransaction')
