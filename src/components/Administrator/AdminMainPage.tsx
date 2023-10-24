@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./AdminMainPage.css";
+import "./CSS Files/./AdminMainPage.css";
 
 const AdminMainPage = () => {
   return (

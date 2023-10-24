@@ -89,6 +89,7 @@ export default function Cashiering()  {
             .catch(err => console.log(err));
         }
     }
+    
     // Styling the Product Table
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
