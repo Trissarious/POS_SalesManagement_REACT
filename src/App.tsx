@@ -10,7 +10,6 @@ import SalesSummary from './components/SalesManager/SalesSummary';
 import ItemPage from './components/SalesManager/ItemPage';
 import TransactionHistory from './components/Cashier/TransactionHistory';
 import TransactionDetails from './components/Cashier/TransactionDetails';
-import CashieringOld from './components/Cashier/CashieringOld';
 import LoginCashier from './components/Cashier/LoginCashier';
 import StartingScreen from './components/StartingScreen/StartingScreen';
 import LoginSalesManager from './components/SalesManager/LoginSalesManager';
@@ -45,7 +44,6 @@ function App() {
               <Route path = "/changepassword" element = {<ChangePassword/>}/>
               <Route path = "/adminmainpage" element = {<AdminMainPage/>}/>
               <Route path = "/viewaccounts" element = {<ViewAccounts/>}/>
-              <Route path = "/cart" element = {<CashieringOld/>}></Route>
             </Routes>
         </BrowserRouter> 
     </div>

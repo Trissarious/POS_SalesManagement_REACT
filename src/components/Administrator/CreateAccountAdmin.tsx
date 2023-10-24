@@ -1,146 +1,96 @@
 import React, { useState } from 'react';
-import './CreateAccountAdmin.css';
+import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
+import { RestAccount } from '../REST/REST Account/RestAccount';
 
-interface Account {
-  username: string;
-  password: string;
-  account_type: string;
-  email: string;
-  fname: string;
-  lname: string;
-  business_name: string;
-  address: string;
-  contactnum: string;
-}
+const post_account = 'http://localhost:8080/user/postUser';
 
-const CreateAccountAdmin: React.FC = () => {
-  const [account, setAccount] = useState<Account>({
-    username: '',
-    password: '',
-    account_type: 'Administrator',
-    email: '',
-    fname: '',
-    lname: '',
-    business_name: '',
-    address: '',
-    contactnum: '',
-  });
+export default function CreateAccountAdmin() {
+  const [deleteByID,getAccountbyId,editAccount,addAccount, account] = RestAccount();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [account_type, setAccount_type] = useState('');
+  const [email, setEmail] = useState('');
+  const [fname, setFname] = useState('');
+  const [mname, setMname] = useState('');
+  const [lname, setLname] = useState('');
+  const [business_name, setBusiness_name] = useState('');
+  const [address, setAddress] = useState('');
+  const [contactnum, setContactnum] = useState('');
 
-  const isFormValid = () => {
-    return (
-      account.username &&
-      account.password &&
-      account.account_type &&
-      account.email &&
-      account.fname &&
-      account.lname &&
-      account.business_name &&
-      account.address &&
-      account.contactnum
-    );
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAccount_type(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isFormValid()) {
-      console.error('Please fill in all required fields.');
-      return;
-    }
-
-    try {
-      const response = await axios.post('/user/postUser', account);
-
-      if (response.status === 200) {
-        console.log('Account created:', response.data);
-      } else {
-        console.error('Account creation failed:', response);
-      }
-    } catch (error) {
-      console.error('Account creation failed:', error);
-    }
+  const handleSubmit = async () => {
+    // Axios post to create account
+    axios.post(post_account, {
+        username: username,
+        password: password,
+        account_type: account_type,
+        email: email,
+        fname: fname,
+        mname: mname,
+        lname: lname,
+        business_name: business_name,
+        address: address,
+        contactnum: contactnum,
+      })
+      .then((res) => {
+        console.log(res.data);
+        alert('Account created');
+        // window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <label>
         Username:
-        <input
-          type="text"
-          value={account.username}
-          onChange={(e) => setAccount({ ...account, username: e.target.value })}
-        />
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       </label>
       <label>
         Password:
-        <input
-          type="text"
-          value={account.password}
-          onChange={(e) => setAccount({ ...account, password: e.target.value })}
-        />
+        <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
       <label>
         Account Type:
-        <input
-          type="text"
-          value={account.account_type}
-          onChange={(e) => setAccount({ ...account, account_type: e.target.value })}
-        />
+        <select value={account_type} onChange={handleDropdownChange}>
+          <option value="Administrator">Administrator</option>
+          <option value="Cashier">Cashier</option>
+          <option value="Sales Manager">Sales Manager</option>
+        </select>
       </label>
       <label>
         Email:
-        <input
-          type="text"
-          value={account.email}
-          onChange={(e) => setAccount({ ...account, email: e.target.value })}
-        />
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
       <label>
         First Name:
-        <input
-          type="text"
-          value={account.fname}
-          onChange={(e) => setAccount({ ...account, fname: e.target.value })}
-        />
+        <input type="text" value={fname} onChange={(e) => setFname(e.target.value)} />
       </label>
       <label>
         Last Name:
-        <input
-          type="text"
-          value={account.lname}
-          onChange={(e) => setAccount({ ...account, lname: e.target.value })}
-        />
+        <input type="text" value={lname} onChange={(e) => setLname(e.target.value)} />
       </label>
       <label>
         Business Name:
         <input
           type="text"
-          value={account.business_name}
-          onChange={(e) => setAccount({ ...account, business_name: e.target.value })}
+          value={business_name}
+          onChange={(e) => setBusiness_name(e.target.value)}
         />
       </label>
       <label>
         Address:
-        <input
-          type="text"
-          value={account.address}
-          onChange={(e) => setAccount({ ...account, address: e.target.value })}
-        />
+        <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
       </label>
       <label>
         Contact Number:
-        <input
-          type="text"
-          value={account.contactnum}
-          onChange={(e) => setAccount({ ...account, contactnum: e.target.value })}
-        />
+        <input type="text" value={contactnum} onChange={(e) => setContactnum(e.target.value)} />
       </label>
-      <button type="submit" disabled={!isFormValid()}>
-        Create Account
-      </button>
-    </form>
+      <button type="submit" onClick={handleSubmit}>Create Account</button>
+    </div>
   );
-};
-
-export default CreateAccountAdmin;
+}
