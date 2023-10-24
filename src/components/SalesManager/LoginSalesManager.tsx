@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
-import { Link } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import './LoginSalesManager.css'; 
+import axios from 'axios';
 
-const StartingScreen = () => {
+const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Get the navigate function
 
   const handleLogin = () => {
-    if (username === 'yourUsername' && password === 'yourPassword') {
-    } else {
-      alert('Invalid credentials. Please try again.');
-    }
+    // Create a request object with the username and password
+    const loginRequest = {
+      username: username,
+      password: password,
+    };
+
+    // Send a POST request to the server
+    axios.post('http://localhost:8080/user/loginsales', loginRequest)
+      .then((response) => {
+        if (response.status === 200) {
+          // Successfully logged in
+          window.alert('Login successful'); // Display a success message
+          navigate('/salesmanagerdb');
+        } else {
+          window.alert('Login failed. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Login failed:', error);
+        window.alert('Login failed. Please try again.');
+      });
   };
 
   const handleForgotPassword = () => {
@@ -30,9 +49,10 @@ const StartingScreen = () => {
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-          />
+            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
+          }
+          InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+        />
         </div>
         <div className="input-container">
           <TextField
@@ -42,21 +62,18 @@ const StartingScreen = () => {
             value={password}
             variant='filled'
             onChange={(e) => setPassword(e.target.value)}
-            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-          />
+            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
+          }
+          InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+        />
         </div>
-        <Link to="/salesmanagerdb">
-          <button className='btn-login-salesmanager' 
-            onClick={handleLogin}>
-          Login</button>
-        </Link>
-        <br></br>
-        <Link to="/salesmanagerdb">
-          <button className='btn-register' 
-            onClick={handleLogin}>
-          Don't Have An Account? </button>
-        </Link>
+        <button className='btn-login-salesmanager' onClick={handleLogin}>
+          Login
+        </button>
+        <br />
+        <button className='btn-register' onClick={handleForgotPassword}>
+        Don't Have An Account?
+        </button>
         <div className="forgot-password">
           <span onClick={handleForgotPassword}>Forgot Password?</span>
         </div>
@@ -65,4 +82,4 @@ const StartingScreen = () => {
   );
 };
 
-export default StartingScreen;
+export default LoginSalesManager;

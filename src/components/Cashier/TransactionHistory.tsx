@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './CSS FIles/TransactionHistory.css';
 import './CSS FIles//Images Cashierieng/ViewIcon.png'
-import { ClassNames } from '@emotion/react';
 
 interface Transaction {
     transactionid: number;
