@@ -131,7 +131,7 @@ export default function Cashiering()  {
             setSelectedProducts([...selectedProducts, productid]);
             // Check if the quantity of the selected product is not zero
             if (initialProductQuantities[productid] === 0) {
-                alert('Cannot add to the cart. Please restock.');
+                alert('Cannot add to the cart. Pleasequantity restock.');
                 // Remove the product from selectedProducts
                 setSelectedProducts(selectedProducts.filter(id => id !== productid));
             }

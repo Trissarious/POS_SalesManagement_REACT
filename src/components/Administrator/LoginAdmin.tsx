@@ -1,60 +1,72 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import './CSS Files/LoginAdmin.css';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 
 const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Get the navigate function
 
   const handleLogin = () => {
-    // Simulate login logic (replace this with your actual logic)
-    if (username === 'yourUsername' && password === 'yourPassword') {
-      // The Link component will handle the navigation
-      // No need to use useHistory in this approach
-    } else {
-      alert('Invalid credentials. Please try again.');
-    }
-  };
+    // Create a request object with the username and password
+    const loginRequest = {
+      username: username,
+      password: password,
+    };
 
-  const handleForgotPassword = () => {
-    window.alert('Please contact your administrator for password assistance.');
+    // Send a POST request to the server
+    axios.post('http://localhost:8080/user/loginad', loginRequest)
+      .then((response) => {
+        if (response.status === 200) {
+          // Successfully logged in
+          window.alert('Login successful'); // Display a success message
+          navigate('/adminmainpage');
+        } else {
+          window.alert('Login failed. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Login failed:', error);
+        window.alert('Login failed. Please try again.');
+      });
   };
 
   return (
     <div className="starting-screen">
-    <div className="centered-content">
-      <h1 className='h1-login-sales'>Login as Administrator</h1>
-      <div className="input-container">
-        <TextField
-          type="text"
-          label="Username"
-          variant="filled"
-          fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+      <div className="centered-content">
+        <h1 className='h1-login-sales'>Login as Administrator</h1>
+        <div className="input-container">
+          <TextField
+            type="text"
+            label="Username"
+            variant="filled"
+            fullWidth
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
+          }
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
         />
-      </div>
-      <div className="input-container">
-        <TextField
-          type="password"
-          fullWidth
-          label="Password"
-          value={password}
-          variant='filled'
-          onChange={(e) => setPassword(e.target.value)}
-          inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+        </div>
+        <div className="input-container">
+          <TextField
+            type="password"
+            fullWidth
+            label="Password"
+            value={password}
+            variant='filled'
+            onChange={(e) => setPassword(e.target.value)}
+            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
+          }
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
         />
-      </div>
-      <Link to="/adminmainpage">
-        <button className='btn-login-salesmanager' 
-          onClick={handleLogin}>
-        Login</button>
-      </Link>
-      <br></br>
+        </div>
+        <button className='btn-login-salesmanager' onClick={handleLogin}>
+          Login
+        </button>
+        <br />
       <Link to="/createaccountadmin">
         <button className='btn-register'>
         Don't Have An Account? </button>
