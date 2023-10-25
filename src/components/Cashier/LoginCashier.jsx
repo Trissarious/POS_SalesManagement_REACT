@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS FIles/LoginCashier.css';  
-import { TextField } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Input } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-
-const LoginCashier = () => {
+const LoginCashier = () => { // Accept the setIsLoggedIn prop
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Get the navigate function
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     // Create a request object with the username and password
@@ -18,24 +19,31 @@ const LoginCashier = () => {
       password: password,
     };
 
+    // Check if the username and password are not empty
+  if (!loginRequest.username || !loginRequest.password) {
+    window.alert('Please enter both your username and password');
+  } else {
     // Send a POST request to the server
     axios.post('http://localhost:8080/user/logincash', loginRequest)
       .then((response) => {
         if (response.status === 200) {
-          // Successfully logged in
-          window.alert('Login successful'); // Display a success message
-          // Redirect to the '/cashier-main' route
-          navigate('/cashier-main');
+            navigate('/cashier-main');
         } else {
-          window.alert('Login failed. Please try again.');
+          window.alert('Please enter your username and password');
         }
       })
       .catch((error) => {
         console.error('Login failed:', error);
-        window.alert('Login failed. Please try again.');
+        window.alert('The username or password you’ve entered is incorrect. Please try again.');
       });
-  };
+  }
 
+};
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+   
   const handleForgotPassword = () => {
     window.alert('Please contact your administrator for password assistance.');
   };
@@ -58,7 +66,7 @@ const LoginCashier = () => {
       </div>
       <div className="input-container">
         <TextField
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           fullWidth
           label="Password"
           value={password}
@@ -66,19 +74,27 @@ const LoginCashier = () => {
           onChange={(e) => setPassword(e.target.value)}
           inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+          InputProps={{
+            endAdornment :
+              <InputAdornment position='end'>
+                  <IconButton onClick={togglePasswordVisibility}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+              </InputAdornment>
+          }}
         />
       </div>
-      <Link to="/cashier-main">
+
         <button className='btn-login-salesmanager' 
           onClick={handleLogin}>
         Login</button>
-      </Link>
+
       <br></br>
-      <Link to="/cashier-main">
+
         <button className='btn-register' 
           onClick={handleLogin}>
         Don't Have An Account? </button>
-      </Link>
+        
       <div className="forgot-password">
         <span onClick={handleForgotPassword}>Forgot Password?</span>
       </div>

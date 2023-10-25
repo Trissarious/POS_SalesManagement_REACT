@@ -45,3 +45,40 @@
    .createAccount form button:hover {
     background-color: #0056b3;
    }
+
+   .register-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #DDDDDD;
+  }
+
+  
+  .h1-register {
+    font-size: 70px;
+    color: #213458;
+    height: 15vh;
+    margin-top: 100px;
+    font-weight: bold;
+  }
+  
+  .btn-signup {
+    background-color: #213458;
+    color: #DDDDDD;
+    height: 70px;
+    text-decoration: none;
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 25px;
+    width: 400px;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+.container-fluid {
+    display: flex;
+    justify-content: space-evenly;
+}

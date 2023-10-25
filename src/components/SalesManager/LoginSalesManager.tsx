@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextField } from '@mui/material';
+import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import { useNavigate } from 'react-router-dom';
 import './LoginSalesManager.css'; 
 import axios from 'axios';
@@ -7,6 +8,7 @@ import axios from 'axios';
 const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Get the navigate function
 
   const handleLogin = () => {
@@ -16,25 +18,34 @@ const LoginSalesManager = () => {
       password: password,
     };
 
-    // Send a POST request to the server
-    axios.post('http://localhost:8080/user/loginsales', loginRequest)
-      .then((response) => {
-        if (response.status === 200) {
-          // Successfully logged in
-          window.alert('Login successful'); // Display a success message
-          navigate('/salesmanagerdb');
-        } else {
-          window.alert('Login failed. Please try again.');
-        }
-      })
-      .catch((error) => {
-        console.error('Login failed:', error);
-        window.alert('Login failed. Please try again.');
-      });
+     // Check if the username and password are not empty
+     if (!loginRequest.username || !loginRequest.password) {
+      window.alert('Please enter both your username and password');
+    } else {
+      // Send a POST request to the server
+      axios.post('http://localhost:8080/user/loginsales', loginRequest)
+        .then((response) => {
+          if (response.status === 200) {
+            // Successfully logged in
+            // window.alert('Login successful'); // Display a success message
+            navigate('/salesmanagerdb');
+          } else {
+            window.alert('Please enter your username and password');
+          }
+        })
+        .catch((error) => {
+          console.error('Login failed:', error);
+          window.alert('The username or password you’ve entered is incorrect. Please try again.');
+        });
+      }   
   };
 
   const handleForgotPassword = () => {
     window.alert('Please contact your administrator for password assistance.');
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -56,15 +67,24 @@ const LoginSalesManager = () => {
         </div>
         <div className="input-container">
           <TextField
-            type="password"
+            type={showPassword ? 'text' : 'password'} // Toggle password visibility
             fullWidth
             label="Password"
             value={password}
             variant='filled'
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
-          }
-          InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+            }
+            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={togglePasswordVisibility}>
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
         />
         </div>
         <button className='btn-login-salesmanager' onClick={handleLogin}>
