@@ -7,6 +7,8 @@ import './CSS FIles//Images Cashierieng/ViewIcon.png'
 interface Transaction {
     transactionid: number;
     date_time: string;
+    refunded: boolean;
+    returned: boolean;
 }
 
 const TransactionHistory = () => {
@@ -89,12 +91,9 @@ const TransactionHistory = () => {
                             <tr key={transaction.transactionid}>
                                 <td style={{fontWeight: 50}}>Transaction {transaction.transactionid}</td>
                                 <td>
-                                    <Link to={`/transactions/${transaction.transactionid}`}>
+                                    <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}`}>
                                         View
                                     </Link>
-                                    <button onClick={() => handleDeleteTransaction(transaction.transactionid)}>
-                                        Delete
-                                    </button>
                                 </td>
 
                             </tr>
@@ -104,14 +103,13 @@ const TransactionHistory = () => {
                                 <td style={{color: '#213458'}}>
                                     <div style={{fontWeight: 'bold', fontSize: 30}}> Transaction {transaction.transactionid}</div> 
                                     <div style={{fontSize: 20}}>{transaction.date_time}</div>
+                                    <div style={{fontSize: 20, color: "red", fontStyle: 'italic'}}>{transaction.refunded ? 'Refunded' : ''}</div>
+                                    <div style={{fontSize: 20, color: "red", fontStyle: 'italic'}}>{transaction.returned ? 'Returned' : ''}</div>
                                 </td>
                                 <td>
                                     <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}` }>
                                             View
                                     </Link>
-                                    <button className='btn btn-danger btn-lg' onClick={() => handleDeleteTransaction(transaction.transactionid)}>
-                                        Delete
-                                    </button>
                                 </td>
                             </tr>
                         ))}

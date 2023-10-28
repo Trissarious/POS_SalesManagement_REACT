@@ -20,17 +20,25 @@ interface TransactionDetails {
     customer_num: string;
     customer_email: string;
     date_time: string;
+    refunded: boolean;
+    returned: boolean;
 }
 
 const TransactionDetails = () => {
     const { id } = useParams();
     const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>();
     const [products, setProducts] = useState<Product[]>([]);
+    const [refunded, setRefunded] = useState(false);
+    const [returned, setReturned] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
 
     useEffect(() => {
         // Fetch transaction details using the provided URL
         axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
             .then((response) => {
+                console.log(response.data); // Log the response data
                 const responseData: TransactionDetails = response.data;
                 setTransactionDetails(responseData);
             })
@@ -49,17 +57,61 @@ const TransactionDetails = () => {
             });
     }, [id]);
 
+
+    // const handleLogin = () => {
+    //     // Create a request object with the username and password
+    //     const loginRequest = {
+    //       username: username,
+    //       password: password,
+    //     };
+    
+    //     // Check if the username and password are not empty
+    //     if (!loginRequest.username || !loginRequest.password) {
+    //       window.alert('Please enter both your username and password');
+    //     } else {
+    //       // Send a POST request to the server
+    //       axios.post('http://localhost:8080/user/loginad', loginRequest)
+    //         .then((response) => {
+    //           if (response.status === 200) {
+    //           } else {
+    //             window.alert('Please enter your username and password');
+    //           }
+    //         })
+    //         .catch((error) => {
+    //           console.error('Login failed:', error);
+    //           window.alert('The username or password you’ve entered is incorrect. Please try again.');
+    //         });
+    //       }   
+    //   };
+
     const handleRefundClick = () => {
         const confirmed = window.confirm('Are you sure you want to refund?');
         if (confirmed) {
-            axios.delete(`http://localhost:8080/transaction/deleteTransaction/${id}`)
-              .then(() => {
-                  window.confirm(`Transaction ${id} has been refunded and deleted.`);
-                  window.location.href = '/transactionhistory'; 
+            setRefunded(true);
+            axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { refunded: true })
+              .then((response) => {
+                  window.confirm(`Transaction ${id} has been refunded.`);
+                  console.log('Refund successful:', response.data); // Log a success message
               })
               .catch((error) => {
                   console.error(error);
                   window.alert(`Failed to refund transaction ${id}.`);
+              });
+        }
+    };
+
+    const handleReturnClick = () => {
+        const confirmed = window.confirm('Are you sure you want to return item?');
+        if (confirmed) {
+            setReturned(true);
+            axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { returned: true })
+              .then((response) => {
+                  window.confirm(`Transaction ${id} has been returned.`);
+                  console.log('Return successful:', response.data); // Log a success message
+              })
+              .catch((error) => {
+                  console.error(error);
+                  window.alert(`Failed to return transaction ${id}.`);
               });
         }
     };
@@ -107,6 +159,14 @@ const TransactionDetails = () => {
                             <th>Date & Time</th>
                             <td>{transactionDetails.date_time}</td>
                         </tr>
+                        <tr>
+                            <th>Refunded</th>
+                            <td>{transactionDetails.refunded ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr>
+                            <th>Returned</th>
+                            <td>{transactionDetails.returned ? 'Yes' : 'No'}</td>
+                        </tr>
                     </tbody>
                 </table>
             )}
@@ -135,7 +195,7 @@ const TransactionDetails = () => {
             <button className="refund-button" onClick={handleRefundClick}>
             Refund
           </button>
-                    <button className="return-button">Return</button>
+                    <button className="return-button" onClick={handleReturnClick}>Return</button>
                 </div>
         </div>
         </div>

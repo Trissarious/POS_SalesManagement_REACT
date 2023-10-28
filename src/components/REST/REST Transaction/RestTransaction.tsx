@@ -12,6 +12,8 @@ export interface Transaction{
     customer_num: string,
     customer_email: string,
     date_time: string,
+    refunded: boolean,
+    returned: boolean,
     productid: number
     userid: number,
 }
@@ -32,6 +34,8 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
             customer_num: transaction.customer_num,
             customer_email: transaction.customer_email,
             date_time: transaction.date_time,
+            refunded: transaction.refunded,
+            returned: transaction.returned,
             productid: transaction.productid,
             userid: transaction.userid,
         }).then((response) => {
@@ -54,6 +58,9 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
             customer_name: transaction.customer_name,
             customer_num: transaction.customer_num,
             customer_email: transaction.customer_email,
+            date_time: transaction.date_time,
+            refunded: transaction.refunded,
+            returned: transaction.returned,
             productid: transaction.productid,
             userid: transaction.userid,
         }).then((response) => {

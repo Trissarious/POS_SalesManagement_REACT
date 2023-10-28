@@ -1,7 +1,7 @@
 /* TransactionDetails.css */
 .table-container {
     margin: 20px;
-    max-height: 715px; /* Adjust the max-height as needed */
+    max-height: 800px; /* Adjust the max-height as needed */
     overflow-y: auto;
     display: flex;
 }

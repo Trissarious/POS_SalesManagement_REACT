@@ -44,9 +44,13 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
     setShowPassword(!showPassword);
   }
    
-  const handleForgotPassword = () => {
+  const handleForgotPassword_Register = () => {
     window.alert('Please contact your administrator for password assistance.');
   };
+
+  const handleRegister = () => {
+    window.alert('Please contact your administrator if you want to create an account.')
+  }
 
   return (
     <div className="starting-screen">
@@ -92,11 +96,11 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
       <br></br>
 
         <button className='btn-register' 
-          onClick={handleLogin}>
+          onClick={handleRegister}>
         Don't Have An Account? </button>
         
       <div className="forgot-password">
-        <span onClick={handleForgotPassword}>Forgot Password?</span>
+        <span onClick={handleForgotPassword_Register}>Forgot Password?</span>
       </div>
     </div>
   </div>

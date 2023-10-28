@@ -29,7 +29,8 @@ export default function Cashiering()  {
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
-
+    const [refunded, setRefunded] = useState(false);
+    const [returned, setReturned] = useState(false);
     
     //Fetch Product Table from Database
     useEffect(() => {
