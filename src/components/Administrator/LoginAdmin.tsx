@@ -56,8 +56,7 @@ const LoginAdmin = () => {
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
-          }
+            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
         />
         </div>

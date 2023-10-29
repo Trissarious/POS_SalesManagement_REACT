@@ -3,16 +3,45 @@ import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
 import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { TextField } from '@mui/material';
-
+import { MenuItem, TextField, Typography } from '@mui/material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const post_account = 'http://localhost:8080/user/postUser';
+const Account_Type = [
+  {
+    value: 'Administrator',
+    label: 'Administrator'
+  },
+  {
+    value: 'Cashier',
+    label: 'Cashier'
+  },
+  {
+    value: 'Sales Manager',
+    label: 'Sales Manager'
+  },
+];
+
+const Gender = [
+  {
+    value: 'Female',
+    label: 'Female'
+  }, 
+  {
+    value: 'Male',
+    label: 'Male',
+  },
+  {
+    value: 'Prefer not to say',
+    label: 'Prefer not to say'
+  }
+]
 
 export default function CreateAccountAdmin() {
-  const [deleteByID,getAccountbyId,editAccount,addAccount, account] = RestAccount();
+  const [deleteByID, getAccountbyId, editAccount, addAccount, account] = RestAccount();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [account_type, setAccount_type] = useState('');
   const [email, setEmail] = useState('');
   const [fname, setFname] = useState('');
   const [mname, setMname] = useState('');
@@ -20,17 +49,17 @@ export default function CreateAccountAdmin() {
   const [business_name, setBusiness_name] = useState('');
   const [address, setAddress] = useState('');
   const [contactnum, setContactnum] = useState('');
-
-  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAccount_type(e.target.value);
-  };
+  const [selectedAccountType, setSelectedAccountType] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null); 
 
   const handleSubmit = async () => {
-    // Axios post to create account
-    axios.post(post_account, {
+    // Axios post to create an account
+    axios
+      .post(post_account, {
         username: username,
         password: password,
-        account_type: account_type,
+        account_type: selectedAccountType,
         email: email,
         fname: fname,
         mname: mname,
@@ -38,102 +67,155 @@ export default function CreateAccountAdmin() {
         business_name: business_name,
         address: address,
         contactnum: contactnum,
+        gender: selectedGender,
+        // bday: bday
       })
       .then((res) => {
         console.log(res.data);
         alert('Account created');
-        // window.location.reload();
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <div className="register-div">
-      <h1 className='h1-register'>Create an Account</h1>     
-      <div className="container-fluid">
-      <div className='col-sm-3'>
-      <label>
-        Username:
-        <TextField 
-          type="text" 
-          value={username} 
-          fullWidth
-          onChange={(e) => setUsername(e.target.value)} 
+      <h1 className="h1-register">Create an Account</h1>
+      <div className="container-fluid center-form">
+      <div className="left-column">
+          <TextField
+            type="text"
+            label = "Username"
+            value={username}
+            fullWidth
+            onChange={(e) => setUsername(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
           />
-      </label>
-      <label>
-        Password:
-        <TextField 
-          type="text" 
-          value={password} 
-          fullWidth
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <label>
-        Account Type:
-        <select value={account_type} onChange={handleDropdownChange}>
-          <option value="Administrator">Administrator</option>
-          <option value="Cashier">Cashier</option>
-          <option value="Sales Manager">Sales Manager</option>
-        </select>
-      </label>
-      <label>
-        Email:
-        <TextField 
-          type="text" 
-          fullWidth
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-        />
-      </label>
-      <label>
-        First Name:
-        <TextField 
-          type="text" 
-          fullWidth
-          value={fname} 
-          onChange={(e) => setFname(e.target.value)} 
-        />
-      </label>
-      <label>
-        Last Name:
-        <TextField 
-          type="text" 
-          value={lname} 
-          fullWidth
-          onChange={(e) => setLname(e.target.value)} 
-        />
-      </label>
-      <label>
-        Business Name:
+
+          <TextField
+            type="text"
+            label = "Password"
+            value={password}
+            fullWidth
+            onChange={(e) => setPassword(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+          />
+
+          <TextField
+            select
+            label="Account Type"
+            fullWidth
+            value={selectedAccountType}
+            onChange={(e) => setSelectedAccountType(e.target.value)}
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            helperText="Please select your account type."
+          >
+            {Account_Type.map((option) => (
+              <MenuItem key={option.value} value={option.value} sx={{ fontSize: 16 }}>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            type="text"
+            label = "Business Name"
+            value={business_name}
+            fullWidth
+            onChange={(e) => setBusiness_name(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+          />
+
+          <TextField
+            type="text"
+            label = "Address"
+            value={address}
+            fullWidth
+            onChange={(e) => setAddress(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+          />
+        </div>
+        
+        <div className="right-column">
         <TextField
-          type="text"
-          fullWidth
-          value={business_name}
-          onChange={(e) => setBusiness_name(e.target.value)}
-        />
-      </label>
-      <label>
-        Address:
-        <TextField 
-          type="text" 
-          fullWidth
-          value={address} 
-          onChange={(e) => setAddress(e.target.value)} 
-        />
-      </label>
-      <label>
-        Contact Number:
-        <TextField 
-          type="text" 
-          value={contactnum} 
-          fullWidth
-          onChange={(e) => setContactnum(e.target.value)} 
+            type="text"
+            label = "First Name"
+            value={fname}
+            fullWidth
+            onChange={(e) => setFname(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
           />
-      </label>
-      <button className='btn-signup' type="submit" onClick={handleSubmit}>Create Account</button>
-      </div> 
+
+        <TextField
+            type="text"
+            label = "Last Name"
+            value={lname}
+            fullWidth
+            onChange={(e) => setLname(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+          />
+
+          <TextField
+            type="text"
+            label = "Birth Date"
+            value={business_name}
+            fullWidth
+            onChange={(e) => setBusiness_name(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+          />
+
+          <TextField
+            select
+            label="Gender"
+            fullWidth
+            value={selectedGender}
+            onChange={(e) => setSelectedGender(e.target.value)}
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px'}}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            helperText="Please select your gender."
+          >
+            {Gender.map((option) => (
+              <MenuItem key={option.value} value={option.value} sx={{ fontSize: 16 }}>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
+              </MenuItem>
+            ))}
+          </TextField>
+
+        <TextField
+            type="text"
+            label = "Contact Number"
+            value={address}
+            fullWidth
+            onChange={(e) => setContactnum(e.target.value)}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '20px'}}
+          />
+        </div>
+
+        <button className="btn-signup" type="submit" onClick={handleSubmit}>
+          Create Account
+        </button>
       </div>
     </div>
   );

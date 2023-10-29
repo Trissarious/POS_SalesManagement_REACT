@@ -13,6 +13,8 @@ export interface Account{
     business_name: string,
     address: string,
     contactnum: string,
+    gender: string,
+    bday: string
 }
 
 
@@ -32,6 +34,8 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
             business_name: account.business_name,
             address: account.address,
             contactnum: account.contactnum,
+            gender: account.gender,
+            bday: account.bday
         }).then((response) => {
             setAccount(response.data);
             console.log(response.data);
@@ -53,6 +57,8 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
             business_name: account.business_name,
             address: account.address,
             contactnum: account.contactnum,
+            gender: account.gender,
+            bday: account.bday
         }).then((response) => {
             setAccount(response.data);
             console.log(response.data);
