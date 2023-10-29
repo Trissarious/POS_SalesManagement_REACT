@@ -1,6 +1,6 @@
 
-import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses, Drawer, IconButton, List, ListItem } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses, Drawer, IconButton, List, ListItem, Typography } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
@@ -9,6 +9,9 @@ import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import './CSS FIles/Cashiering.css';
+import perform_transaction from './Images/perform_transaction.png';
+import transaction_history from './Images/transaction_history.png';
+import logout from './Images/logout.png'
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
@@ -22,6 +25,7 @@ export default function Cashiering()  {
     const [selectedProducts, setSelectedProducts] = useState(initialSelectedProducts);
     const [initialProductQuantities, setInitialProductQuantities] = useState({});
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const location = useLocation();
 
     //TRANSACTION VARIABLES
     const [total_quantity, setTotal_quantity] = useState(0);
@@ -65,6 +69,15 @@ export default function Cashiering()  {
         fetchData();
       }, []);
     
+    const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
+    // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
+    useEffect(() => {
+        if (location.pathname === '/cashiering') {
+            setNavigatorColor('#daede5');
+        } else {
+            setNavigatorColor('#213458');
+        }
+    }, [location]);
 
         const decreaseProductQuantityInDatabase = async (productid) => {
             try {
@@ -290,10 +303,9 @@ export default function Cashiering()  {
     
  return (
     <div className="container">
-        {/* Hamburger icon to open the drawer */}
-        <IconButton
+         {/* Hamburger icon to open the drawer */}
+         <IconButton
                 edge="end" 
-                color="inherit"
                 aria-label="open drawer"
                 onClick={openDrawer}
                 sx={{
@@ -302,32 +314,29 @@ export default function Cashiering()  {
                 right: '2rem', 
                 fontSize: '6rem', 
                 zIndex: 999, 
-                }}
-            >
+            }}>
             <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
             </IconButton>
-
             {/* Drawer component */}
-            <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem' }}>
+            <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem'}}>
+                <div className='drawer-account'>
+                    <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
+                </div>
                 <List>
-                <ListItem button component={Link} to="/cashiering">
-                    <h2 
-                    style={{fontFamily: 'Poppins'}}
-                    
-                    >Perform Transaction</h2>
-                </ListItem>
-                <ListItem button component={Link} to="/transactionhistory">
-                <h2 
-                    style={{fontFamily: 'Poppins'}}
-                    
-                    >Transaction History</h2>
-                </ListItem>
-                <ListItem>
-                <h2
-                    style={{fontFamily: 'Poppins'}}
-                    
-                    >Log Out</h2>
-                </ListItem>
+                    <ListItem button component={Link} to="/cashiering" className={location.pathname === '/cashiering' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>Perform Transaction</h2>
+                        <img src={perform_transaction} className="img_cashiering"/>
+                    </ListItem>
+
+                    <ListItem button component={Link} to="/transactionhistory" className={location.pathname === '/transactionhistory' ? 'active-link' : ''}>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>Transaction History</h2>
+                    <img src={transaction_history} className="img_cashiering" />
+                    </ListItem>
+
+                    <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                        <img src={logout} className='img_cashiering'/> 
+                    </ListItem>
                 </List>
             </Drawer>
 

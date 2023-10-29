@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './CSS FIles/TransactionHistory.css';
 import './CSS FIles//Images Cashierieng/ViewIcon.png'
 import { Drawer, IconButton, List, ListItem, Typography } from '@mui/material';
@@ -19,6 +19,7 @@ interface Transaction {
 const TransactionHistory = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const location = useLocation();
 
     // Function to open the Drawer
     const openDrawer = () => {
@@ -40,6 +41,15 @@ const TransactionHistory = () => {
             });
     }, []);
 
+    const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
+    // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
+    useEffect(() => {
+        if (location.pathname === '/transactionhistory') {
+            setNavigatorColor('#daede5');
+        } else {
+            setNavigatorColor('#213458');
+        }
+    }, [location]);
 
     const [searchInput, setSearchInput] = useState('');
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
@@ -56,7 +66,6 @@ const TransactionHistory = () => {
             {/* Hamburger icon to open the drawer */}
             <IconButton
                 edge="end" 
-                color="inherit"
                 aria-label="open drawer"
                 onClick={openDrawer}
                 sx={{
@@ -74,20 +83,20 @@ const TransactionHistory = () => {
                     <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
                 </div>
                 <List>
-                <ListItem button component={Link} to="/cashiering" sx={{backgroundColor: '#daede5'}}>
-                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>Perform Transaction</h2>
-                    <img src={perform_transaction} className="img_cashiering"/>
-                </ListItem>
+                    <ListItem button component={Link} to="/cashiering" className={location.pathname === '/cashiering' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>Perform Transaction</h2>
+                        <img src={perform_transaction} className="img_cashiering"/>
+                    </ListItem>
 
-                <ListItem button component={Link} to="/transactionhistory" sx={{backgroundColor: '#daede5'}}>
-                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>Transaction History</h2>
-                    <img src={transaction_history} className="img_cashiering"/>
-                </ListItem>
+                    <ListItem button component={Link} to="/transactionhistory" className={location.pathname === '/transactionhistory' ? 'active-link' : ''}>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>Transaction History</h2>
+                    <img src={transaction_history} className="img_cashiering" />
+                    </ListItem>
 
-                <ListItem sx={{backgroundColor: '#daede5'}}>
-                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
-                    <img src={logout} className='img_cashiering'/> 
-                </ListItem>
+                    <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                        <img src={logout} className='img_cashiering'/> 
+                    </ListItem>
                 </List>
             </Drawer>
             <div style={{ display: 'flex', color: '#213458', marginBottom: 50}}>
