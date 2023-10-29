@@ -72,7 +72,16 @@ const TransactionHistory = () => {
                             <tr key={transaction.transactionid}>
                                 <td style={{fontWeight: 50}}>Transaction {transaction.transactionid}</td>
                                 <td>
-                                    <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}`}>
+                                    <Link
+                                        className="btn btn-success btn-lg"
+                                        style={{
+                                            marginRight: 5,
+                                            padding: '10px 40px', 
+                                            fontSize: 20,
+                                            fontWeight: 'medium'
+                                        }}
+                                        to={`/transactions/${transaction.transactionid}`}
+                                        >
                                         View
                                     </Link>
                                 </td>
@@ -88,8 +97,17 @@ const TransactionHistory = () => {
                                     <div style={{fontSize: 20, color: "red", fontStyle: 'italic'}}>{transaction.returned ? 'Returned' : ''}</div>
                                 </td>
                                 <td>
-                                    <Link className='btn btn-success btn-lg'style={{marginRight: 5}} to={`/transactions/${transaction.transactionid}` }>
-                                            View
+                                <Link
+                                    className="btn btn-success btn-lg"
+                                    style={{
+                                        marginRight: 5,
+                                        padding: '10px 40px', 
+                                        fontSize: 20,
+                                        fontWeight: 'medium'
+                                    }}
+                                    to={`/transactions/${transaction.transactionid}`}
+                                    >
+                                    View
                                     </Link>
                                 </td>
                             </tr>

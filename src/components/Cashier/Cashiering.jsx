@@ -29,25 +29,32 @@ export default function Cashiering()  {
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
-    const [refunded, setRefunded] = useState(false);
-    const [returned, setReturned] = useState(false);
     
     //Fetch Product Table from Database
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get(url); 
-                setProduct(response.data);
-            } catch (error) {
-                console.error(error);
-            }
+          try {
+            const response = await axios.get(url);
+            const data = response.data;
+            setProduct(data);
+    
+            // Initialize the cart state
+            setCart([]);
+    
+            // Initialize the selected products state
+            setSelectedProducts([]);
+          } catch (error) {
+            console.error(error);
+          }
         };
-        fetchData();}, []);
+        fetchData();
+      }, []);
+    
 
-        const decreaseProductQuantityInDatabase = async (productId) => {
+        const decreaseProductQuantityInDatabase = async (productid) => {
             try {
               // Make an HTTP request to update the product quantity in the database
-              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productId}`);
+              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productid}`);
             } catch (error) {
               console.error(error);
             }
@@ -83,9 +90,8 @@ export default function Cashiering()  {
             })
             .then(res => {
               console.log(res.data);
-              handlePrint()
               alert('Transaction Complete');
-              window.location.reload();
+              handlePrint();
             })
             .catch(err => console.log(err));
         }
