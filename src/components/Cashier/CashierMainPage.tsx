@@ -4,7 +4,7 @@ import { Outlet, Link } from 'react-router-dom';
 
 const CashierMainPage = () => {
     return (
-      <div className='center-bod' style={{ backgroundColor: '#DDDDDD' }}>
+      <div className='center-bod' style={{ backgroundColor: 'white' }}>
         <div className="button-container">
           <Link to="/cashiering"><button className='button1'>Perform Transaction</button></Link>
           <br></br>

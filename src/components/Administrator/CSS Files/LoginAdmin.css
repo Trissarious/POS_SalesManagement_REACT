@@ -7,8 +7,8 @@
 
 .btn-login-salesmanager {
 background-color: #213458;
-color: #DDDDDD;
 height: 50px;
+color: white;
 font-family: 'Poppins';
 font-weight: 400;
 font-size: 20px;
@@ -21,7 +21,7 @@ cursor: pointer;
 
 .btn-register {
 background-color: #213458;
-color: #DDDDDD;
+color: white;
 height: 50px;
 font-family: 'Poppins';
 font-weight: 400;
