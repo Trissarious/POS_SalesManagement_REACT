@@ -24,25 +24,6 @@ const TransactionHistory = () => {
             });
     }, []);
 
-    const handleDeleteTransaction = (id: number) => {
-      const confirmDelete = window.confirm("Are you sure you want to delete this transaction?");
-  
-      if (confirmDelete) {
-          axios.delete(`http://localhost:8080/transaction/deleteTransaction/${id}`)
-              .then(() => {
-                  // Display a window.confirm message after successful deletion
-                  const success = window.confirm("Transaction has been deleted.");
-                  if (success) {
-                      setTransactions((prevTransactions) =>
-                          prevTransactions.filter((transaction) => transaction.transactionid !== id)
-                      );
-                  }
-              })
-              .catch((error) => {
-                  console.error(error);
-              });
-      }
-  };
 
     const [searchInput, setSearchInput] = useState('');
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
@@ -76,7 +57,7 @@ const TransactionHistory = () => {
             
             <div className="transaction-table-container">      
             {searchInput && filteredTransactions.length === 0 ? (
-                <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No transactions found.</p>
+                <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No Transactions found.</p>
             ) : (
                 <table className="transaction-table" style={{maxWidth: '90%'}}>
                     <thead>
