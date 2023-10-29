@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './CSS FIles/TransactionDetails.css'; 
-import { Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { Button } from 'react-bootstrap';
 
 interface Product {
@@ -32,8 +32,8 @@ const TransactionDetails = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [refunded, setRefunded] = useState(false);
     const [returned, setReturned] = useState(false);
-    const {username} = useParams();
-    const {password} = useParams();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
@@ -210,20 +210,41 @@ const TransactionDetails = () => {
 
         <Dialog open={open} onClose={handleClickClose}>
         <DialogContent>
-            <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#f7f5f5'}}>
+            <Card sx={{maxWidth: 900, borderRadius: 5, backgroundColor: '#f7f5f5', maxHeight: 1000, color: '#213458'}}>
                 <CardContent>
-                    <Typography gutterBottom variant='h3' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
+                    <Typography gutterBottom variant='h2' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
                         Want to Refund Transaction?
                     </Typography>
-                    <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db'}}>
-                        <Typography gutterBottom variant='h4' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, paddingTop: 2.5, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
+                    <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db', marginTop: 5, color: '#213458'}}>
+                        <Typography gutterBottom variant='h5' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, padding: 1, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
                             Request for Manager To Approve Refund Request
                         </Typography>
-                    <CardActions>
-                        {/* insert button */}
-                    </CardActions>
                     </Card>
                 </CardContent>
+                     <CardActions sx={{marginTop: 3}}>
+                            <TextField
+                                type="text"
+                                label="Username"
+                                variant="outlined"
+                                fullWidth
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
+                    <CardActions sx={{marginBottom: 5}}>
+                            <TextField
+                                type='password'
+                                fullWidth
+                                label="Password"
+                                value={password}
+                                variant='outlined'
+                                onChange={(e) => setPassword(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                                InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
             </Card>
         </DialogContent>
         <DialogActions>
