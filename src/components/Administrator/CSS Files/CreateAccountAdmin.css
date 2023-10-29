@@ -7,6 +7,7 @@
     justify-content: center;
     height: 100vh;
     background-color: #f0f2f5;
+    font-size: 18px;
    }
    
    .createAccount form {
@@ -18,6 +19,7 @@
     max-width: 500px;
     padding: 20px;
     background-color: #fff;
+    font-size: 18px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
    }
@@ -28,7 +30,7 @@
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 18px;
    }
    
    .createAccount form button {
@@ -50,6 +52,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    font-size: 18px;
     align-items: center;
   }
 
@@ -101,3 +104,8 @@
   margin-left: 500px;
   margin-bottom: 50px;
 }
+
+.error-message {
+  color: red;
+}
+

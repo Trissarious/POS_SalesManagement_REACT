@@ -4,8 +4,9 @@ import axios from 'axios';
 import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MenuItem, TextField, Typography } from '@mui/material';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
@@ -51,37 +52,77 @@ export default function CreateAccountAdmin() {
   const [contactnum, setContactnum] = useState('');
   const [selectedAccountType, setSelectedAccountType] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null); 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isFormValid, setFormValid] = useState(true); 
 
-  const handleSubmit = async () => {
-    // Axios post to create an account
-    axios
-      .post(post_account, {
-        username: username,
-        password: password,
-        account_type: selectedAccountType,
-        email: email,
-        fname: fname,
-        mname: mname,
-        lname: lname,
-        business_name: business_name,
-        address: address,
-        contactnum: contactnum,
-        gender: selectedGender,
-        // bday: bday
-      })
-      .then((res) => {
-        console.log(res.data);
-        alert('Account created');
-      })
-      .catch((err) => console.log(err));
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
   };
 
+   // Function to check if all required fields are filled
+   const isFormComplete = () => {
+    return (
+      username.trim() !== '' &&
+      password.trim() !== '' &&
+      selectedAccountType.trim() !== '' &&
+      fname.trim() !== '' &&
+      lname.trim() !== '' &&
+      selectedDate !== null &&
+      contactnum.trim() !== ''
+    );
+  };
+
+  const handleSubmit = async () => {
+    if (isFormComplete()) {
+      if (selectedDate) {
+        // The form is complete, so proceed with the Axios POST request
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+
+        axios
+          .post(post_account, {
+            username: username,
+            password: password,
+            account_type: selectedAccountType,
+            email: email,
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            business_name: business_name,
+            address: address,
+            contactnum: contactnum,
+            gender: selectedGender,
+            bday: formattedDate,
+          })
+          .then((res) => {
+            alert('Account created');
+            console.log(res.data);
+            window.location.reload();
+          })
+          .catch((err) => console.log(err));
+      } else {
+        alert('Please select a birth date.');
+      }
+    } else {
+      // The form is incomplete, show an error message
+      setFormValid(false);
+    }
+  };
+  
   return (
     <div className="register-div">
+       {/* Display an error message if the form is not complete */}
+       {!isFormValid && (
+        <p className="error-message">Please fill in all required fields.</p>
+        
+      )}
       <h1 className="h1-register">Create an Account</h1>
       <div className="container-fluid center-form">
       <div className="left-column">
+        
           <TextField
             type="text"
             label = "Username"
@@ -170,16 +211,18 @@ export default function CreateAccountAdmin() {
             style={{marginBottom: '10px'}}
           />
 
-          <TextField
-            type="text"
-            label = "Birth Date"
-            value={business_name}
-            fullWidth
-            onChange={(e) => setBusiness_name(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px'}}
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              value={selectedDate}
+              onChange={handleDateChange}
+              sx={{
+                marginBottom: '10px',
+                '& .MuiInputBase-input': {
+                  fontSize: '16px', // Adjust the font size as needed
+                },
+              }}
+            />
+          </LocalizationProvider>
 
           <TextField
             select
@@ -204,7 +247,7 @@ export default function CreateAccountAdmin() {
         <TextField
             type="text"
             label = "Contact Number"
-            value={address}
+            value={contactnum}
             fullWidth
             onChange={(e) => setContactnum(e.target.value)}
             inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
