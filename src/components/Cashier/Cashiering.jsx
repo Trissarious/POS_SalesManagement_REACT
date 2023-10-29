@@ -1,11 +1,13 @@
 
-import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses, Drawer, IconButton, List, ListItem } from '@mui/material';
+import { Link } from 'react-router-dom';
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
+import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import './CSS FIles/Cashiering.css';
 
 const initialSelectedProducts = [];
@@ -19,6 +21,7 @@ export default function Cashiering()  {
     const [cart, setCart] = useState([product])
     const [selectedProducts, setSelectedProducts] = useState(initialSelectedProducts);
     const [initialProductQuantities, setInitialProductQuantities] = useState({});
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     //TRANSACTION VARIABLES
     const [total_quantity, setTotal_quantity] = useState(0);
@@ -30,6 +33,18 @@ export default function Cashiering()  {
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
     
+
+    // Function to open the Drawer
+    const openDrawer = () => {
+        setIsDrawerOpen(true);
+    };
+
+    // Function to close the Drawer
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+    };
+
+
     //Fetch Product Table from Database
     useEffect(() => {
         const fetchData = async () => {
@@ -275,6 +290,47 @@ export default function Cashiering()  {
     
  return (
     <div className="container">
+        {/* Hamburger icon to open the drawer */}
+        <IconButton
+                edge="end" 
+                color="inherit"
+                aria-label="open drawer"
+                onClick={openDrawer}
+                sx={{
+                position: 'fixed',
+                top: '.5rem',
+                right: '2rem', 
+                fontSize: '6rem', 
+                zIndex: 999, 
+                }}
+            >
+            <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
+            </IconButton>
+
+            {/* Drawer component */}
+            <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem' }}>
+                <List>
+                <ListItem button component={Link} to="/cashiering">
+                    <h2 
+                    style={{fontFamily: 'Poppins'}}
+                    
+                    >Perform Transaction</h2>
+                </ListItem>
+                <ListItem button component={Link} to="/transactionhistory">
+                <h2 
+                    style={{fontFamily: 'Poppins'}}
+                    
+                    >Transaction History</h2>
+                </ListItem>
+                <ListItem>
+                <h2
+                    style={{fontFamily: 'Poppins'}}
+                    
+                    >Log Out</h2>
+                </ListItem>
+                </List>
+            </Drawer>
+
                 {/*Search Bar */}
                 <input
                     type="text"

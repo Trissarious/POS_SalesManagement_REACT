@@ -38,3 +38,14 @@
   margin-right: auto;
   height: 90vh;
 }
+
+.img_cashiering {
+  padding: auto;
+  margin: auto;
+}
+
+.drawer-account {
+  background-color: darkcyan;
+  height: 5.5vh;
+  margin-bottom: -8px;
+}
