@@ -1,11 +1,81 @@
 import { Typography } from '@mui/material';
-
+import { Link, useLocation } from 'react-router-dom';
+import { IconButton, Drawer, List, ListItem, Box } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
+import React, { useState, useEffect } from 'react';
+import dashboard from './Images/dashboard.png';
+import item_page from './Images/item_page.png';
+import sales_summry from './Images/sales_summary.png'
+import logout from './Images/logout.png'
 
 
 export default function SalesSummary() {
-    <title>Sales Summary</title>
+  const location = useLocation();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Function to open the Drawer
+  const openDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+
+  // Function to close the Drawer
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
+  // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
+  useEffect(() => {
+      if (location.pathname === '/salessummary') {
+          setNavigatorColor('#daede5');
+      } else {
+          setNavigatorColor('#213458');
+      }
+  }, [location]);
+
     return (
         <div className='center'>
+          {/* Hamburger icon to open the Drawer */}
+      <IconButton
+                edge="end" 
+                aria-label="open drawer"
+                onClick={openDrawer}
+                sx={{
+                position: 'fixed',
+                top: '.5rem',
+                right: '2rem', 
+                fontSize: '6rem', 
+                zIndex: 999, 
+            }}>
+            <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
+            </IconButton>
+            {/* Drawer component */}
+            <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem'}}>
+                <div className='drawer-account'>
+                    <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
+                </div>
+                <List>
+                    <ListItem button component={Link} to="/salesmanagerdb" className={location.pathname === '/salesmanagerdb' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 150}}>Dashboard</h2>
+                        <img src={dashboard} className="img_cashiering"/>
+                    </ListItem>
+                    
+                    <ListItem button component={Link} to="/salessummary" className={location.pathname === '/salessummary' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 90}}>Sales Summary</h2>
+                        <img src={sales_summry} className="img_cashiering"/>
+                    </ListItem>
+
+                    <ListItem button component={Link} to="/itempage" className={location.pathname === '/itempage' ? 'active-link' : ''}>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 160, marginLeft: 5}}>Item Page</h2>
+                    <img src={item_page} className="img_cashiering" />
+                    </ListItem>
+
+                    <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                        <img src={logout} className='img_cashiering'/> 
+                    </ListItem>
+                </List>
+            </Drawer>
             
         <Typography variant="h2" style={{ textAlign: 'center', fontWeight: 'bold' }}>
           SALES SUMMARY

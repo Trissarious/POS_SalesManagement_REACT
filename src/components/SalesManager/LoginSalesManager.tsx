@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import { useNavigate } from 'react-router-dom';
-import './LoginSalesManager.css'; 
+import './CSS Files/LoginSalesManager.css'; 
 import axios from 'axios';
 
 const LoginSalesManager = () => {
@@ -43,6 +43,10 @@ const LoginSalesManager = () => {
   const handleForgotPassword = () => {
     window.alert('Please contact your administrator for password assistance.');
   };
+
+  const handleRegister = () => {
+    window.alert('Please contact your administrator if you want to create an account.')
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -91,7 +95,7 @@ const LoginSalesManager = () => {
           Login
         </button>
         <br />
-        <button className='btn-register' onClick={handleForgotPassword}>
+        <button className='btn-register' onClick={handleRegister}>
         Don't Have An Account?
         </button>
         <div className="forgot-password">
