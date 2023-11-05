@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './CSS FIles/TransactionDetails.css'; 
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AccountLoginValid/AuthContext';
 
 interface Product {
     productid: number;
@@ -23,6 +25,22 @@ interface TransactionDetails {
 }
 
 const TransactionDetails = () => {
+    const { isCashierLoggedIn } = useAuth();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      // Check for a valid JWT token on page load
+      const token = localStorage.getItem('cashierToken');
+  
+      if (!token) {
+        // Redirect to the login page if there's no token
+        navigate('/logincashier');
+      } else {
+        // Verify the token on the server, handle token expiration, etc.
+        // If token is valid, setIsCashierLoggedIn(true)
+      }
+    }, [isCashierLoggedIn, navigate]);
+
     const { id } = useParams();
     const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>();
     const [products, setProducts] = useState<Product[]>([]);

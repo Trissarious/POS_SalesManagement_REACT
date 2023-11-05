@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './CSS FIles/TransactionHistory.css';
 import './CSS FIles//Images Cashierieng/ViewIcon.png'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AccountLoginValid/AuthContext';
+
 
 interface Transaction {
     transactionid: number;
@@ -10,6 +13,23 @@ interface Transaction {
 }
 
 const TransactionHistory = () => {
+
+    const { isCashierLoggedIn } = useAuth();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      // Check for a valid JWT token on page load
+      const token = localStorage.getItem('cashierToken');
+  
+      if (!token) {
+        // Redirect to the login page if there's no token
+        navigate('/logincashier');
+      } else {
+        // Verify the token on the server, handle token expiration, etc.
+        // If token is valid, setIsCashierLoggedIn(true)
+      }
+    }, [isCashierLoggedIn, navigate]);
+
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     useEffect(() => {

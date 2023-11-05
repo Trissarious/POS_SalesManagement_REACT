@@ -1,9 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { IconButton, Drawer, List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AccountLoginValid/AuthContext';
 
 export default function SalesManagerDashboard() {
+  const { isSalesmanLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Delete the 'cashierToken' from local storage
+    localStorage.removeItem('salesmanToken');
+    // Clear the login state
+    localStorage.removeItem('salesmanLoggedIn');
+    // Redirect to the login page
+    navigate('/loginsales');
+  };
+
+  useEffect(() => {
+    // Check for a valid JWT token on page load
+    const token = localStorage.getItem('salesmanToken');
+
+    if (!token) {
+      // Redirect to the login page if there's no token
+      navigate('/loginsales');
+    } else {
+      // Verify the token on the server, handle token expiration, etc.
+      // If token is valid, setIsCashierLoggedIn(true)
+    }
+  }, [isSalesmanLoggedIn, navigate]);
+
   // State to control the open/closed state of the Drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -65,7 +91,7 @@ export default function SalesManagerDashboard() {
             
             >Item Page</h2>
           </ListItem>
-          <ListItem>
+          <ListItem button onClick={handleLogout}>
           <h2
               style={{fontFamily: 'Poppins'}}
             

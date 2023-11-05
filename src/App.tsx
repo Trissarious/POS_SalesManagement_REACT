@@ -19,6 +19,7 @@ import ForgotPassword from './components/Administrator/ForgotPassword';
 import ChangePassword from './components/Administrator/ChangePassword';
 import AdminMainPage from './components/Administrator/AdminMainPage';
 import ViewAccounts from './components/Administrator/ViewAccounts';
+import { AuthProvider } from './components/AccountLoginValid/AuthContext';
 
 function App() {
 
@@ -51,4 +52,10 @@ function App() {
   );
 }
 
-export default App;
+export default function AppWithProvider() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}

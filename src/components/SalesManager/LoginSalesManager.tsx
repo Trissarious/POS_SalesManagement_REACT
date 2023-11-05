@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TextField } from '@mui/material';
 import './LoginSalesManager.css'; 
 import axios from 'axios';
+import { useAuth } from '../AccountLoginValid/AuthContext';
 
 const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { isSalesManLoggedIn, setIsSalesManLoggedIn } = useAuth(); // Get the context
   const navigate = useNavigate(); // Get the navigate function
+
+  useEffect(() => {
+    // Check if the user is already logged in
+    const isLoggedIn = localStorage.getItem('salesmanLoggedIn');
+    if (isLoggedIn === 'true') {
+      navigate('/salesmanagerdb');
+    }
+  }, [navigate]);
 
   const handleLogin = () => {
     // Create a request object with the username and password
@@ -20,7 +30,12 @@ const LoginSalesManager = () => {
     axios.post('http://localhost:8080/user/loginsales', loginRequest)
       .then((response) => {
         if (response.status === 200) {
+          const token = response.data.token;
+          // Store the token in a cookie or local storage
+          localStorage.setItem('salesmanToken', token);
           // Successfully logged in
+          setIsSalesManLoggedIn(true); // Set the login status to true
+          localStorage.setItem('salesmanLoggedIn', 'true');
           window.alert('Login successful'); // Display a success message
           navigate('/salesmanagerdb');
         } else {

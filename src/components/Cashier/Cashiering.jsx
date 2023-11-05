@@ -7,12 +7,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
 import './CSS FIles/Cashiering.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AccountLoginValid/AuthContext';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
 const post_transaction = 'http://localhost:8080/transaction/postTransaction';
 
 export default function Cashiering()  {
+    const { isCashierLoggedIn } = useAuth();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      // Check for a valid JWT token on page load
+      const token = localStorage.getItem('cashierToken');
+  
+      if (!token) {
+        // Redirect to the login page if there's no token
+        navigate('/logincashier');
+      } else {
+        // Verify the token on the server, handle token expiration, etc.
+        // If token is valid, setIsCashierLoggedIn(true)
+      }
+    }, [isCashierLoggedIn, navigate]);
+
     <title>Cashiering</title>
     const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
     const [products, setProduct] = useState([product])
