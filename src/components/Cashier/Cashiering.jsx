@@ -349,7 +349,9 @@ export default function Cashiering()  {
                     style={{
                         width: '100%', 
                         height: '40px', 
-                        margin: '10px 0', 
+                        margin: '10px 0',
+                        marginTop: '-30px', 
+                        marginBottom: '10px',
                         padding: '5px', 
                         fontSize: '16px', 
                     }}                    
@@ -358,8 +360,8 @@ export default function Cashiering()  {
         <div className='container-product'> 
         <div className="col-lg-7">
         {filteredProducts.length > 0 ? (   
-        <TableContainer component={Paper} sx={{maxHeight: 700}}>
-            <Table sx={{ minWidth: 700}} aria-label="customized table">
+        <TableContainer component={Paper} sx={{maxHeight: 720}}>
+            <Table sx={{ maxWidth: 1000}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
                     <StyledTableCell>Product ID</StyledTableCell>

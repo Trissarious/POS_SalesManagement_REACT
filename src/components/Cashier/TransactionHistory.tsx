@@ -79,22 +79,31 @@ const TransactionHistory = () => {
             </IconButton>
             {/* Drawer component */}
             <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem'}}>
+
                 <div className='drawer-account'>
+                    {/* CHANGE THIS TO THE CURRENT LOGGED IN CASHIER ACCOUNT */}
                     <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
                 </div>
+
                 <List>
                     <ListItem button component={Link} to="/cashiering" className={location.pathname === '/cashiering' ? 'active-link' : ''}>
-                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>Perform Transaction</h2>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>
+                            Perform Transaction
+                        </h2>
                         <img src={perform_transaction} className="img_cashiering"/>
                     </ListItem>
 
                     <ListItem button component={Link} to="/transactionhistory" className={location.pathname === '/transactionhistory' ? 'active-link' : ''}>
-                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>Transaction History</h2>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>
+                        Transaction History
+                    </h2>
                     <img src={transaction_history} className="img_cashiering" />
                     </ListItem>
 
                     <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
-                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>
+                            Log Out
+                        </h2>
                         <img src={logout} className='img_cashiering'/> 
                     </ListItem>
                 </List>
@@ -119,7 +128,7 @@ const TransactionHistory = () => {
             
             <div className="transaction-table-container">      
             {searchInput && filteredTransactions.length === 0 ? (
-                <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px' }}>No Transactions found.</p>
+                <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px', fontWeight: 'bolder' }}>No Transactions found.</p>
             ) : (
                 <table className="transaction-table" style={{maxWidth: '90%'}}>
                     <thead>
@@ -132,7 +141,7 @@ const TransactionHistory = () => {
                         {searchInput
                             ? filteredTransactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td style={{fontWeight: 50}}>Transaction {transaction.transactionid}</td>
+                                <td style={{fontWeight: 'bolder', color: '#213458'}}>Transaction {transaction.transactionid}</td>
                                 <td>
                                     <Link
                                         className="btn btn-success btn-lg"

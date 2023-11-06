@@ -24,7 +24,13 @@
     position: relative;
     margin-bottom: 20px;
     border-radius: 10px;
+    opacity: 1;
+    border: none;
     cursor: pointer;
+  }
+
+  .btn-admin:hover, .btn-cashier:hover, .btn-salesmanager:hover {
+    opacity: 0.6;
   }
 
   .button-container {
