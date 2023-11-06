@@ -1,5 +1,5 @@
 .App {
-  background-color: #DDDDDD;
+  /* background-color: #DDDDDD; */
   position: fixed;
   left: 0;
   top: 0;
@@ -17,8 +17,12 @@
 }
 
 .container {
+  align-items: center;
   background-color: #1D7D814D;
-  opacity: 30;  
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5%;
 }
 
 .buttons-nav {
@@ -44,11 +48,16 @@
   margin-bottom: 20px;
   border-radius: 10px;
   cursor: pointer;
+  opacity: 1;
+}
+
+.button1:hover, .button2:hover, .button-label:hover {
+  opacity: 0.6;
 }
 
 .button-record-transaction {
   background-color: #213458;
-  color: #DDDDDD;
+  color: white;
   height: 60px;
   text-decoration: none;
   font-family: 'Poppins';
@@ -57,7 +66,9 @@
   position: relative;
   margin-bottom: 20px;
   border-radius: 10px;
+  border: none;
   cursor: pointer;
+  opacity: 1;
 }
 
 
@@ -66,8 +77,13 @@
   color: white; /* Text color (if needed) */
 }
 
+.button-record-transaction:hover {
+  opacity: 0.8;
+}
+
 .button-label {
   display: inline-block;
+  opacity: 1;
   padding: 10px 20px;
   background-color: #1D7D81; /* Default button background color */
   color: #fff; /* Default text color */
@@ -81,15 +97,6 @@
   background-color: #ff5722; /* Change the background color when checked */
 }
 
-.button-label:hover{
-  background-color: #0e2146;
-  transform: scale(1.0.5);
-}
-
-button:hover{
-  background-color: #0e2146;
-  transform: scale(1.0.5);
-}
 
 table, th, td, thead, tr {
   border: 1px solid black;

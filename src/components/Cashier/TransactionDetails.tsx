@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './CSS FIles/TransactionDetails.css'; 
+import { Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
@@ -22,6 +24,8 @@ interface TransactionDetails {
     customer_num: string;
     customer_email: string;
     date_time: string;
+    refunded: boolean;
+    returned: boolean;
 }
 
 const TransactionDetails = () => {
@@ -44,11 +48,20 @@ const TransactionDetails = () => {
     const { id } = useParams();
     const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>();
     const [products, setProducts] = useState<Product[]>([]);
+    const [refunded, setRefunded] = useState(false);
+    const [returned, setReturned] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [openRefund, setOpenRefund] = React.useState(false);
+    const [openReturn, setOpenReturn] = React.useState(false);
+    const [initialUsername, setInitialUsername] = useState('');
+    const [initialPassword, setInitialPassword] = useState('');
 
     useEffect(() => {
         // Fetch transaction details using the provided URL
         axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
             .then((response) => {
+                console.log(response.data); // Log the response data
                 const responseData: TransactionDetails = response.data;
                 setTransactionDetails(responseData);
             })
@@ -67,25 +80,118 @@ const TransactionDetails = () => {
             });
     }, [id]);
 
-    const handleRefundClick = () => {
-        const confirmed = window.confirm('Are you sure you want to refund?');
-        if (confirmed) {
-            axios.delete(`http://localhost:8080/transaction/deleteTransaction/${id}`)
-              .then(() => {
-                  window.confirm(`Transaction ${id} has been refunded and deleted.`);
-                  window.location.href = '/transactionhistory'; 
-              })
-              .catch((error) => {
-                  console.error(error);
-                  window.alert(`Failed to refund transaction ${id}.`);
-              });
-        }
-    };
+
+    const handleLoginForRefund = () => {
+        // Create a request object with the username and password
+        const loginRequest = {
+          username: username,
+          password: password,
+        };
     
+        // Check if the username and password are not empty
+        if (!loginRequest.username || !loginRequest.password) {
+          window.alert('Please enter both your username and password');
+        } else {
+          // Send a POST request to the server
+          axios.post('http://localhost:8080/user/loginsales', loginRequest)
+            .then((response) => {
+              if (response.status === 200) {
+                // Insert code for approval ^-^
+                    const confirmed = window.confirm('Are you sure you want to refund?');
+                    if (confirmed) {
+                        setRefunded(true);
+                        axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { refunded: true })
+                          .then((response) => {
+                              window.confirm(`Transaction ${id} has been refunded.`);
+                              console.log('Refund successful:', response.data);
+                              window.location.reload();
+                          })
+                          .catch((error) => {
+                              console.error(error);
+                              window.alert(`Failed to refund transaction ${id}.`);
+                          });
+                    }
+              } else {
+                window.alert('Please enter your username and password');
+              }
+            })
+            .catch((error) => {
+              console.error('Login failed:', error);
+              window.alert('The username or password you’ve entered is incorrect. Please try again.');
+            });
+          }   
+      };
+
+      const handleLoginForReturn = () => {
+        // Create a request object with the username and password
+        const loginRequest = {
+          username: username,
+          password: password,
+        };
+    
+        // Check if the username and password are not empty
+        if (!loginRequest.username || !loginRequest.password) {
+          window.alert('Please enter both your username and password');
+        } else {
+          // Send a POST request to the server
+          axios.post('http://localhost:8080/user/loginsales', loginRequest)
+            .then((response) => {
+              if (response.status === 200) {
+                // Insert code for approval ^-^
+                const confirmed = window.confirm('Are you sure you want to return item?');
+                if (confirmed) {
+                    setReturned(true);
+                    axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { returned: true })
+                      .then((response) => {
+                          window.confirm(`Transaction ${id} has been returned.`);
+                          console.log('Return successful:', response.data);
+                          window.location.reload();
+                      })
+                      .catch((error) => {
+                          console.error(error);
+                          window.alert(`Failed to return transaction ${id}.`);
+                      });
+                }
+              } else {
+                window.alert('Please enter your username and password');
+              }
+            })
+            .catch((error) => {
+              console.error('Login failed:', error);
+              window.alert('The username or password you’ve entered is incorrect. Please try again.');
+            });
+          }   
+      };
+
+    const handleClickOpenRefund = () => {
+        setOpenRefund(true);
+        console.log(transactionDetails);
+    }
+
+    const handleClickCloseRefund = () => {
+        setOpenRefund(false);
+        console.log(transactionDetails);
+        setUsername(initialUsername); // Reset the username
+        setPassword(initialPassword); // Reset the password
+    }
+
+    const handleClickOpenReturn= () => {
+        setOpenReturn(true);
+        console.log(transactionDetails);
+    }
+
+    const handleClickCloseReturn = () => {
+        setOpenReturn(false);
+        console.log(transactionDetails);
+        setUsername(initialUsername); // Reset the username
+        setPassword(initialPassword); // Reset the password
+    }
+
+
     return (
         <div className='table-container'>
             <div className='table'>
-            <h2>Transaction Details</h2>
+            <h2 className='header-details'> Transaction Details</h2>
             {transactionDetails && (
                 <table>
                     <tbody>
@@ -125,12 +231,20 @@ const TransactionDetails = () => {
                             <th>Date & Time</th>
                             <td>{transactionDetails.date_time}</td>
                         </tr>
+                        <tr>
+                            <th>Refunded</th>
+                            <td>{transactionDetails.refunded ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr>
+                            <th>Returned</th>
+                            <td>{transactionDetails.returned ? 'Yes' : 'No'}</td>
+                        </tr>
                     </tbody>
                 </table>
             )}
             </div>
             <div className='table'>
-            <h2>Products Purchased</h2>
+            <h2 className='header-details'>Products Purchased</h2>
             <table>
                 <thead>
                     <tr>
@@ -150,11 +264,101 @@ const TransactionDetails = () => {
                 </tbody>
             </table>
             <div className="buttons-container">
-            <button className="refund-button" onClick={handleRefundClick}>
-            Refund
-          </button>
-                    <button className="return-button">Return</button>
-                </div>
+            <button className="refund-button" onClick={handleClickOpenRefund}>Refund</button>
+            <button className="return-button" onClick={handleClickOpenReturn}>Return</button>
+            </div>
+
+        {/* DIALOG FOR REFUND */}
+        <Dialog open={openRefund} onClose={handleClickCloseRefund}>
+        <DialogContent>
+            <Card sx={{maxWidth: 900, borderRadius: 5, backgroundColor: '#f7f5f5', maxHeight: 1000, color: '#213458'}}>
+                <CardContent>
+                    <Typography gutterBottom variant='h2' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
+                        Want to Refund Transaction?
+                    </Typography>
+                    <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db', marginTop: 5, color: '#213458'}}>
+                        <Typography gutterBottom variant='h5' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, padding: 1, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
+                            Request for Manager To Approve Refund Request
+                        </Typography>
+                    </Card>
+                </CardContent>
+                     <CardActions sx={{marginTop: 3}}>
+                            <TextField
+                                type="text"
+                                label="Username"
+                                variant="outlined"
+                                fullWidth
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
+                    <CardActions sx={{marginBottom: 5}}>
+                            <TextField
+                                type='password'
+                                fullWidth
+                                label="Password"
+                                value={password}
+                                variant='outlined'
+                                onChange={(e) => setPassword(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                                InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
+            </Card>
+        </DialogContent>
+        <DialogActions>
+            <button className="btn-cancel" onClick={handleClickCloseRefund}>Cancel</button>
+            <button className="btn-approve" onClick={handleLoginForRefund}>Approve</button>
+        </DialogActions>
+        </Dialog>
+
+        {/* DIALOG FOR RETURN */}
+        <Dialog open={openReturn} onClose={handleClickCloseReturn}>
+        <DialogContent>
+            <Card sx={{maxWidth: 900, borderRadius: 5, backgroundColor: '#f7f5f5', maxHeight: 1000, color: '#213458'}}>
+                <CardContent>
+                    <Typography gutterBottom variant='h2' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
+                        Want to Return Transaction?
+                    </Typography>
+                    <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db', marginTop: 5, color: '#213458'}}>
+                        <Typography gutterBottom variant='h5' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, padding: 1, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
+                            Request for Manager To Approve Refund Request
+                        </Typography>
+                    </Card>
+                </CardContent>
+                     <CardActions sx={{marginTop: 3}}>
+                            <TextField
+                                type="text"
+                                label="Username"
+                                variant="outlined"
+                                fullWidth
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
+                    <CardActions sx={{marginBottom: 5}}>
+                            <TextField
+                                type='password'
+                                fullWidth
+                                label="Password"
+                                value={password}
+                                variant='outlined'
+                                onChange={(e) => setPassword(e.target.value)}
+                                inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
+                                InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                            />
+                    </CardActions>
+            </Card>
+        </DialogContent>
+        <DialogActions>
+            <button className="btn-cancel" onClick={handleClickCloseReturn}>Cancel</button>
+            <button className="btn-approve" onClick={handleLoginForReturn}>Approve</button>
+        </DialogActions>
+        </Dialog>
         </div>
         </div>
     );

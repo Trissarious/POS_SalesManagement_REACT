@@ -38,3 +38,19 @@
   margin-right: auto;
   height: 90vh;
 }
+
+.img_cashiering {
+  padding: auto;
+  margin: auto;
+}
+
+.drawer-account {
+  background-color: darkcyan;
+  height: 5.5vh;
+  margin-bottom: -8px;
+}
+
+.active-link {
+  background-color: #daede5;
+  color: #213458; /* Set the desired text color for active link */
+}

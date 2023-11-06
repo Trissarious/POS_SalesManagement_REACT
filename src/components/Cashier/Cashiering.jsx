@@ -1,12 +1,17 @@
 
-import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses, Drawer, IconButton, List, ListItem, Typography } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import axios from 'axios';
 import { Product, RestProduct } from '../REST/REST Product/RestProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
+import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import './CSS FIles/Cashiering.css';
+import perform_transaction from './Images/perform_transaction.png';
+import transaction_history from './Images/transaction_history.png';
+import logout from './Images/logout.png'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
@@ -37,6 +42,8 @@ export default function Cashiering()  {
     const [cart, setCart] = useState([product])
     const [selectedProducts, setSelectedProducts] = useState(initialSelectedProducts);
     const [initialProductQuantities, setInitialProductQuantities] = useState({});
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const location = useLocation();
 
     //TRANSACTION VARIABLES
     const [total_quantity, setTotal_quantity] = useState(0);
@@ -47,24 +54,53 @@ export default function Cashiering()  {
     const [customer_num, setCustomer_num] = useState('');
     const [customer_email, setCustomer_email] = useState('');
     const [date_time, setDate_time] = useState('');
-
     
+
+    // Function to open the Drawer
+    const openDrawer = () => {
+        setIsDrawerOpen(true);
+    };
+
+    // Function to close the Drawer
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+    };
+
+
     //Fetch Product Table from Database
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get(url); 
-                setProduct(response.data);
-            } catch (error) {
-                console.error(error);
-            }
+          try {
+            const response = await axios.get(url);
+            const data = response.data;
+            setProduct(data);
+    
+            // Initialize the cart state
+            setCart([]);
+    
+            // Initialize the selected products state
+            setSelectedProducts([]);
+          } catch (error) {
+            console.error(error);
+          }
         };
-        fetchData();}, []);
+        fetchData();
+      }, []);
+    
+    const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
+    // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
+    useEffect(() => {
+        if (location.pathname === '/cashiering') {
+            setNavigatorColor('#daede5');
+        } else {
+            setNavigatorColor('#213458');
+        }
+    }, [location]);
 
-        const decreaseProductQuantityInDatabase = async (productId) => {
+        const decreaseProductQuantityInDatabase = async (productid) => {
             try {
               // Make an HTTP request to update the product quantity in the database
-              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productId}`);
+              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productid}`);
             } catch (error) {
               console.error(error);
             }
@@ -100,9 +136,8 @@ export default function Cashiering()  {
             })
             .then(res => {
               console.log(res.data);
-              handlePrint()
               alert('Transaction Complete');
-              window.location.reload();
+              handlePrint();
             })
             .catch(err => console.log(err));
         }
@@ -286,6 +321,43 @@ export default function Cashiering()  {
     
  return (
     <div className="container">
+         {/* Hamburger icon to open the drawer */}
+         <IconButton
+                edge="end" 
+                aria-label="open drawer"
+                onClick={openDrawer}
+                sx={{
+                position: 'fixed',
+                top: '.5rem',
+                right: '2rem', 
+                fontSize: '6rem', 
+                zIndex: 999, 
+            }}>
+            <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
+            </IconButton>
+            {/* Drawer component */}
+            <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem'}}>
+                <div className='drawer-account'>
+                    <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
+                </div>
+                <List>
+                    <ListItem button component={Link} to="/cashiering" className={location.pathname === '/cashiering' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>Perform Transaction</h2>
+                        <img src={perform_transaction} className="img_cashiering"/>
+                    </ListItem>
+
+                    <ListItem button component={Link} to="/transactionhistory" className={location.pathname === '/transactionhistory' ? 'active-link' : ''}>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>Transaction History</h2>
+                    <img src={transaction_history} className="img_cashiering" />
+                    </ListItem>
+
+                    <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                        <img src={logout} className='img_cashiering'/> 
+                    </ListItem>
+                </List>
+            </Drawer>
+
                 {/*Search Bar */}
                 <input
                     type="text"
@@ -295,7 +367,9 @@ export default function Cashiering()  {
                     style={{
                         width: '100%', 
                         height: '40px', 
-                        margin: '10px 0', 
+                        margin: '10px 0',
+                        marginTop: '-30px', 
+                        marginBottom: '10px',
                         padding: '5px', 
                         fontSize: '16px', 
                     }}                    
@@ -304,8 +378,8 @@ export default function Cashiering()  {
         <div className='container-product'> 
         <div className="col-lg-7">
         {filteredProducts.length > 0 ? (   
-        <TableContainer component={Paper} sx={{maxHeight: 700}}>
-            <Table sx={{ minWidth: 700}} aria-label="customized table">
+        <TableContainer component={Paper} sx={{maxHeight: 720}}>
+            <Table sx={{ maxWidth: 1000}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
                     <StyledTableCell>Product ID</StyledTableCell>

@@ -7,31 +7,35 @@
 
 .btn-login-salesmanager {
 background-color: #213458;
-color: #DDDDDD;
 height: 50px;
+color: white;
 font-family: 'Poppins';
 font-weight: 400;
 font-size: 20px;
 width: 300px;
 position: relative;
+border: none;
 margin-top: 30px;
 border-radius: 10px;
 cursor: pointer;
 }
 
 .btn-register {
-background-color: #213458;
-color: #DDDDDD;
+background-color: rgb(50, 179, 50);
+color: white;
 height: 50px;
 font-family: 'Poppins';
 font-weight: 400;
 font-size: 20px;
 width: 300px;
-position: relative;
 margin-top: 10px;
 border-radius: 10px;
+opacity: 1;
+border: none;
 cursor: pointer;
 }
+
+.btn-register:hover, .btn-login-salesmanager:hover { opacity: 0.8}
 
 .forgot-password {
 font-size: large;

@@ -1,7 +1,7 @@
 /* TransactionDetails.css */
 .table-container {
     margin: 20px;
-    max-height: 715px; /* Adjust the max-height as needed */
+    max-height: 800px; /* Adjust the max-height as needed */
     overflow-y: auto;
     display: flex;
 }
@@ -41,9 +41,9 @@
     margin-top: 20px;
 }
 
-.refund-button, .return-button {
+.refund-button, .return-button, .btn-cancel, .btn-approve {
     padding: 15px 30px;
-    background-color: #007bff;
+    background-color: #213458;
     color: white;
     border: none;
     cursor: pointer;
@@ -52,8 +52,51 @@
 }
 
 .return-button {
-    background-color: #dc3545;
+    background-color: #213458;
     margin-left: 70px;
     font-size: 20px; /* Adjust the font size as needed */
 }
 
+.header-details {
+    font-size: 30px;
+    color: #213458;
+    font-weight: bold;
+}
+
+.btn-approve {
+    background-color: green;
+    color: #DDDDDD;
+    height: 50px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 15px;
+    width: 200px;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: auto;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    font-size: 15px;
+    color: #DDDDDD;
+    height: 50px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    width: 200px;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: auto;
+}
+
+.btn-cancel:hover{
+    background-color: #ce0519;
+    transform: scale(1.0.5);
+  }
+
+.btn-approve:hover {
+    background-color: rgb(52, 179, 52);
+    transform: scale(1.0.5);
+}

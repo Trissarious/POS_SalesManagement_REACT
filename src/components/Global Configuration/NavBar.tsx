@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-
+import LOGOS from './LOGOS.png';
 export default function Navbar() {
 return (
     <nav className="navbar navbar-custom">
@@ -7,8 +7,8 @@ return (
      <Link 
         style={{ color: '#FFF', textDecoration: 'none', fontFamily: 'Poppins', fontSize: 20 }} 
         to='/'>
-           {/* <img src='./LOGOS.png' alt="Logo" className="navbar-logo" /> */}
-          <span className='navbar-title'>POS SALES MANAGEMENT SYSTEM</span>
+           <img src={LOGOS}  alt="Logo" className="navbar-logo" />
+          <span className='navbar-title'>Point-Of-Sales Management</span>
       </Link>
     </div>
   </nav>
