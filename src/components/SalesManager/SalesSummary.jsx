@@ -1,13 +1,11 @@
 import { IconButton, Drawer, List, ListItem, Typography} from '@mui/material';
-import { IconButton, Drawer, List, ListItem, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import React, { useState, useEffect } from 'react';
 import dashboard from './Images/dashboard.png';
 import item_page from './Images/item_page.png';
 import sales_summry from './Images/sales_summary.png'
 import logout from './Images/logout.png'
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation  } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
 
@@ -41,6 +39,8 @@ export default function SalesSummary() {
   // State to control the open/closed state of the Drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const location = useLocation();
+  
   // Function to open the Drawer
   const openDrawer = () => {
     setIsDrawerOpen(true);

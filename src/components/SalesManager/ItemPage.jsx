@@ -179,5 +179,6 @@ export default function ItemPage() {
         </div>                   
         </div>
       </div>
+      </div>
     );
   }
