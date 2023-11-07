@@ -91,8 +91,8 @@
     margin: auto;
 }
 
-.btn-cancel:hover{
-    background-color: #ce0519;
+.btn-cancel:hover, .refund-button:hover, .return-button:hover{
+    opacity: 0.6;
     transform: scale(1.0.5);
   }
 

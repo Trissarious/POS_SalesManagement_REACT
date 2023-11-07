@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS FIles/LoginCashier.css';  
 import { TextField, IconButton, InputAdornment, Input } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
-import { Link } from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from '../AccountLoginValid/AuthContext';
 
 const LoginCashier = () => { // Accept the setIsLoggedIn prop
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { isCashierLoggedIn, setIsCashierLoggedIn } = useAuth(); // Get the context
+
+
+  useEffect(() => {
+    // Check if the user is already logged in
+    const isLoggedIn = localStorage.getItem('cashierLoggedIn');
+    if (isLoggedIn === 'true') {
+      navigate('/cashier-main');
+    }
+  }, [navigate]);
+
 
   const handleLogin = () => {
     // Create a request object with the username and password
@@ -27,7 +38,15 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
     axios.post('http://localhost:8080/user/logincash', loginRequest)
       .then((response) => {
         if (response.status === 200) {
-            navigate('/cashier-main');
+          const token = response.data.token;
+          // Store the token in a cookie or local storage
+          localStorage.setItem('cashierToken', token);
+          // Successfully logged in
+          setIsCashierLoggedIn(true); // Set the login status to true in the context
+          localStorage.setItem('cashierLoggedIn', 'true');
+          window.alert('Login successful'); // Display a success message
+          // Redirect to the '/cashier-main' route
+          navigate('/cashier-main');
         } else {
           window.alert('Please enter your username and password');
         }

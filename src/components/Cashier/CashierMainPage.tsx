@@ -29,7 +29,7 @@ export default function CashierMainPage() {
   }, [isCashierLoggedIn, navigate]);
 
   return (
-    <div className="center-bod" style={{ backgroundColor: '#DDDDDD' }}>
+    <div className="center-bod">
       <div className="button-container">
         <Link to="/cashiering">
           <button className="button1">Perform Transaction</button>

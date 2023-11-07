@@ -82,7 +82,7 @@ export default function ItemPage() {
             {/* Drawer component */}
             <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem'}}>
                 <div className='drawer-account'>
-                    <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Cashier</Typography>
+                    <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Sales Manager</Typography>
                 </div>
                 <List>
                     <ListItem button component={Link} to="/salesmanagerdb" className={location.pathname === '/salesmanagerdb' ? 'active-link' : ''}>
@@ -96,58 +96,18 @@ export default function ItemPage() {
                     </ListItem>
 
                     <ListItem button component={Link} to="/itempage" className={location.pathname === '/itempage' ? 'active-link' : ''}>
-                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 160, marginLeft: 5}}>Item Page</h2>
+                    <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: '#213458', marginRight: 160, marginLeft: 5}}>Item Page</h2>
                     <img src={item_page} className="img_cashiering" />
                     </ListItem>
 
-                    <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
-                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>Log Out</h2>
+                    <ListItem button onClick={handleLogout} className={location.pathname === '/logout' ? 'active-link' : ''} >
+                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}} >Log Out</h2>
                         <img src={logout} className='img_cashiering'/> 
                     </ListItem>
                 </List>
             </Drawer>
+
     <div>
-      {/* Hamburger icon to open the Drawer */}
-      <IconButton
-        edge="end" 
-        color="inherit"
-        aria-label="open drawer"
-        onClick={openDrawer}
-        sx={{
-          position: 'fixed',
-          top: '.5rem',
-          right: '2rem', 
-          fontSize: '6rem', 
-          zIndex: 999, 
-        }}
-      >
-        <MenuIcon sx={{ fontSize: '3rem'}}/> {/* Place the MenuIcon component here */}
-      </IconButton>
-
-      {/* Drawer component */}
-      <Drawer anchor="right" open={isDrawerOpen} onClose={closeDrawer} sx={{ width: '5rem' }}>
-        <List>
-          <ListItem button component={Link} to="/salessummary">
-            <h2 
-              style={{fontFamily: 'Poppins'}}
-            
-            >Sales Summary</h2>
-          </ListItem>
-          <ListItem button component={Link} to="/itempage">
-          <h2 
-              style={{fontFamily: 'Poppins'}}
-            
-            >Item Page</h2>
-          </ListItem>
-          <ListItem button onClick={handleLogout}>
-          <h2
-              style={{fontFamily: 'Poppins'}}
-            
-            >Log Out</h2>
-          </ListItem>
-        </List>
-      </Drawer>
-
         <div className='center'>
             <Typography variant="h2" style={{ textAlign: 'center', fontWeight: 'bold' }}>
             ITEMS
