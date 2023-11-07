@@ -10,7 +10,7 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { isAdminLoggedIn, setIsAdminLoggedIn } = useAuth(); // Get the context
+  const { setIsAdminLoggedIn } = useAuth(); // Get the context
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Get the navigate function
 
@@ -38,12 +38,12 @@ const LoginAdmin = () => {
         .then((response) => {
           if (response.status === 200) {
             const token = response.data.token;
-          // Store the token in a cookie or local storage
-          localStorage.setItem('adminToken', token);
-          // Successfully logged in
-          setIsAdminLoggedIn(true); // Set the login status to true
-          localStorage.setItem('adminLoggedIn', 'true');
-            // window.alert('Login successful'); // Display a success message
+            const username = response.data.username; // Assuming the API returns the username
+            console.log('Username from API response:', username);
+            localStorage.setItem('adminToken', token);
+            localStorage.setItem('adminLoggedIn', 'true');
+            localStorage.setItem('adminUsername', username); // Store the username in local storage
+            setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
           } else {
             window.alert('Please enter your username and password');
