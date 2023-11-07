@@ -2,6 +2,7 @@
   overflow: auto; 
   max-height: 650px; 
   width: 1500px;
+  margin-bottom: 40px;
 }
 
 .transaction-table {
@@ -36,7 +37,8 @@
   width: max-content;
   margin-left: auto;
   margin-right: auto;
-  height: 90vh;
+
+  height: auto;
 }
 
 .img_cashiering {

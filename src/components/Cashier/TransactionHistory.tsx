@@ -161,7 +161,12 @@ const TransactionHistory = () => {
                         {searchInput
                             ? filteredTransactions.map((transaction) => (
                             <tr key={transaction.transactionid}>
-                                <td style={{fontWeight: 'bolder', color: '#213458'}}>Transaction {transaction.transactionid}</td>
+                                <td style={{color: '#213458'}}>
+                                    <div style={{fontWeight: 'bold', fontSize: 30}}> Transaction {transaction.transactionid}</div> 
+                                    <div style={{fontSize: 20}}>{transaction.date_time}</div>
+                                    <div style={{fontSize: 20, color: "red", fontStyle: 'italic'}}>{transaction.refunded ? 'Refunded' : ''}</div>
+                                    <div style={{fontSize: 20, color: "red", fontStyle: 'italic'}}>{transaction.returned ? 'Returned' : ''}</div>
+                                </td>
                                 <td>
                                     <Link
                                         className="btn btn-success btn-lg"

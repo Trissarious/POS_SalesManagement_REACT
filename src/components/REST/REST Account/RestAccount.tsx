@@ -6,6 +6,7 @@ export interface Account{
     userid: number,
     username: string,
     password: string,
+    account_type: string,
     email: string,
     fname: string,
     mname: string,
@@ -27,6 +28,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
         axios.post("http://localhost:8080/user/postUser",{
             username: account.username,
             password: account.password,
+            account_Type: account.account_type,
             email: account.email,
             fname: account.fname,
             mname: account.mname,
@@ -50,6 +52,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
         axios.put("http://localhost:8080/product/getByProduct?productid=" + account.userid,{
             username: account.username,
             password: account.password,
+            account_Type: account.account_type,
             email: account.email,
             fname: account.fname,
             mname: account.mname,

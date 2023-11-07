@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import "./CSS Files/./AdminMainPage.css";
 
@@ -30,30 +30,25 @@ const AdminMainPage = () => {
   }, [isSalesmanLoggedIn, navigate]);
 
   return (
-    <div className="confirm-forgot-password">
-      <div className="profile-container">
-        <div className="profile-picture">
-          <img src="/path-to-your-image" alt="Profile" />
-        </div>
-        <div className="profile-name">Admin</div>
-      </div>
-      <div className="button-container">
-        <div>
-          <Link to="/createaccountadmin">
-            <button>Create New Account</button>
-          </Link>
-        </div>
-        <div>
-          <Link to="/viewaccounts">
-            <button>View Accounts</button>
-          </Link>
-        </div>
-        <div className="sign-out-button">
-            <button onClick={handleLogout}>Sign Out</button>
-        </div>
-      </div>
-    </div>
+<div className="center-bod">
+<div className="button-container">
+  <Link to="/createaccountadmin">
+    <button className="button1">Create New Account</button>
+  </Link>
+  <br></br>
+  <Link to="/viewaccounts">
+    <button className="button2">View Accounts</button>
+  </Link>
+  <br></br>
+  <button className= "button2" onClick={handleLogout}>Sign Out</button>
+</div>
+<Outlet />
+</div>
   );
 };
 
 export default AdminMainPage;
+
+
+
+

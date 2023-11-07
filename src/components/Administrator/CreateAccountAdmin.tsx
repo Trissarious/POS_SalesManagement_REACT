@@ -174,7 +174,7 @@ export default function CreateAccountAdmin() {
                 <Typography sx={{ fontSize: 25, fontFamily: 'Poppins' }}>{option.label}</Typography>
               </MenuItem>
             ))}
-</TextField>
+          </TextField>
 
 
           <TextField
@@ -227,25 +227,25 @@ export default function CreateAccountAdmin() {
             style={{marginBottom: '10px', width: 600}}
           />
 
-<LocalizationProvider dateAdapter={AdapterDateFns}>
-  <DatePicker
-    value={selectedDate}
-    onChange={handleDateChange}
-    sx={{
-      marginBottom: '10px',
-      width: 600,
-      '& .MuiInputBase-input': {
-        fontSize: '25px', // Adjust the input font size
-      },
-      '& .MuiPickersDay-day': {
-        fontSize: '50px', // Adjust the day font size
-      },
-      '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
-        fontSize: '50px', // Adjust the year font size
-      },
-    }}
-  />
-</LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              value={selectedDate}
+              onChange={handleDateChange}
+              sx={{
+                marginBottom: '10px',
+                width: 600,
+                '& .MuiInputBase-input': {
+                  fontSize: '25px', // Adjust the input font size
+                },
+                '& .MuiPickersDay-day': {
+                  fontSize: '50px', // Adjust the day font size
+                },
+                '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
+                  fontSize: '50px', // Adjust the year font size
+                },
+              }}
+            />
+          </LocalizationProvider>
 
           <TextField
             select
