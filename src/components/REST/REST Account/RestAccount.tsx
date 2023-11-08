@@ -86,7 +86,8 @@ function deleteByID (userid:number|undefined){
     axios.delete("http://localhost:8080/user/deleteAccount/" + userid,{
     }).then((response) => {
     setAccount(response.data);
-    console.log(response.data);    
+    console.log(response.data);  
+    window.location.reload()  
     })
 .catch((error) => {
     setError(error.message);
