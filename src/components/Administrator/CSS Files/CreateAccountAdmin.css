@@ -60,7 +60,7 @@
     color: #213458;
     font-weight: bold;
     margin-bottom: 50px;
-    margin-top: 50px;
+    margin-top: 30px;
   }
   
   .btn-signup {
@@ -91,7 +91,7 @@
   width: 100%;
   padding: 10px;
   margin-right: 800px;
-  margin-bottom: -443px;
+  margin-bottom: -520px;
 }
 
 .right-column {
@@ -100,7 +100,7 @@
   width: 100%;
   padding: 10px;
   margin-left: 600px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .error-message {

@@ -1,14 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Box, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, Typography } from '@mui/material';
+import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import './CSS Files/ViewAccounts.css'
 import axios from "axios";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import UpdateAccount from "./UpdateAccount";
-import { RestAccount } from "../REST/REST Account/RestAccount";
+
 
 interface Account {
   userid: number,
@@ -17,6 +13,7 @@ interface Account {
   password: string,
   email: string,
   fname: string,
+  mname: string,
   lname: string,
   business_name: string,
   address: string,
@@ -63,8 +60,6 @@ export default function ViewAccounts() {
             });
     }, []);
 
-    
-
   return (
     <div className="confirm-forgot-password">
       <div className="profile-container">
@@ -72,13 +67,7 @@ export default function ViewAccounts() {
           <img src="/path-to-your-image" alt="Profile" />
         </div>
         {/* <div className="profile-name">Admin</div> */}
-        
-    
-        <div className="profile-name">
-          
         </div>
-
-      </div>
 
        <div className="account-container">
 
@@ -129,6 +118,7 @@ export default function ViewAccounts() {
                                       business_name={account.business_name}
                                       address={account.address}
                                       fname={account.fname}
+                                      mname={account.mname}
                                       lname={account.lname}
                                       contactnum={account.contactnum}
                                       gender={account.gender}
@@ -175,6 +165,7 @@ export default function ViewAccounts() {
                                           business_name={account.business_name}
                                           address={account.address}
                                           fname={account.fname}
+                                          mname={account.mname}
                                           lname={account.lname}
                                           contactnum={account.contactnum}
                                           gender={account.gender}

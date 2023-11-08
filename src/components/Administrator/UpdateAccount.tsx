@@ -17,6 +17,7 @@ interface Account {
     password: string,
     email: string,
     fname: string,
+    mname: string,
     lname: string,
     business_name: string,
     address: string,

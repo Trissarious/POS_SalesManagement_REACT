@@ -3,11 +3,12 @@ import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
 import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { MenuItem, TextField, Typography } from '@mui/material';
+import { IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const post_account = 'http://localhost:8080/user/postUser';
@@ -56,6 +57,8 @@ export default function CreateAccountAdmin() {
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isFormValid, setFormValid] = useState(true); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -113,6 +116,20 @@ export default function CreateAccountAdmin() {
       setFormValid(false);
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const passwordsMatch = password === confirmPassword;
   
   return (
     <div className="register-div">
@@ -138,16 +155,50 @@ export default function CreateAccountAdmin() {
           />
 
           <TextField
-            type="text"
+            type={showPassword ? 'text' : 'password'} // Toggle password visibility
             label = "Password"
             variant='filled'
             value={password}
             fullWidth
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
             InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={togglePasswordVisibility}>
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
           />
+
+          <TextField
+            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+            label = "Confirm Password"
+            variant='filled'
+            value={confirmPassword}
+            fullWidth
+            onChange={handleConfirmPasswordChange}
+            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px', width: 600}}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={togglePasswordVisibility}>
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+
+          {!passwordsMatch && (
+            <p style={{ color: 'red', fontSize: 12 }}>Passwords do not match.</p>
+          )}
 
           <TextField
             select
@@ -226,27 +277,7 @@ export default function CreateAccountAdmin() {
             InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
-
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              value={selectedDate}
-              onChange={handleDateChange}
-              sx={{
-                marginBottom: '10px',
-                width: 600,
-                '& .MuiInputBase-input': {
-                  fontSize: '25px', // Adjust the input font size
-                },
-                '& .MuiPickersDay-day': {
-                  fontSize: '50px', // Adjust the day font size
-                },
-                '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
-                  fontSize: '50px', // Adjust the year font size
-                },
-              }}
-            />
-          </LocalizationProvider>
-
+          
           <TextField
             select
             label="Gender"
@@ -274,6 +305,38 @@ export default function CreateAccountAdmin() {
               </MenuItem>
             ))}
           </TextField>
+
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              value={selectedDate}
+              onChange={handleDateChange}
+              sx={{
+                marginBottom: '10px',
+                width: 600,
+                '& .MuiInputBase-input': {
+                  fontSize: '25px', // Adjust the input font size
+                },
+                '& .MuiPickersDay-day': {
+                  fontSize: '50px', // Adjust the day font size
+                },
+                '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
+                  fontSize: '50px', // Adjust the year font size
+                },
+              }}
+            />
+          </LocalizationProvider>
+
+          <TextField
+            type="text"
+            variant='filled'
+            label = "Email"
+            value={email}
+            fullWidth
+            onChange={(e) => setEmail(e.target.value)}
+            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            style={{marginBottom: '10px', width: 600}}
+          />     
 
         <TextField
             type="text"
