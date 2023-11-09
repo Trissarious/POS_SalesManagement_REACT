@@ -43,4 +43,13 @@ color: #1D7D81;
 font-weight: bold;
 margin-bottom: 100px;
 margin-top: 10px;
+text-align: right;
+text-decoration: none;
+}
+
+.forgot-password-text {
+    color: #08317e;
+    font-size: small;
+    font-weight: light;
+    text-decoration: none;
 }

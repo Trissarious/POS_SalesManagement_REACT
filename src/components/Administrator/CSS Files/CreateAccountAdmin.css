@@ -90,8 +90,8 @@
   flex-direction: column;
   width: 100%;
   padding: 10px;
-  margin-right: 800px;
-  margin-bottom: -443px;
+  margin-right: 750px;
+  margin-bottom: -438px;
 }
 
 .right-column {
@@ -99,8 +99,14 @@
   flex-direction: column;
   width: 100%;
   padding: 10px;
-  margin-left: 600px;
-  margin-bottom: 50px;
+  margin-left: 500px;
+}
+
+.already-account {
+  color: #08317e;
+  font-size: medium;
+  font-weight: 70px;
+  text-decoration: none;
 }
 
 .error-message {

@@ -8,6 +8,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DateFnsUtils from '@mui/x-date-pickers/AdapterDateFns';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 
 const post_account = 'http://localhost:8080/user/postUser';
@@ -163,7 +166,7 @@ export default function CreateAccountAdmin() {
             }}
             FormHelperTextProps={{
               style: {
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: 'Poppins',
               },
             }}
@@ -262,7 +265,7 @@ export default function CreateAccountAdmin() {
             // Use FormHelperTextProps to set the font size of the helper text
             FormHelperTextProps={{
               style: {
-                fontSize: 14, // Adjust the font size as needed
+                fontSize: 12, // Adjust the font size as needed
                 fontFamily: 'Poppins',
               },
             }}
