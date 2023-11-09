@@ -82,8 +82,8 @@ export default function ChangePassword() {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
+              name="confirm-password"
+              label="Confirm Password"
               type="password"
               value={reEnterPassword}
               onChange={(e) => setReEnterPassword(e.target.value)}
