@@ -1,58 +1,123 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import  { useState } from "react";
 import { RestAccount } from "../REST/REST Account/RestAccount";
 import axios from "axios";
 
-const ChangePassword = () => {
+const defaultTheme = createTheme();
+
+export default function ChangePassword() {
   const [deleteByID, getAccountbyId, editAccount, addAccount, account] = RestAccount();
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // TODO: Add validation for password and re-enter password match
-  
-    // Extract the reset token from the URL (assuming it's passed as a query parameter)
     const resetToken = new URLSearchParams(window.location.search).get('token');
   
-    try {
-      // Make a request to change the password
+    if (password !== reEnterPassword) {
+      alert('Passwords do not match. Please re-enter your password');
+    }
+
+  try {
       const response = await axios.put(
         `http://localhost:8080/user/changepassword?resetToken=${resetToken}`,
         {
           password: password,
         }
       );
-  
-      // Handle success (you can redirect the user or show a success message)
       console.log(response.data);
     } catch (error) {
-      // Handle errors (you can show an error message)
       console.error(error);
     }
   };
-  
-  
 
   return (
-    <div className="confirm-forgot-password">
-      <h1>Confirm Forgot Password</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type="submit" onClick={handleSubmit}>
-          Confirm
-        </button>
-      </form>
-    </div>
-  );
-};
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" style={{fontSize: 30}}>
+            Reset your Password
+          </Typography>
+          <Box component="form"noValidate sx={{ mt: 2, width: 450}}>
+          <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              inputProps={{style: {fontSize: 16}}}
+              InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+              id="password"
+              autoComplete="current-password"
+            />
 
-export default ChangePassword;
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              value={reEnterPassword}
+              onChange={(e) => setReEnterPassword(e.target.value)}
+              id="confirm_password"
+              autoComplete="current-password"
+              inputProps={{style: {fontSize: 16}}}
+              InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={handleSubmit} 
+              sx={{ mt: 3, mb: 2 }}
+              style={{fontSize: 15}}
+            >
+              Reset Password
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/loginadmin" variant="body2" style={{fontSize: 14}}>
+                  Remember your password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/createaccountadmin" variant="body2" style={{fontSize: 14}}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
+}
