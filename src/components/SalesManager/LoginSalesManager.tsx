@@ -17,7 +17,7 @@ const LoginSalesManager = () => {
     // Check if the user is already logged in
     const isLoggedIn = localStorage.getItem('salesmanLoggedIn');
     if (isLoggedIn === 'true') {
-      navigate('/salesmanagerdb');
+      navigate('/salessummary');
     }
   }, [navigate]);
 
@@ -43,7 +43,7 @@ const LoginSalesManager = () => {
           setIsSalesManLoggedIn(true); // Set the login status to true
           localStorage.setItem('salesmanLoggedIn', 'true');
             // window.alert('Login successful'); // Display a success message
-            navigate('/salesmanagerdb');
+            navigate('/salessummary');
           } else {
             window.alert('Please enter your username and password');
           }
