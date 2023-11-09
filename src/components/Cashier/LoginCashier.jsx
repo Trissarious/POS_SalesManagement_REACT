@@ -119,7 +119,7 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
         Don't Have An Account? </button>
         
       <div className="forgot-password">
-        <span onClick={handleForgotPassword_Register}>Forgot Password?</span>
+        <span className='forgot-password-text' onClick={handleForgotPassword_Register}>Forgot Password?</span>
       </div>
     </div>
   </div>

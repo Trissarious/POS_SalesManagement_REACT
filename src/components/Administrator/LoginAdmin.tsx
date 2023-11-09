@@ -105,9 +105,9 @@ const LoginAdmin = () => {
         <button className='btn-register'>
         Don't Have An Account? </button > 
       </Link>
-      <Link to="/forgotpassword"> {/* Add this Link */}
+      <Link to="/forgotpassword" style={{textDecoration: 'none'}}> {/* Add this Link */}
           <div className="forgot-password">
-            <span>Forgot Password?</span>
+            <span className='forgot-password-text'>Forgot Password?</span>
           </div>
         </Link>
     </div>

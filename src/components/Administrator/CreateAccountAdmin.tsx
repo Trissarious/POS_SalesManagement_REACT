@@ -3,7 +3,7 @@ import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
 import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
+import { Button, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -145,25 +145,25 @@ export default function CreateAccountAdmin() {
         
           <TextField
             type="text"
-            variant='filled'
+            variant='outlined'
             label = "Username"
             value={username}
             fullWidth
             onChange={(e) => setUsername(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
 
           <TextField
             type={showPassword ? 'text' : 'password'} // Toggle password visibility
             label = "Password"
-            variant='filled'
+            variant='outlined'
             value={password}
             fullWidth
             onChange={handlePasswordChange}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
             InputProps={{
               endAdornment: (
@@ -179,12 +179,12 @@ export default function CreateAccountAdmin() {
           <TextField
             type={showPassword ? 'text' : 'password'} // Toggle password visibility
             label = "Confirm Password"
-            variant='filled'
+            variant='outlined'
             value={confirmPassword}
             fullWidth
             onChange={handleConfirmPasswordChange}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
             InputProps={{
               endAdornment: (
@@ -204,14 +204,14 @@ export default function CreateAccountAdmin() {
           <TextField
             select
             label="Account Type"
-            variant="filled"
+            variant="outlined"
             fullWidth
             value={selectedAccountType}
             onChange={(e) => setSelectedAccountType(e.target.value)}
-            InputProps={{ style: { fontSize: 25, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
+            InputProps={{ style: { fontSize: 16, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
             style={{ marginBottom: '10px', width: 600 }}
             InputLabelProps={{
-              style: { fontSize: 25, fontFamily: 'Poppins'},
+              style: { fontSize: 16, fontFamily: 'Poppins'},
             }}
             FormHelperTextProps={{
               style: {
@@ -223,7 +223,7 @@ export default function CreateAccountAdmin() {
           >
             {Account_Type.map((option) => (
             <MenuItem key={option.value} value={option.value}>
-                <Typography sx={{ fontSize: 25, fontFamily: 'Poppins' }}>{option.label}</Typography>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
               </MenuItem>
             ))}
           </TextField>
@@ -231,25 +231,25 @@ export default function CreateAccountAdmin() {
 
           <TextField
             type="text"
-            variant='filled'
+            variant='outlined'
             label = "Business Name"
             value={business_name}
             fullWidth
             onChange={(e) => setBusiness_name(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
 
           <TextField
-            variant='filled'
+            variant='outlined'
             type="text"
             label = "Address"
             value={address}
             fullWidth
             onChange={(e) => setAddress(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
         </div>
@@ -257,39 +257,39 @@ export default function CreateAccountAdmin() {
         <div className="right-column">
         <TextField
             type="text"
-            variant='filled'
+            variant='outlined'
             label = "First Name"
             value={fname}
             fullWidth
             onChange={(e) => setFname(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
 
         <TextField
             type="text"
             label = "Last Name"
-            variant='filled'
+            variant='outlined'
             value={lname}
             fullWidth
             onChange={(e) => setLname(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
           
           <TextField
             select
             label="Gender"
-            variant='filled'
+            variant='outlined'
             fullWidth
             value={selectedGender}
             onChange={(e) => setSelectedGender(e.target.value)}
-            InputProps={{ style: { fontSize: 25, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
+            InputProps={{ style: { fontSize: 16, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
             style={{ marginBottom: '10px', width: 600 }}
             InputLabelProps={{
-              style: { fontSize: 25, fontFamily: 'Poppins' },
+              style: { fontSize: 16, fontFamily: 'Poppins' },
             }}
             // Use FormHelperTextProps to set the font size of the helper text
             FormHelperTextProps={{
@@ -301,8 +301,8 @@ export default function CreateAccountAdmin() {
             helperText="Please select your gender."
           >
             {Gender.map((option) => (
-              <MenuItem key={option.value} value={option.value} sx={{ fontSize: 25 }}>
-                <Typography sx={{ fontSize: 25, fontFamily: 'Poppins' }}>{option.label}</Typography>
+              <MenuItem key={option.value} value={option.value} sx={{ fontSize: 16 }}>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
               </MenuItem>
             ))}
           </TextField>
@@ -315,13 +315,13 @@ export default function CreateAccountAdmin() {
                 marginBottom: '10px',
                 width: 600,
                 '& .MuiInputBase-input': {
-                  fontSize: '25px', // Adjust the input font size
+                  fontSize: '16px', // Adjust the input font size
                 },
                 '& .MuiPickersDay-day': {
-                  fontSize: '50px', // Adjust the day font size
+                  fontSize: '16px', // Adjust the day font size
                 },
                 '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
-                  fontSize: '50px', // Adjust the year font size
+                  fontSize: '16px', // Adjust the year font size
                 },
               }}
             />
@@ -330,32 +330,37 @@ export default function CreateAccountAdmin() {
 
           <TextField
             type="text"
-            variant='filled'
+            variant='outlined'
             label = "Email"
             value={email}
             fullWidth
             onChange={(e) => setEmail(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />     
 
         <TextField
             type="text"
             label = "Contact Number"
-            variant='filled'
+            variant='outlined'
             value={contactnum}
             fullWidth
             onChange={(e) => setContactnum(e.target.value)}
-            inputProps={{style: {fontSize: 25, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 25, fontFamily: 'Poppins' } }}
+            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
+            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
             style={{marginBottom: '10px', width: 600}}
           />
         </div>
 
-        <button className="btn-signup" type="submit" onClick={handleSubmit}>
+        <Button 
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }} type="submit" 
+          onClick={handleSubmit}
+          style={{fontSize: 20, fontFamily: 'Poppins', width: 500, padding: 10, backgroundColor: '#4BB543'}}
+        >
           Create Account
-        </button>
+        </Button>
       </div>
     </div>
   );

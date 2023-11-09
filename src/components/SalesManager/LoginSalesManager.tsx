@@ -114,7 +114,7 @@ const LoginSalesManager = () => {
         Don't Have An Account?
         </button>
         <div className="forgot-password">
-          <span onClick={handleForgotPassword}>Forgot Password?</span>
+          <span className='forgot-password-text' onClick={handleForgotPassword}>Forgot Password?</span>
         </div>
       </div>
     </div>

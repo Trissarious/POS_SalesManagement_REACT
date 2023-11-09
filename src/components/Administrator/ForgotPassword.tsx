@@ -79,12 +79,12 @@ export default function ChangePassword() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2" style={{fontSize: 14}}>
+                <Link href="/loginadmin" variant="body2" style={{fontSize: 14}}>
                   Remember your password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2" style={{fontSize: 14}}>
+                <Link href="/createaccountadmin" variant="body2" style={{fontSize: 14}}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
