@@ -13,7 +13,6 @@ interface Account {
   password: string,
   email: string,
   fname: string,
-  mname: string,
   lname: string,
   business_name: string,
   address: string,
@@ -23,24 +22,14 @@ interface Account {
 }
 
 export default function ViewAccounts() {
-    const { isAdminLoggedIn, setIsAdminLoggedIn } = useAuth();
+    const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser, setAdminUser } = useAuth();
     const [accounts, setAccounts] = useState<Account[]>([]);
     const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check for a valid JWT token on page load
-    const token = localStorage.getItem('adminToken');
-
-    if (!token) {
-      // Redirect to the login page if there's no token
-      navigate('/loginadmin');
-    } else {
-      setIsAdminLoggedIn(true)
-    }
-  }, [isAdminLoggedIn, navigate]);
 
     const [searchInput, setSearchInput] = useState('');
     const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
+
     const handleSearch = (searchValue: string) => {
         setSearchInput(searchValue);
         const filtered = accounts.filter((account) =>
@@ -49,7 +38,7 @@ export default function ViewAccounts() {
         setFilteredAccounts(filtered);
     };
 
-
+    // Fetch Account data
     useEffect(() => {
         axios.get('http://localhost:8080/user/getAllUser')
             .then((response) => {
@@ -59,6 +48,29 @@ export default function ViewAccounts() {
                 console.error(error);
             });
     }, []);
+    
+    // Token
+  useEffect(() => {
+    // Check for a valid JWT token on page load
+    const token = localStorage.getItem('adminToken');
+
+    if (!token) {
+      // Redirect to the login page if there's no token
+      navigate('/loginadmin');
+    } else {
+      setIsAdminLoggedIn(true)
+
+      // Fetch user data from API
+      axios.get('http://localhost:8080/user/getUserData').then((response) => {
+        const userData = response.data;
+        setAdminUser(userData.username);
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+  }, [isAdminLoggedIn, navigate]);
+
+
 
   return (
     <div className="confirm-forgot-password">
@@ -66,8 +78,12 @@ export default function ViewAccounts() {
         <div className="profile-picture">
           <img src="/path-to-your-image" alt="Profile" />
         </div>
-        {/* <div className="profile-name">Admin</div> */}
+
+        <div className="profile-name">
+          
         </div>
+
+      </div>
 
        <div className="account-container">
 
@@ -118,44 +134,28 @@ export default function ViewAccounts() {
                                       business_name={account.business_name}
                                       address={account.address}
                                       fname={account.fname}
-                                      mname={account.mname}
                                       lname={account.lname}
                                       contactnum={account.contactnum}
                                       gender={account.gender}
                                       bday={account.bday}
                                       />
-                                    {/* <button
-                                          className="btn btn-success btn-lg"
-                                          style={{
-                                              marginRight: 5,
-                                              padding: '10px 40px', 
-                                              fontSize: 20,
-                                              fontWeight: 'medium'
-                                          }} 
-                                          onClick={() => deleteByID(account.userid)}>Delete</button>     */}
                                 </td>
 
                             </tr>
                             ))
                             : accounts.map((account) => (
                             <tr key={account.userid}>
-                                <td style={{color: '#213458'}}>
-                                    <div style={{fontWeight: 'bold', fontSize: 30}}>{account.username}</div> 
-                                    <div style={{fontSize: 20, fontStyle: 'italic'}}>Account Type: {account.account_type}</div>
+                                <td style={{color: '#213458', textAlign: 'left'}}>
+                                <div style={{fontWeight: 'bold', fontSize: 30}}>{account.username}</div> 
+                                    <div style={{marginLeft: '10px'}}>
+                                      <div style={{fontSize: 20, fontWeight: 'medium', textAlign: 'right', marginTop: '-35px', marginRight: '10px'}}>{account.business_name}</div>
+                                      <div style={{fontSize: 20, fontWeight: 'medium', textAlign: 'right', marginRight: '10px', marginBottom: '-30px'}}>{account.contactnum}</div>
+                                      <div style={{fontSize: 20, fontStyle: 'italic'}}>{account.fname} {account.lname}</div>
+                                      <div style={{fontSize: 20, fontStyle: 'italic'}}>{account.email}</div>
+                                      <div style={{fontSize: 20, fontStyle: 'italic'}}>Birth Date: {account.bday}</div>
+                                    </div>
                                 </td>
                                 <td>
-                                    {/* <button
-                                        className="btn btn-success btn-lg"
-                                        style={{
-                                            marginRight: 5,
-                                            padding: '10px 40px', 
-                                            fontSize: 20,
-                                            fontWeight: 'medium'
-                                        }}
-                                        onClick={handleClickOpen}
-                                        >
-                                        Edit
-                                    </button> */}
                                     <UpdateAccount
                                           userid={account.userid}
                                           username={account.username}
@@ -165,7 +165,6 @@ export default function ViewAccounts() {
                                           business_name={account.business_name}
                                           address={account.address}
                                           fname={account.fname}
-                                          mname={account.mname}
                                           lname={account.lname}
                                           contactnum={account.contactnum}
                                           gender={account.gender}

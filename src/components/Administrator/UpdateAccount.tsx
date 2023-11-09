@@ -17,7 +17,6 @@ interface Account {
     password: string,
     email: string,
     fname: string,
-    mname: string,
     lname: string,
     business_name: string,
     address: string,
@@ -60,7 +59,6 @@ interface Account {
 export default function UpdateAccount(props: Account) {
     const [deleteByID, getAccountbyId, editAccount, addAccount, account] = RestAccount();
     const [open, setOpen] = React.useState(false);
-    const [accounts, setAccounts] = useState<Account[]>([]);
     const usernameRef = useRef<HTMLTextAreaElement>();
     const passwordRef = useRef<HTMLTextAreaElement>();
     const emailRef = useRef<HTMLTextAreaElement>();
@@ -73,9 +71,15 @@ export default function UpdateAccount(props: Account) {
     const genderRef = useRef<HTMLTextAreaElement>();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleUpdate = async () => {
+        if (selectedDate) {
+            // The form is complete, so proceed with the Axios POST request
+            const formattedDate = selectedDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            });
         axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
             username: usernameRef.current?.value,
             password: passwordRef.current?.value,
@@ -87,11 +91,14 @@ export default function UpdateAccount(props: Account) {
             address: addressRef.current?.value,
             contactnum: contactnumRef.current?.value,
             gender: genderRef.current?.value,
-            bday: setSelectedDate
+            bday: formattedDate,
         }).then(res => {
           console.log(res.data)
           window.location.reload()
         }).catch(err => console.log(err))
+        } else {
+            alert('Pleaes select a birth')
+        }
     }
 
     const handleClickOpen = () => {
@@ -120,10 +127,10 @@ export default function UpdateAccount(props: Account) {
                     fontSize: 20,
                     fontWeight: 'medium'
                 }} 
-                onClick={handleClickOpen}>View</button>
+                onClick={handleClickOpen}>Edit</button>
 
             <button
-                className="btn btn-success btn-lg"
+                className="btn btn-danger btn-lg"
                 style={{
                     marginRight: 5,
                     padding: '10px 40px', 
@@ -174,22 +181,15 @@ export default function UpdateAccount(props: Account) {
                                 )}}/>
 
                         <TextField
-                            type={showPassword ? 'text' : 'password'} 
+                            type="text"
+                            label="Email"
+                            variant="outlined"
                             fullWidth
-                            label="Confirm Password"
-                            inputRef={passwordRef}
-                            defaultValue={props.password}
-                            variant='outlined'
+                            inputRef={emailRef}
+                            defaultValue={props.email}
                             inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                             InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position='end'>
-                                    <IconButton onClick={togglePasswordVisibility}>
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                    </InputAdornment>
-                                )}}/>
+                        />
                     </CardActions>
 
 
@@ -299,6 +299,7 @@ export default function UpdateAccount(props: Account) {
                             </MenuItem>
                             ))}
                         </TextField>
+
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                             value={selectedDate}
@@ -317,6 +318,7 @@ export default function UpdateAccount(props: Account) {
                             }}
                             />
                         </LocalizationProvider>
+
                     </CardActions>
             </Card>
         </DialogContent>
