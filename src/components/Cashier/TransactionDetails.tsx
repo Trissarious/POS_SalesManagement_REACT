@@ -100,7 +100,7 @@ const TransactionDetails = () => {
                     const confirmed = window.confirm('Are you sure you want to refund?');
                     if (confirmed) {
                         setRefunded(true);
-                        axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { refunded: true })
+                        axios.put(`http://localhost:8080/transaction/isRefunded?transactionid=${id}`, { refunded: true })
                           .then((response) => {
                               window.confirm(`Transaction ${id} has been refunded.`);
                               console.log('Refund successful:', response.data);
@@ -141,7 +141,7 @@ const TransactionDetails = () => {
                 const confirmed = window.confirm('Are you sure you want to return item?');
                 if (confirmed) {
                     setReturned(true);
-                    axios.put(`http://localhost:8080/transaction/putTransaction?transactionid=${id}`, { returned: true })
+                    axios.put(`http://localhost:8080/transaction/isReturned?transactionid=${id}`, { returned: true })
                       .then((response) => {
                           window.confirm(`Transaction ${id} has been returned.`);
                           console.log('Return successful:', response.data);

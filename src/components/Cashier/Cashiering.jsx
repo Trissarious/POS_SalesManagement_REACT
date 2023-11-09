@@ -97,14 +97,32 @@ export default function Cashiering()  {
         }
     }, [location]);
 
-        const decreaseProductQuantityInDatabase = async (productid) => {
+    const decreaseProductQuantityInDatabase = async (productid, quantityToDecrease) => {
+        if (quantityToDecrease === undefined) {
+            console.error("Quantity to decrease is undefined.");
+            return;
+        }
+    
+        try {
+            // Make an HTTP request to update the product quantity in the database
+            await axios.put(`http://localhost:8080/product/decreaseQuantity/${productid}?quantityToDecrease=${quantityToDecrease}`);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    
+    
+      
+
+          const incrementPurchaseCount = async (productid, quantityPurchased) => {
             try {
-              // Make an HTTP request to update the product quantity in the database
-              await axios.put(`http://localhost:8080/product/decreaseQuantity/${productid}`);
+                // Make an HTTP request to increment the purchase count in the database for the specified product
+                await axios.put(`http://localhost:8080/product/incrementPurchaseCount/${productid}?quantityPurchased=${quantityPurchased}`);
             } catch (error) {
-              console.error(error);
+                console.error(error);
             }
-          };
+        };
 
         const record_transaction = async () => {
             if (!tendered_bill) {
@@ -118,10 +136,19 @@ export default function Cashiering()  {
               }
               const isReadyToPay = window.confirm('Are you sure you want to proceed with the payment?');
               if (isReadyToPay) {
-                // Iterate over selected products and decrease their quantity in the database
-                for (const productid of selectedProducts) {
-                    decreaseProductQuantityInDatabase(productid);
-                }
+                  for (const productid of selectedProducts) {
+                      const productInCart = cart.find((item) => item.productid === productid);
+                      if (productInCart) {
+                          const quantityPurchased = productInCart.quantity;
+                          
+                          // Decrease the product quantity in the database by the exact quantity purchased
+                          await decreaseProductQuantityInDatabase(productid, quantityPurchased);
+                          
+                          // Increment the purchase count for the product
+                          await incrementPurchaseCount(productid, quantityPurchased);
+                      }
+                  }
+              
                 // Axios post to create record transaction
                 axios.post(post_transaction, {
                 total_quantity: total_quantity,

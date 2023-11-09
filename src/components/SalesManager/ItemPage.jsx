@@ -242,6 +242,20 @@ const handleAddProduct = () => {
   }
 };
 
+const [mostPurchasedProduct, setMostPurchasedProduct] = useState(null);
+
+useEffect(() => {
+  // Fetch the product with the highest purchase count from the API
+  axios
+    .get('http://localhost:8080/product/most-purchased')
+    .then((response) => {
+      // Set the most purchased product in the state
+      setMostPurchasedProduct(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching most purchased product:', error);
+    });
+}, []);
 
     return (
       <div>
@@ -265,10 +279,6 @@ const handleAddProduct = () => {
                     <Typography sx={{fontFamily:'Poppins', fontWeight: 'bold', color: 'white', fontSize: 25, textAlign: 'center'}}>Sales Manager</Typography>
                 </div>
                 <List>
-                    <ListItem button component={Link} to="/salesmanagerdb" className={location.pathname === '/salesmanagerdb' ? 'active-link' : ''}>
-                        <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 150}}>Dashboard</h2>
-                        <img src={dashboard} className="img_cashiering"/>
-                    </ListItem>
                     
                     <ListItem button component={Link} to="/salessummary" className={location.pathname === '/salessummary' ? 'active-link' : ''}>
                         <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 90}}>Sales Summary</h2>
@@ -302,6 +312,19 @@ const handleAddProduct = () => {
   Add Product
 </Button>
         </div>
+        {mostPurchasedProduct && (
+        <div>
+          <Typography variant="h4" style={{ fontWeight: 'bold' }}>
+            Most Purchased Product:
+          </Typography>
+          <Typography variant="body1">
+            Product Name: {mostPurchasedProduct.productname}
+          </Typography>
+          <Typography variant="body1">
+            Purchase Count: {mostPurchasedProduct.purchaseCount}
+          </Typography>
+        </div>
+      )}
         <table>
           <thead>
             <tr>
@@ -354,16 +377,16 @@ const handleAddProduct = () => {
       onChange={(e) => setNewProductName(e.target.value)}
     />
     <TextField
-      label="Price"
-      type="number"
-      value={newPrice}
-      onChange={(e) => setNewPrice(e.target.value)}
-    />
-    <TextField
       label="Quantity"
       type="number"
       value={newQuantity}
       onChange={(e) => setNewQuantity(e.target.value)}
+    />    
+    <TextField
+      label="Price"
+      type="number"
+      value={newPrice}
+      onChange={(e) => setNewPrice(e.target.value)}
     />
   </DialogContent>
   <DialogActions>
