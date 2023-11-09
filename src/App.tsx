@@ -20,6 +20,7 @@ import ChangePassword from './components/Administrator/ChangePassword';
 import AdminMainPage from './components/Administrator/AdminMainPage';
 import ViewAccounts from './components/Administrator/ViewAccounts';
 import { AuthProvider } from './components/AccountLoginValid/AuthContext';
+import ImageUploadAccount from './components/Administrator/ImageUploadAccount';
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
               <Route path = "/changepassword" element = {<ChangePassword/>}/>
               <Route path = "/adminmainpage" element = {<AdminMainPage/>}/>
               <Route path = "/viewaccounts" element = {<ViewAccounts/>}/>
+              <Route path = "/imageUpload" element = {<ImageUploadAccount/>}/>
             </Routes>
         </BrowserRouter> 
     </div>

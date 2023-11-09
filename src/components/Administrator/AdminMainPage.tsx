@@ -4,30 +4,27 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 import "./CSS Files/./AdminMainPage.css";
 
 const AdminMainPage = () => {
-  const { isSalesmanLoggedIn } = useAuth();
+  const { isAdminLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
 
   const handleLogout = () => {
-    // Delete the 'cashierToken' from local storage
     localStorage.removeItem('adminToken');
-    // Clear the login state
     localStorage.removeItem('adminLoggedIn');
-    // Redirect to the login page
+    localStorage.removeItem('adminUsername');
     navigate('/loginadmin');
   };
 
   useEffect(() => {
-    // Check for a valid JWT token on page load
     const token = localStorage.getItem('adminToken');
-
+    const storedUsername = localStorage.getItem('adminUsername');
+    console.log('Stored username:', storedUsername); // Add this line
     if (!token) {
-      // Redirect to the login page if there's no token
       navigate('/loginadmin');
     } else {
-      // Verify the token on the server, handle token expiration, etc.
-      // If token is valid, setIsCashierLoggedIn(true)
+      setUsername(storedUsername || 'Admin'); // Set the username, default to 'Admin' if it's not available
     }
-  }, [isSalesmanLoggedIn, navigate]);
+  }, [isAdminLoggedIn, navigate]);
 
   return (
 <div className="center-bod">

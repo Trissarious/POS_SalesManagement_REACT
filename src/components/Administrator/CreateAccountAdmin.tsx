@@ -215,7 +215,7 @@ export default function CreateAccountAdmin() {
             }}
             FormHelperTextProps={{
               style: {
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: 'Poppins',
               },
             }}
@@ -294,7 +294,7 @@ export default function CreateAccountAdmin() {
             // Use FormHelperTextProps to set the font size of the helper text
             FormHelperTextProps={{
               style: {
-                fontSize: 14, // Adjust the font size as needed
+                fontSize: 12, // Adjust the font size as needed
                 fontFamily: 'Poppins',
               },
             }}
