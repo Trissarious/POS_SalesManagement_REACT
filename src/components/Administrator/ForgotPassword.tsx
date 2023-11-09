@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';  // Import Link
+import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Send email with instructions to reset the password
+
+    try {
+      // Send a POST request to the backend to initiate the password reset process
+      const response = await axios.post('http://localhost:8080/user/forgotpassword', { email: email });
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors (e.g., email not found, server error)
+      console.error('Error sending reset email:', error);
+    }
   };
 
   return (
@@ -14,17 +23,17 @@ const ForgotPassword = () => {
       <h1>Forgot Password</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Email Address
+          Email:
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </label>
-        <Link to="/changepassword">  {/* Use Link to navigate */}
-          <button type="submit">Send Email</button>
-        </Link>
+        <button type="submit">Reset Password</button>
       </form>
+      <Link to="/login">Remembered your password? Login here.</Link>
     </div>
   );
 };

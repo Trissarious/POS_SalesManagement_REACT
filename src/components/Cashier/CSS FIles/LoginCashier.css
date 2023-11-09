@@ -29,5 +29,10 @@
     cursor: pointer;
 }
 
+.forgot-password {
+  cursor: pointer;
+  text-decoration: none;
+}
+
   /* You can add more styles as needed */
   
