@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import './CSS Files/LoginAdmin.css';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 
@@ -62,13 +62,13 @@ const LoginAdmin = () => {
 
   return (
     <div className="starting-screen">
-      <div className="centered-content">
-        <h1 className='h1-login-sales'>Login as Administrator</h1>
-        <div className="input-container">
+      <Typography style={{color: "#213458", fontSize: 60, fontWeight: 'bolder', fontFamily: 'Poppins', marginBottom: 20}}>Login as Administrator</Typography>
+        <div className="centered-content">
+          <div className="input-container">
           <TextField
             type="text"
             label="Username"
-            variant="filled"
+            variant="outlined"
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -82,7 +82,7 @@ const LoginAdmin = () => {
             fullWidth
             label="Password"
             value={password}
-            variant='filled'
+            variant='outlined'
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
             InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}

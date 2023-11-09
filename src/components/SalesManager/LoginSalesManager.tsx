@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import { useNavigate } from 'react-router-dom';
 import './CSS Files/LoginSalesManager.css'; 
@@ -69,13 +69,13 @@ const LoginSalesManager = () => {
 
   return (
     <div className="starting-screen">
+      <Typography style={{color: "#213458", fontSize: 60, fontWeight: 'bolder', fontFamily: 'Poppins', marginBottom: 20}}>Login as Sales Manager</Typography>
       <div className="centered-content">
-        <h1 className='h1-login-sales'>Login as Sales Manager</h1>
         <div className="input-container">
           <TextField
             type="text"
             label="Username"
-            variant="filled"
+            variant="outlined"
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -90,7 +90,7 @@ const LoginSalesManager = () => {
             fullWidth
             label="Password"
             value={password}
-            variant='filled'
+            variant='outlined'
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}
             }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS FIles/LoginCashier.css';  
-import { TextField, IconButton, InputAdornment, Input } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Input, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 import { useAuth } from '../AccountLoginValid/AuthContext';
@@ -73,13 +73,13 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
 
   return (
     <div className="starting-screen">
+      <Typography style={{color: "#213458", fontSize: 60, fontWeight: 'bolder', fontFamily: 'Poppins', marginBottom: 20}}>Login as Cashier</Typography>
     <div className="centered-content">
-      <h1 className='h1-login-sales'>Login as Cashier</h1>
       <div className="input-container">
         <TextField
           type="text"
           label="Username"
-          variant="filled"
+          variant="outlined"
           fullWidth
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -93,7 +93,7 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
           fullWidth
           label="Password"
           value={password}
-          variant='filled'
+          variant='outlined'
           onChange={(e) => setPassword(e.target.value)}
           inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
           InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}

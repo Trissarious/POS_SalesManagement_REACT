@@ -8,8 +8,14 @@
   
   .centered-content {
     text-align: center;
-    width: 900px;
+    width: 500px;
   }
+
+  .login-cashier {
+    font-size: 10;
+    color: #213458;
+    font-weight: bold;
+}
   
   .input-container {
     margin: 10px 0;
