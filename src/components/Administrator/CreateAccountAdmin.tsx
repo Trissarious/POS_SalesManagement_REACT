@@ -1,50 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
 import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DateFnsUtils from '@mui/x-date-pickers/AdapterDateFns';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
 
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
   {
     value: 'Administrator',
-    label: 'Administrator'
+    label: 'Administrator',
   },
   {
     value: 'Cashier',
-    label: 'Cashier'
+    label: 'Cashier',
   },
   {
     value: 'Sales Manager',
-    label: 'Sales Manager'
+    label: 'Sales Manager',
   },
 ];
 
 const Gender = [
   {
     value: 'Female',
-    label: 'Female'
-  }, 
+    label: 'Female',
+  },
   {
     value: 'Male',
     label: 'Male',
   },
   {
     value: 'Prefer not to say.',
-    label: 'Prefer not to say.'
-  }
-]
+    label: 'Prefer not to say.',
+  },
+];
 
 export default function CreateAccountAdmin() {
-  const [deleteByID, getAccountbyId, editAccount, addAccount, account] = RestAccount();
+  const [
+    deleteByID,
+    getAccountbyId,
+    editAccount,
+    addAccount,
+    account,
+  ] = RestAccount();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -57,16 +68,16 @@ export default function CreateAccountAdmin() {
   const [selectedAccountType, setSelectedAccountType] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isFormValid, setFormValid] = useState(true); 
+  const [isFormValid, setFormValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
 
-   // Function to check if all required fields are filled
-   const isFormComplete = () => {
+  // Function to check if all required fields are filled
+  const isFormComplete = () => {
     return (
       username.trim() !== '' &&
       password.trim() !== '' &&
@@ -122,83 +133,95 @@ export default function CreateAccountAdmin() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setPassword(e.target.value);
   };
-  
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleConfirmPasswordChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setConfirmPassword(e.target.value);
   };
 
   const passwordsMatch = password === confirmPassword;
-  
+
   return (
     <div className="register-div">
-       {/* Display an error message if the form is not complete */}
-       {!isFormValid && (
+      {/* Display an error message if the form is not complete */}
+      {!isFormValid && (
         <p className="error-message">Please fill in all required fields.</p>
-        
       )}
       <h1 className="h1-register">Create an Account</h1>
       <div className="container-fluid center-form">
-      <div className="left-column">
-        
+        <div className="left-column">
           <TextField
             type="text"
-            variant='outlined'
-            label = "Username"
+            variant="outlined"
+            label="Username"
             value={username}
             fullWidth
-            onChange={(e) => setUsername(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setUsername(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
 
           <TextField
             type={showPassword ? 'text' : 'password'} // Toggle password visibility
-            label = "Password"
-            variant='outlined'
+            label="Password"
+            variant="outlined"
             value={password}
             fullWidth
             onChange={handlePasswordChange}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position='end'>
+                <InputAdornment position="end">
                   <IconButton onClick={togglePasswordVisibility}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
           />
 
           <TextField
             type={showPassword ? 'text' : 'password'} // Toggle password visibility
-            label = "Confirm Password"
-            variant='outlined'
+            label="Confirm Password"
+            variant="outlined"
             value={confirmPassword}
             fullWidth
             onChange={handleConfirmPasswordChange}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position='end'>
+                <InputAdornment position="end">
                   <IconButton onClick={togglePasswordVisibility}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
           />
 
           {!passwordsMatch && (
-            <p style={{ color: 'red', fontSize: 12 }}>Passwords do not match.</p>
+            <p style={{ color: 'red', fontSize: 12 }}>
+              Passwords do not match.
+            </p>
           )}
 
           <TextField
@@ -207,11 +230,23 @@ export default function CreateAccountAdmin() {
             variant="outlined"
             fullWidth
             value={selectedAccountType}
-            onChange={(e) => setSelectedAccountType(e.target.value)}
-            InputProps={{ style: { fontSize: 16, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
+            onChange={(e: ChangeEvent<{ value: unknown }>) =>
+              setSelectedAccountType(e.target.value as string)
+            }
+            InputProps={{
+              style: {
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                minHeight: '2.5em',
+                height: 'auto',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              },
+            }}
             style={{ marginBottom: '10px', width: 600 }}
             InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins'},
+              style: { fontSize: 16, fontFamily: 'Poppins' },
             }}
             FormHelperTextProps={{
               style: {
@@ -222,71 +257,100 @@ export default function CreateAccountAdmin() {
             helperText="Please select your account type."
           >
             {Account_Type.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
+              <MenuItem key={option.value} value={option.value}>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
+                  {option.label}
+                </Typography>
               </MenuItem>
             ))}
           </TextField>
 
-
           <TextField
             type="text"
-            variant='outlined'
-            label = "Business Name"
+            variant="outlined"
+            label="Business Name"
             value={business_name}
             fullWidth
-            onChange={(e) => setBusiness_name(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setBusiness_name(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
 
           <TextField
-            variant='outlined'
+            variant="outlined"
             type="text"
-            label = "Address"
+            label="Address"
             value={address}
             fullWidth
-            onChange={(e) => setAddress(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setAddress(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
         </div>
-        
+
         <div className="right-column">
-        <TextField
+          <TextField
             type="text"
-            variant='outlined'
-            label = "First Name"
+            variant="outlined"
+            label="First Name"
             value={fname}
             fullWidth
-            onChange={(e) => setFname(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setFname(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
 
-        <TextField
+          <TextField
             type="text"
-            label = "Last Name"
-            variant='outlined'
+            label="Last Name"
+            variant="outlined"
             value={lname}
             fullWidth
-            onChange={(e) => setLname(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setLname(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
-          
+
           <TextField
             select
             label="Gender"
-            variant='outlined'
+            variant="outlined"
             fullWidth
             value={selectedGender}
-            onChange={(e) => setSelectedGender(e.target.value)}
-            InputProps={{ style: { fontSize: 16, fontFamily: 'Poppins', minHeight: '2.5em', height: 'auto', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'  } }}
+            onChange={(e: ChangeEvent<{ value: unknown }>) =>
+              setSelectedGender(e.target.value as string)
+            }
+            InputProps={{
+              style: {
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                minHeight: '2.5em',
+                height: 'auto',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              },
+            }}
             style={{ marginBottom: '10px', width: 600 }}
             InputLabelProps={{
               style: { fontSize: 16, fontFamily: 'Poppins' },
@@ -301,8 +365,10 @@ export default function CreateAccountAdmin() {
             helperText="Please select your gender."
           >
             {Gender.map((option) => (
-              <MenuItem key={option.value} value={option.value} sx={{ fontSize: 16 }}>
-                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>{option.label}</Typography>
+              <MenuItem key={option.value} value={option.value}>
+                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
+                  {option.label}
+                </Typography>
               </MenuItem>
             ))}
           </TextField>
@@ -326,38 +392,52 @@ export default function CreateAccountAdmin() {
               }}
             />
           </LocalizationProvider>
-          
 
           <TextField
             type="text"
-            variant='outlined'
-            label = "Email"
+            variant="outlined"
+            label="Email"
             value={email}
             fullWidth
-            onChange={(e) => setEmail(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
-          />     
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
+          />
 
-        <TextField
+          <TextField
             type="text"
-            label = "Contact Number"
-            variant='outlined'
+            label="Contact Number"
+            variant="outlined"
             value={contactnum}
             fullWidth
-            onChange={(e) => setContactnum(e.target.value)}
-            inputProps={{style: {fontSize: 16, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            style={{marginBottom: '10px', width: 600}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setContactnum(e.target.value)
+            }
+            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+            InputLabelProps={{
+              style: { fontSize: 16, fontFamily: 'Poppins' },
+            }}
+            style={{ marginBottom: '10px', width: 600 }}
           />
         </div>
 
-        <Button 
+        <Button
           variant="contained"
-          sx={{ mt: 3, mb: 2 }} type="submit" 
+          sx={{ mt: 3, mb: 2 }}
+          type="submit"
           onClick={handleSubmit}
-          style={{fontSize: 20, fontFamily: 'Poppins', width: 500, padding: 10, backgroundColor: '#4BB543'}}
+          style={{
+            fontSize: 20,
+            fontFamily: 'Poppins',
+            width: 500,
+            padding: 10,
+            backgroundColor: '#4BB543',
+          }}
         >
           Create Account
         </Button>

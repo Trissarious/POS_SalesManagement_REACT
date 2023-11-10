@@ -18,6 +18,7 @@ export default function SalesSummary() {
   const [transactions, setTransactions] = useState([]);
   const [refundss, setRefunds] = useState(0);
   const [returnss, setReturns] = useState(0);
+  
 
   useEffect(() => {
     // Fetch all transactions when the component mounts
@@ -201,6 +202,7 @@ export default function SalesSummary() {
       </div>
     );
   };
+  
   
   const renderDateSpecificSummary = () => {
     return (
