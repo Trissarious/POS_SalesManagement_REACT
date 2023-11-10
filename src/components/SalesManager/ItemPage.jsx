@@ -315,7 +315,7 @@ useEffect(() => {
 
         <div className='center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', backgroundColor: "#1D7D814D"}}>
-          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 480}}>
+          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 1190}}>
             ITEMS
           </Typography>
           <Button
@@ -330,27 +330,27 @@ useEffect(() => {
         </div>
         {mostPurchasedProduct && (
         <div style={{ backgroundColor: "#1D7D814D", marginTop: -10}}>
-          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 454 }}>
-            Most Purchased Product:
+          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 1174 }}>
+            Most Purchased Product 
           </Typography>
-          <Typography variant="h4 ">
-            Product Name: {mostPurchasedProduct.productname}
+          <Typography variant="h4" style={{fontWeight: 'bolder', color: 'green', marginLeft: 10, fontFamily: 'Poppins'}}>
+            {mostPurchasedProduct.productname}
           </Typography>
-          <Typography variant="h4">
+          <Typography variant="h4" style={{marginLeft: 10}}>
             Purchase Count: {mostPurchasedProduct.purchaseCount}
           </Typography>
         </div>
       )}
 
           
-          {/*Search Bar */}
+       {/*Search Bar */}
        <TextField
           type="text"
           placeholder="Search products"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
-            width: '810px', 
+            width: '1500px', 
             margin: '10px 0',
             marginBottom: '10px',
           }}               
@@ -359,7 +359,7 @@ useEffect(() => {
       />     
       {filteredProducts.length > 0 ? (   
             <TableContainer component={Paper} sx={{ maxHeight: '700px' }}>
-              <Table sx={{ maxWidth: 800, marginBottom: '50px' }} aria-label="customized table">
+              <Table sx={{ maxWidth: 1500, marginBottom: '50px' }} aria-label="customized table">
                 <TableHead>
                 <TableRow>
                     <StyledTableCell>#</StyledTableCell>
@@ -378,12 +378,12 @@ useEffect(() => {
                     <StyledTableCell align="right">{product?.productname}</StyledTableCell>
                     <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
                     <StyledTableCell align="right">₱{product?.price.toFixed(2)}</StyledTableCell>
-                    <StyledTableCell align="right"> 
+                    <StyledTableCell align="center"> 
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={() => openRestockDialog(product)}
-                      style={{ marginRight: '8px', fontSize: 12 }}
+                      style={{ marginRight: '8px', fontSize: 12}}
                     >
                       Restock
                   </Button>
