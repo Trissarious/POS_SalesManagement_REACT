@@ -1,10 +1,10 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField,  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled, tableCellClasses, Typography } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconButton, Drawer, List, ListItem} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import AddIcon from '@mui/icons-material/Add'; // Import the AddIcon
 import React, { useState, useEffect } from 'react';
-import dashboard from './Images/dashboard.png';
+import { RestProduct } from '../REST/REST Product/RestProduct';
 import item_page from './Images/item_page.png';
 import sales_summry from './Images/sales_summary.png'
 import logout from './Images/logout.png'
@@ -13,6 +13,7 @@ import axios from 'axios';
 
 
 export default function ItemPage() {
+  const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
   const [products, setProducts] = useState([]); // State to store the product data
   const { isSalesmanLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -24,7 +25,17 @@ const [editedProductName, setEditedProductName] = useState('');
 const [editedPrice, setEditedPrice] = useState(0);
 const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
-
+// Styling the Product Table
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    fontSize: 15,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 15,
+  },
+}));
   const handleLogout = () => {
     // Delete the 'cashierToken' from local storage
     localStorage.removeItem('salesmanToken');
@@ -47,6 +58,11 @@ const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
     }
   }, [isSalesmanLoggedIn, navigate]);
 
+  //SEARCH BAR FILTERING
+  const [searchQuery, setSearchQuery] = useState('');
+  const filteredProducts = products.filter((product) =>
+      product?.productname.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Function to open the Drawer
   const openDrawer = () => {
@@ -297,101 +313,141 @@ useEffect(() => {
                 </List>
             </Drawer>
 
-            <div className='center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-          <Typography variant="h2" style={{ textAlign: 'center', fontWeight: 'bold' }}>
+        <div className='center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', backgroundColor: "#1D7D814D"}}>
+          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 480}}>
             ITEMS
           </Typography>
           <Button
-  variant="contained"
-  color="primary"
-  startIcon={<AddIcon />}
-  style={{ marginLeft: '1rem' }}
-  onClick={() => openAddProductDialog()}
->
-  Add Product
-</Button>
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            style={{ marginLeft: '1rem', backgroundColor: 'green', fontSize: 12 }}
+            onClick={() => openAddProductDialog()}
+          >
+            Add Product
+          </Button>
         </div>
         {mostPurchasedProduct && (
-        <div>
-          <Typography variant="h4" style={{ fontWeight: 'bold' }}>
+        <div style={{ backgroundColor: "#1D7D814D", marginTop: -10}}>
+          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 454 }}>
             Most Purchased Product:
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="h4 ">
             Product Name: {mostPurchasedProduct.productname}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="h4">
             Purchase Count: {mostPurchasedProduct.purchaseCount}
           </Typography>
         </div>
       )}
-        <table>
-          <thead>
-            <tr>
-              <th>Product ID</th>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Actions</th> {/* Add a column for actions */}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.productid}>
-                <td>{product.productid}</td>
-                <td>{product.productname}</td>
-                <td>{product.quantity}</td>
-                <td>₱ {product.price}</td>
-                <td>
-                <Button
-  variant="contained"
-  color="primary"
-  onClick={() => openRestockDialog(product)}
-  style={{ marginRight: '8px' }}
->
-  Restock
-</Button>
 
-  <Button
-    variant="contained"
-    color="primary"
-    onClick={() => openEditDialog(product)}
-  >
-    Edit
-  </Button>
+          
+          {/*Search Bar */}
+       <TextField
+          type="text"
+          placeholder="Search products"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            width: '810px', 
+            margin: '10px 0',
+            marginBottom: '10px',
+          }}               
+          inputProps={{style: {fontSize: 13, fontFamily: 'Poppins'}}}
+          InputLabelProps={{ style: { fontSize: 13, fontFamily: 'Poppins' } }}   
+      />     
+      {filteredProducts.length > 0 ? (   
+            <TableContainer component={Paper} sx={{ maxHeight: '700px' }}>
+              <Table sx={{ maxWidth: 800, marginBottom: '50px' }} aria-label="customized table">
+                <TableHead>
+                <TableRow>
+                    <StyledTableCell>#</StyledTableCell>
+                    <StyledTableCell align="right">Product Name</StyledTableCell>
+                    <StyledTableCell align="right">Quantity</StyledTableCell>
+                    <StyledTableCell align="right">Price</StyledTableCell>
+                    <StyledTableCell align="right" style={{textAlign: 'center'}}> Actions </StyledTableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
+                {filteredProducts.map((product) => (
+                    <TableRow key={product?.productid}>
+                    <StyledTableCell component="th" scope="row">
+                        {product?.productid}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{product?.productname}</StyledTableCell>
+                    <StyledTableCell align="right">{product?.quantity}</StyledTableCell>
+                    <StyledTableCell align="right">₱{product?.price.toFixed(2)}</StyledTableCell>
+                    <StyledTableCell align="right"> 
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => openRestockDialog(product)}
+                      style={{ marginRight: '8px', fontSize: 12 }}
+                    >
+                      Restock
+                  </Button>
 
-  <Button
-    variant="contained"
-    color="error"
-    onClick={() => handleDeleteProduct(product.productid)}
-    style={{ marginLeft: '8px' }}
-  >
-    Delete
-  </Button>
-  <Dialog open={isAddProductDialogOpen} onClose={() => setIsAddProductDialogOpen(false)}>
-  <DialogTitle>Add Product</DialogTitle>
-  <DialogContent>
-    <TextField
-      label="Product Name"
-      value={newProductName}
-      onChange={(e) => setNewProductName(e.target.value)}
-    />
-    <TextField
-      label="Quantity"
-      type="number"
-      value={newQuantity}
-      onChange={(e) => setNewQuantity(e.target.value)}
-    />    
-    <TextField
-      label="Price"
-      type="number"
-      value={newPrice}
-      onChange={(e) => setNewPrice(e.target.value)}
-    />
+                  <Button
+                    variant="contained"
+                    color='success'
+                    onClick={() => openEditDialog(product)}
+                    style={{fontSize: 12}}
+                  >
+                    Edit
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDeleteProduct(product.productid)}
+                    style={{ marginLeft: '8px', fontSize: 12 }}
+                  >
+                    Delete
+                  </Button>
+                    </StyledTableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+            </TableContainer>
+            ) : (
+            <div className="no-products-found" 
+                style={{ 
+                    background: 'white', 
+                    padding: '100px', 
+                    margin: '1px', 
+                    textAlign: 'center',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                }}>
+            No products found
+            </div>
+            )}
+        <Dialog open={isAddProductDialogOpen} onClose={() => setIsAddProductDialogOpen(false)}>
+        <DialogTitle>Add Product</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Product Name"
+            value={newProductName}
+            onChange={(e) => setNewProductName(e.target.value)}
+          />
+          <TextField
+            label="Quantity"
+            type="number"
+            value={newQuantity}
+            onChange={(e) => setNewQuantity(e.target.value)}
+          />    
+          <TextField
+            label="Price"
+            type="number"
+            value={newPrice}
+            onChange={(e) => setNewPrice(e.target.value)}
+          />
   </DialogContent>
   <DialogActions>
     <Button onClick={() => setIsAddProductDialogOpen(false)}>Cancel</Button>
-    <Button onClick={handleAddProduct} color="primary">
+    <Button onClick={handleAddProduct}>
       Add
     </Button>
   </DialogActions>
@@ -437,11 +493,6 @@ useEffect(() => {
   </DialogActions>
 </Dialog>
 
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
     );

@@ -16,6 +16,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
@@ -441,6 +442,12 @@ export default function CreateAccountAdmin() {
         >
           Create Account
         </Button>
+
+        <Link to="/loginadmin" style={{textDecoration: 'none'}}> {/* Add this Link */}
+          <div className="forgot-password">
+            <span className='forgot-password-text'>Already have an account?</span>
+          </div>
+        </Link>
       </div>
     </div>
   );
