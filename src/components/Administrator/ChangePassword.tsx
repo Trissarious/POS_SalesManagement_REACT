@@ -39,6 +39,7 @@ export default function ChangePassword() {
         }
       );
       console.log(response.data);
+      alert('Changed password successfully.')
     } catch (error) {
       console.error(error);
     }

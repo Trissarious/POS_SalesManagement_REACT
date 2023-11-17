@@ -5,6 +5,9 @@ import { TextField, IconButton, InputAdornment, Input, Typography } from '@mui/m
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 import { useAuth } from '../AccountLoginValid/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const LoginCashier = () => { // Accept the setIsLoggedIn prop
   const [username, setUsername] = useState('');
@@ -32,7 +35,16 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
 
     // Check if the username and password are not empty
   if (!loginRequest.username || !loginRequest.password) {
-    window.alert('Please enter both your username and password');
+    toast.error('Please enter both your username and password', {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   } else {
     // Send a POST request to the server
     axios.post('http://localhost:8080/user/logincash', loginRequest)
@@ -48,12 +60,30 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
           // Redirect to the '/cashier-main' route
           navigate('/cashier-main');
         } else {
-          window.alert('Please enter your username and password');
+          toast.error('Please enter your username and password', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         }
       })
       .catch((error) => {
         console.error('Login failed:', error);
-        window.alert('The username or password you’ve entered is incorrect. Please try again.');
+        toast.error('The username or password you’ve entered is incorrect. Please try again.', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       });
   }
 
@@ -64,11 +94,29 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
   }
    
   const handleForgotPassword_Register = () => {
-    window.alert('Please contact your administrator for password assistance.');
+    toast.info('Please contact your administrator for password assistance.', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   };
 
   const handleRegister = () => {
-    window.alert('Please contact your administrator if you want to create an account.')
+    toast.info('Please contact your administrator if you want to create an account.', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   }
 
   return (
@@ -122,6 +170,9 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
         <span className='forgot-password-text' onClick={handleForgotPassword_Register}>Forgot Password?</span>
       </div>
     </div>
+
+    <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
+
   </div>
   );
 };

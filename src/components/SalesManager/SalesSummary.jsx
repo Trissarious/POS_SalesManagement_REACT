@@ -11,6 +11,8 @@ import sales_summry from './Images/sales_summary.png';
 import logout from './Images/logout.png';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SalesSummary() {
   const { isSalesmanLoggedIn } = useAuth();
@@ -18,36 +20,51 @@ export default function SalesSummary() {
   const [transactions, setTransactions] = useState([]);
   const [refundss, setRefunds] = useState(0);
   const [returnss, setReturns] = useState(0);
+  const [ setGrossSales] = useState(0);
+  const [setNetSales] = useState(0);
   
 
   useEffect(() => {
-    // Fetch all transactions when the component mounts
     axios.get('http://localhost:8080/transaction/getAllTransaction')
       .then((response) => {
         const allTransactions = response.data;
         setTransactions(allTransactions);
-
-        // Filter transactions that are both refunded and returned
-        const refundedAndReturned = allTransactions.filter(transaction => (
-          transaction.refunded === 'refunded' && transaction.returned === 'returned'
-        ));
-
-        // Calculate refunds and returns for these transactions
-        const refundedAmount = transactions
-        .filter(transaction => transaction.refunded === 'refunded')
-        .reduce((total, transaction) => total + transaction.total_price, 0);
-      
-      const returnedAmount = transactions
-        .filter(transaction => transaction.returned === 'returned')
-        .reduce((total, transaction) => total + transaction.total_price, 0);
-
-        setRefunds(refundedAmount);
-        setReturns(returnedAmount);
+  
+        // ... rest of the code
+  
+        const grossSales = allTransactions.reduce((total, transaction) => {
+          if (!transaction.refunded && !transaction.returned) {
+            return total + transaction.total_price;
+          }
+          return total;
+        }, 0);
+  
+        const refunds = allTransactions.reduce((total, transaction) => {
+          if (transaction.refunded) {
+            return total + transaction.total_price;
+          }
+          return total;
+        }, 0);
+  
+        const returns = allTransactions.reduce((total, transaction) => {
+          if (transaction.returned) {
+            return total + transaction.total_price;
+          }
+          return total;
+        }, 0);
+  
+        const netSales = grossSales - (refunds + returns);
+  
+        setRefunds(refunds);
+        setReturns(returns);
+        setGrossSales(grossSales);
+        setNetSales(netSales);
       })
       .catch((error) => {
         console.error('Error fetching transactions:', error);
       });
   }, []);
+  
   // Fetch all transactions when the component mounts
   useEffect(() => {
     axios.get('http://localhost:8080/transaction/getAllTransaction')
@@ -69,29 +86,21 @@ export default function SalesSummary() {
   };
 
   useEffect(() => {
-    // Check for a valid JWT token on page load
     const token = localStorage.getItem('salesmanToken');
-
     if (!token) {
-      // Redirect to the login page if there's no token
       navigate('/loginsales');
     } else {
-      // Verify the token on the server, handle token expiration, etc.
-      // If token is valid, setIsCashierLoggedIn(true)
     }
   }, [isSalesmanLoggedIn, navigate]);
 
-  // State to control the open/closed state of the Drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const location = useLocation();
 
-  // Function to open the Drawer
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
 
-  // Function to close the Drawer
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
@@ -155,25 +164,58 @@ export default function SalesSummary() {
   }));
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [timeGranularity, setTimeGranularity] = useState('day'); // day, week, or month
+  const [showOverallSummary, setShowOverallSummary] = useState(true);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [overallSelectedDate, setOverallSelectedDate] = useState(new Date());
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setShowOverallSummary(false);
-    // Filter transactions for the selected date
-    const filteredData = transactions.filter((transaction) => {
-      const transactionDate = new Date(transaction.date_time);
-      return (
-        transactionDate.getFullYear() === date.getFullYear() &&
-        transactionDate.getMonth() === date.getMonth() &&
-        transactionDate.getDate() === date.getDate()
-      );
-    });
+
+    // Filter transactions based on the selected time granularity
+    let filteredData = [];
+    switch (timeGranularity) {
+      case 'day':
+        filteredData = transactions.filter((transaction) => {
+          const transactionDate = new Date(transaction.date_time);
+          return (
+            transactionDate.getFullYear() === date.getFullYear() &&
+            transactionDate.getMonth() === date.getMonth() &&
+            transactionDate.getDate() === date.getDate()
+          );
+        });
+        break;
+      case 'week':
+        // Implement week filtering logic
+        break;
+      case 'month':
+        filteredData = transactions.filter((transaction) => {
+          const transactionDate = new Date(transaction.date_time);
+          return (
+            transactionDate.getFullYear() === date.getFullYear() &&
+            transactionDate.getMonth() === date.getMonth()
+          );
+        });
+        break;
+      default:
+        break;
+    }
+
     setFilteredTransactions(filteredData);
   };
-  const handleOverallClick = () => {
-    setShowOverallSummary(!showOverallSummary);
+
+  const handleOverallDateChange = (date) => {
+    setOverallSelectedDate(date);
+    //... any other logic needed for the overall summary
   };
-  const [showOverallSummary, setShowOverallSummary] = useState(true); // Initialize with overall summary
+  
+
+  // Add a new function to handle granularity change
+  const handleGranularityChange = (granularity) => {
+    setTimeGranularity(granularity);
+  };
+
   
   const renderOverallSummary = () => {
     return (
@@ -207,27 +249,31 @@ export default function SalesSummary() {
   const renderDateSpecificSummary = () => {
     return (
       <div>
-        {/* Date-Specific Summary components */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3rem' }}>
-          <Typography variant="h2" style={{ fontWeight: 'bold', marginLeft: '29rem' }}>Gross Sales</Typography>
-          <Typography variant="h2" style={{ fontWeight: 'bold', marginRight: '38rem' }}>
-            {filteredTransactions.reduce((total, transaction) => total + transaction.total_price, 0).toFixed(2)}
-          </Typography>
-        </div>
+         <div style={{ textAlign: 'center', margin: '2rem' }}>
+         <DatePicker selected={overallSelectedDate} onChange={handleOverallDateChange} dateFormat="MM/dd/yyyy" />
+        <button style={{ marginLeft: 10, fontSize: 17, color: 'green' }} onClick={() => setShowOverallSummary(true)}>
+          Overall
+        </button>
+        {/* Add buttons or dropdown for selecting time granularity */}
+        <button onClick={() => handleGranularityChange('day')}>Day</button>
+        <button onClick={() => handleGranularityChange('week')}>Week</button>
+        <button onClick={() => handleGranularityChange('month')}>Month</button>
+      </div>
+
   
               {/* Display Refunds */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
         <Typography variant="h2" style={{ fontWeight: 'bold', marginLeft: '29rem' }}>Refunds</Typography>
         <Typography variant="h2" style={{ fontWeight: 'bold', marginRight: '38rem' }}>
         {filteredTransactions
-  .filter((transaction) => transaction.refunded === true)
-  .reduce((total, transaction) => {
-    console.log("Reducing Transaction: ", transaction);
-    return total + transaction.total_price;
-  }, 0)
-  .toFixed(2)}
-        </Typography>
-      </div>
+          .filter((transaction) => transaction.refunded === true)
+          .reduce((total, transaction) => {
+            console.log("Reducing Transaction: ", transaction);
+            return total + transaction.total_price;
+          }, 0)
+          .toFixed(2)}
+                </Typography>
+              </div>
 
       {/* Display Returns */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
@@ -337,7 +383,7 @@ export default function SalesSummary() {
           </List>
         </Drawer>
 
-        <Typography variant="h2" style={{ textAlign: 'center', fontWeight: 'bold' }}>
+        <Typography variant="h2" style={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins' }}>
           SALES SUMMARY
         </Typography>
         <div style={{ textAlign: 'center', margin: '2rem' }}>
@@ -346,7 +392,8 @@ export default function SalesSummary() {
           onChange={handleDateChange}
           dateFormat="MM/dd/yyyy"
         />
-         <button onClick={() => setShowOverallSummary(true)}>Overall</button>
+        <DatePicker selected={overallSelectedDate} onChange={handleOverallDateChange} dateFormat="MM/dd/yyyy" />
+         <button style={{marginLeft: 10, fontSize: 17, color: 'green'}} onClick={() => setShowOverallSummary(true)}>Overall</button>
       </div>          
       {showOverallSummary ? renderOverallSummary() : renderDateSpecificSummary()}
         <br></br>
@@ -375,6 +422,9 @@ export default function SalesSummary() {
           </LineChart>
         </ResponsiveContainer>
       </div>
+
+      <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
+
     </div>
   );
 }

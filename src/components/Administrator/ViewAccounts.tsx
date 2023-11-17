@@ -27,6 +27,7 @@ export default function ViewAccounts() {
     const navigate = useNavigate();
 
 
+
     const [searchInput, setSearchInput] = useState('');
     const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
 
@@ -80,7 +81,6 @@ export default function ViewAccounts() {
         </div>
 
         <div className="profile-name">
-          
         </div>
 
       </div>

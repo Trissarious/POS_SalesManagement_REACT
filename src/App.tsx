@@ -5,7 +5,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Navbar from './components/Global Configuration/NavBar';
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
-import SalesManagerDashboard from './components/SalesManager/SalesManagerDashboard';
 import SalesSummary from './components/SalesManager/SalesSummary';
 import ItemPage from './components/SalesManager/ItemPage';
 import TransactionHistory from './components/Cashier/TransactionHistory';
@@ -33,7 +32,6 @@ function App() {
             <Routes>
               <Route path = "/" element = {<StartingScreen/>}/>
               <Route path = "/loginsales" element = {<LoginSalesManager/>}></Route>
-              <Route path = "/salesmanagerdb"  element = {<SalesManagerDashboard/>}></Route>
               <Route path = "/salessummary"  element = {<SalesSummary/>}></Route>
               <Route path = "/itempage"  element = {<ItemPage/>}></Route>
               <Route path = "/logincashier" element ={<LoginCashier/>}/>

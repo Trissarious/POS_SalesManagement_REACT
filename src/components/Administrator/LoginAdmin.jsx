@@ -4,6 +4,8 @@ import './CSS Files/LoginAdmin.css';
 import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
@@ -31,7 +33,16 @@ const LoginAdmin = () => {
 
     // Check if the username and password are not empty
     if (!loginRequest.username || !loginRequest.password) {
-      window.alert('Please enter both your username and password');
+      toast.error('Please enter both your username and password', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     } else {
       // Send a POST request to the server
       axios.post('http://localhost:8080/user/loginad', loginRequest)
@@ -46,12 +57,30 @@ const LoginAdmin = () => {
             setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
           } else {
-            window.alert('Please enter your username and password');
+            toast.error('Please enter your username and password', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
           }
         })
         .catch((error) => {
           console.error('Login failed:', error);
-          window.alert('The username or password you’ve entered is incorrect. Please try again.');
+          toast.error('The username or password you’ve entered is incorrect. Please try again.', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         });
       }   
   };
@@ -111,6 +140,9 @@ const LoginAdmin = () => {
           </div>
         </Link>
     </div>
+
+    <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
+
   </div>
   );
 };

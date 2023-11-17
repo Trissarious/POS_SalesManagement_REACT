@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,8 +11,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import  { useState } from "react";
-import { RestAccount } from "../REST/REST Account/RestAccount";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const defaultTheme = createTheme();
 
@@ -23,18 +22,50 @@ export default function ChangePassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // Send a POST request to the backend to initiate the password reset process
-      const response = await axios.post('http://localhost:8080/user/forgotpassword', { email: email });
-      console.log(response.data);
-      alert('Reset Password confirmation successfully.')
-    } catch (error) {
-      alert('Email not found.')
-      console.error('Error sending reset email:', error);
-    }
+    if (!email) { 
+      toast.error('Please enter your email address.', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    } else {
+        try {
+          // Send a POST request to the backend to initiate the password reset process
+          const response = await axios.post('http://localhost:8080/user/forgotpassword', { email: email });
+          console.log(response.data);
+          toast.success('Email verification sent successfully.', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        } catch (error) {
+          toast.warn('Email not found.', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+          console.error('Error sending reset email:', error);
+        }
+      }
   };
 
   return (
+    <>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -52,6 +83,7 @@ export default function ChangePassword() {
           <Typography component="h1" variant="h5" style={{fontSize: 30}}>
             Reset your Password
           </Typography>
+
           <Box component="form"noValidate sx={{ mt: 2, width: 450}}>
             <TextField
               margin="normal"
@@ -77,6 +109,7 @@ export default function ChangePassword() {
             >
               Send Link
             </Button>
+
             <Grid container>
               <Grid item xs>
                 <Link href="/loginadmin" variant="body2" style={{fontSize: 14}}>
@@ -93,5 +126,9 @@ export default function ChangePassword() {
         </Box>
       </Container>
     </ThemeProvider>
+
+    <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
+
+    </>
   );
 }

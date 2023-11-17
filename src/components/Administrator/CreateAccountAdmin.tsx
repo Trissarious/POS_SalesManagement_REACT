@@ -1,22 +1,16 @@
 import React, { useState, ChangeEvent } from 'react';
 import './CSS Files/./CreateAccountAdmin.css';
 import axios from 'axios';
-import { RestAccount } from '../REST/REST Account/RestAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  Button,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material';
+import {Button,IconButton,InputAdornment,MenuItem,TextField,Typography} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
@@ -50,18 +44,10 @@ const Gender = [
 ];
 
 export default function CreateAccountAdmin() {
-  const [
-    deleteByID,
-    getAccountbyId,
-    editAccount,
-    addAccount,
-    account,
-  ] = RestAccount();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [fname, setFname] = useState('');
-  const [mname, setMname] = useState('');
   const [lname, setLname] = useState('');
   const [business_name, setBusiness_name] = useState('');
   const [address, setAddress] = useState('');
@@ -100,32 +86,45 @@ export default function CreateAccountAdmin() {
           day: '2-digit',
         });
 
-        axios
-          .post(post_account, {
+        axios.post(post_account, {
             username: username,
             password: password,
             account_type: selectedAccountType,
             email: email,
             fname: fname,
-            mname: mname,
             lname: lname,
             business_name: business_name,
             address: address,
             contactnum: contactnum,
             gender: selectedGender,
             bday: formattedDate,
-          })
-          .then((res) => {
-            alert('Account created');
+          }).then((res) => {
+            toast.success('Account created successfully.', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
             console.log(res.data);
-            window.location.reload();
-          })
-          .catch((err) => console.log(err));
+          }).catch((err) => console.log(err));
+            toast.error('Username has already been used. Please try again with a different username.', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
       } else {
         alert('Please select a birth date.');
       }
     } else {
-      // The form is incomplete, show an error message
       setFormValid(false);
     }
   };
@@ -150,7 +149,6 @@ export default function CreateAccountAdmin() {
 
   return (
     <div className="register-div">
-      {/* Display an error message if the form is not complete */}
       {!isFormValid && (
         <p className="error-message">Please fill in all required fields.</p>
       )}
@@ -449,6 +447,7 @@ export default function CreateAccountAdmin() {
           </div>
         </Link>
       </div>
+      <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
     </div>
   );
 }

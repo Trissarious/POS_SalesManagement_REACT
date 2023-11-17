@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import './CSS Files/LoginSalesManager.css'; 
 import axios from 'axios';
 import { useAuth } from '../AccountLoginValid/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
@@ -30,37 +32,79 @@ const LoginSalesManager = () => {
 
      // Check if the username and password are not empty
      if (!loginRequest.username || !loginRequest.password) {
-      window.alert('Please enter both your username and password');
+      toast.error('Please enter both your username and password', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     } else {
       // Send a POST request to the server
       axios.post('http://localhost:8080/user/loginsales', loginRequest)
         .then((response) => {
           if (response.status === 200) {
             const token = response.data.token;
-          // Store the token in a cookie or local storage
-          localStorage.setItem('salesmanToken', token);
-          // Successfully logged in
-          setIsSalesManLoggedIn(true); // Set the login status to true
-          localStorage.setItem('salesmanLoggedIn', 'true');
-            // window.alert('Login successful'); // Display a success message
+            localStorage.setItem('salesmanToken', token);
+            setIsSalesManLoggedIn(true); 
+            localStorage.setItem('salesmanLoggedIn', 'true');
             navigate('/salessummary');
           } else {
-            window.alert('Please enter your username and password');
+            toast.error('Please enter your username and password', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
           }
         })
         .catch((error) => {
           console.error('Login failed:', error);
-          window.alert('The username or password you’ve entered is incorrect. Please try again.');
+          toast.error('The username or password you’ve entered is incorrect. Please try again.', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         });
       }   
   };
 
   const handleForgotPassword = () => {
-    window.alert('Please contact your administrator for password assistance.');
+    toast.info('Please contact your administrator for password assistance.', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   };
 
   const handleRegister = () => {
-    window.alert('Please contact your administrator if you want to create an account.')
+    toast.info('Please contact your administrator if you want to create an account.', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   }
 
   const togglePasswordVisibility = () => {
@@ -117,6 +161,9 @@ const LoginSalesManager = () => {
           <span className='forgot-password-text' onClick={handleForgotPassword}>Forgot Password?</span>
         </div>
       </div>
+
+    <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
+
     </div>
   );
 };
