@@ -14,6 +14,8 @@ import transaction_history from './Images/transaction_history.png';
 import logout from './Images/logout.png'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialSelectedProducts = [];
 const url = 'http://localhost:8080/product/getAllProduct';
@@ -126,15 +128,34 @@ export default function Cashiering()  {
 
         const record_transaction = async () => {
             if (!tendered_bill) {
-                alert('Tendered bill cannot be empty. Please enter a valid amount.');
+                toast.error('Tendered bill cannot be empty. Please enter a valid amount.', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    });
                 return;
               }   
 
               if (parseFloat(tendered_bill) < total_price) {
-                alert('Insufficient amount. Please enter an amount equal to or greater than the total price.');
+                toast.error('Insufficient amount. Please enter an amount equal to or greater than the total price.', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    });
                 return;
               }
               const isReadyToPay = window.confirm('Are you sure you want to proceed with the payment?');
+              
               if (isReadyToPay) {
                   for (const productid of selectedProducts) {
                       const productInCart = cart.find((item) => item.productid === productid);
@@ -632,7 +653,7 @@ export default function Cashiering()  {
             }
         </div>  
         <div className="footer"></div>
-        
+    <ToastContainer className="foo" style={{ width: "500px", fontSize: 15 }} />
     </div>
  );
 }

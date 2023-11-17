@@ -7,12 +7,12 @@ export default function CashierMainPage() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Delete the 'cashierToken' from local storage
-    localStorage.removeItem('cashierToken');
-    // Clear the login state
-    localStorage.removeItem('cashierLoggedIn');
-    // Redirect to the login page
-    navigate('/logincashier');
+    const confirm = window.confirm('Are you sure you want to logout?');
+    if (confirm) {
+      localStorage.removeItem('cashierToken');
+      localStorage.removeItem('cashierLoggedIn');
+      navigate('/logincashier');
+    }
   };
 
   useEffect(() => {

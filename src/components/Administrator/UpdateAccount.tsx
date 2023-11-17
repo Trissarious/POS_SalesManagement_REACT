@@ -80,25 +80,29 @@ export default function UpdateAccount(props: Account) {
               month: '2-digit',
               day: '2-digit',
             });
-        axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
-            username: usernameRef.current?.value,
-            password: passwordRef.current?.value,
-            account_type: account_typeRef.current?.value,
-            email: emailRef.current?.value,
-            fname: fnameRef.current?.value,
-            lname: lnameRef.current?.value,
-            business_name: business_nameRef.current?.value,
-            address: addressRef.current?.value,
-            contactnum: contactnumRef.current?.value,
-            gender: genderRef.current?.value,
-            bday: formattedDate,
-        }).then(res => {
-          console.log(res.data)
-          window.location.reload()
-        }).catch(err => console.log(err))
+        const confirmUpdate = window.confirm('Are you sure you want to update this account?');
+        if (confirmUpdate) {
+            axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
+                username: usernameRef.current?.value,
+                password: passwordRef.current?.value,
+                account_type: account_typeRef.current?.value,
+                email: emailRef.current?.value,
+                fname: fnameRef.current?.value,
+                lname: lnameRef.current?.value,
+                business_name: business_nameRef.current?.value,
+                address: addressRef.current?.value,
+                contactnum: contactnumRef.current?.value,
+                gender: genderRef.current?.value,
+                bday: formattedDate,
+            }).then(res => {
+              console.log(res.data)
+              window.location.reload()
+            }).catch(err => console.log(err))
+            } 
         } else {
             alert('Pleaes select a birth')
         }
+       
     }
 
     const handleClickOpen = () => {

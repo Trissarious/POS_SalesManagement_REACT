@@ -56,8 +56,6 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
           // Successfully logged in
           setIsCashierLoggedIn(true); // Set the login status to true in the context
           localStorage.setItem('cashierLoggedIn', 'true');
-          window.alert('Login successful'); // Display a success message
-          // Redirect to the '/cashier-main' route
           navigate('/cashier-main');
         } else {
           toast.error('Please enter your username and password', {

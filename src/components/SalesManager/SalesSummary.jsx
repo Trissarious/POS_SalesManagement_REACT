@@ -77,12 +77,12 @@ export default function SalesSummary() {
   }, []);
 
   const handleLogout = () => {
-    // Delete the 'cashierToken' from local storage
-    localStorage.removeItem('salesmanToken');
-    // Clear the login state
-    localStorage.removeItem('salesmanLoggedIn');
-    // Redirect to the login page
-    navigate('/loginsales');
+    const confirm = window.confirm('Are you sure you want to logout?')
+    if (confirm) {
+      localStorage.removeItem('salesmanToken');
+      localStorage.removeItem('salesmanLoggedIn');
+      navigate('/loginsales');
+    }
   };
 
   useEffect(() => {

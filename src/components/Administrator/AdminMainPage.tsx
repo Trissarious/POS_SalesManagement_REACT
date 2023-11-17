@@ -9,10 +9,13 @@ const AdminMainPage = () => {
   const [username, setUsername] = useState('');
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminLoggedIn');
-    localStorage.removeItem('adminUsername');
-    navigate('/loginadmin');
+    const confirm = window.confirm('Are you sure you want to log out?')
+    if (confirm) {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('adminUsername');
+      navigate('/loginadmin');
+    }
   };
 
   useEffect(() => {
