@@ -12,7 +12,7 @@ const LoginSalesManager = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { isSalesManLoggedIn, setIsSalesManLoggedIn } = useAuth(); // Get the context
+  const { setIsSalesManLoggedIn } = useAuth(); // Get the context
   const navigate = useNavigate(); // Get the navigate function
 
   useEffect(() => {

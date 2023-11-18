@@ -4,7 +4,6 @@ import { IconButton, Drawer, List, ListItem} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon
 import AddIcon from '@mui/icons-material/Add'; // Import the AddIcon
 import React, { useState, useEffect } from 'react';
-import { RestProduct } from '../REST/REST Product/RestProduct';
 import item_page from './Images/item_page.png';
 import sales_summry from './Images/sales_summary.png'
 import logout from './Images/logout.png'
@@ -13,7 +12,6 @@ import axios from 'axios';
 
 
 export default function ItemPage() {
-  const [deleteByID, getProductByID, editProduct, addProduct, product] = RestProduct();
   const [products, setProducts] = useState([]); // State to store the product data
   const { isSalesmanLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -76,17 +74,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-
-  const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
-    // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
-    useEffect(() => {
-        if (location.pathname === '/itempage') {
-            setNavigatorColor('#daede5');
-        } else {
-            setNavigatorColor('#213458');
-        }
-    }, [location]);
 
     useEffect(() => {
       // Fetch product data from the API when the component mounts
@@ -298,17 +285,17 @@ useEffect(() => {
                     
                     <ListItem button component={Link} to="/salessummary" className={location.pathname === '/salessummary' ? 'active-link' : ''}>
                         <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 90}}>Sales Summary</h2>
-                        <img src={sales_summry} className="img_cashiering"/>
+                        <img src={sales_summry} className="img_cashiering" alt='sales_summary'/>
                     </ListItem>
 
                     <ListItem button component={Link} to="/itempage" className={location.pathname === '/itempage' ? 'active-link' : ''}>
                     <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: '#213458', marginRight: 160, marginLeft: 5}}>Item Page</h2>
-                    <img src={item_page} className="img_cashiering" />
+                    <img src={item_page} className="img_cashiering" alt='item_page' />
                     </ListItem>
 
                     <ListItem button onClick={handleLogout} className={location.pathname === '/logout' ? 'active-link' : ''} >
                         <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}} >Log Out</h2>
-                        <img src={logout} className='img_cashiering'/> 
+                        <img src={logout} className='img_cashiering' alt='logout' /> 
                     </ListItem>
                 </List>
             </Drawer>

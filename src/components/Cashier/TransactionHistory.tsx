@@ -110,21 +110,21 @@ const TransactionHistory = () => {
                         <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 30}}>
                             Perform Transaction
                         </h2>
-                        <img src={perform_transaction} className="img_cashiering"/>
+                        <img src={perform_transaction} className="img_cashiering" alt='perform transaction'/>
                     </ListItem>
 
                     <ListItem button component={Link} to="/transactionhistory" className={location.pathname === '/transactionhistory' ? 'active-link' : ''}>
                     <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: 'auto', marginRight: 40, marginLeft: 5}}>
                         Transaction History
                     </h2>
-                    <img src={transaction_history} className="img_cashiering" />
+                    <img src={transaction_history} className="img_cashiering" alt='transaction history'/>
                     </ListItem>
 
                     <ListItem className={location.pathname === '/logout' ? 'active-link' : ''}>
                         <h2 style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5}}>
                             Log Out
                         </h2>
-                        <img src={logout} className='img_cashiering'/> 
+                        <img src={logout} className='img_cashiering' alt='logout'/> 
                     </ListItem>
                 </List>
             </Drawer>

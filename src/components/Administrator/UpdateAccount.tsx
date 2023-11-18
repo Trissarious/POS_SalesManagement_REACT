@@ -9,6 +9,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { RestAccount } from "../REST/REST Account/RestAccount";
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Account {
     userid: number,
@@ -71,6 +74,7 @@ export default function UpdateAccount(props: Account) {
     const genderRef = useRef<HTMLTextAreaElement>();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPassword, setShowPassword] = useState(false);
+    const [isBday, setIsBday] = useState(true);
 
     const handleUpdate = async () => {
         if (selectedDate) {
@@ -80,27 +84,37 @@ export default function UpdateAccount(props: Account) {
               month: '2-digit',
               day: '2-digit',
             });
-        const confirmUpdate = window.confirm('Are you sure you want to update this account?');
-        if (confirmUpdate) {
-            axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
-                username: usernameRef.current?.value,
-                password: passwordRef.current?.value,
-                account_type: account_typeRef.current?.value,
-                email: emailRef.current?.value,
-                fname: fnameRef.current?.value,
-                lname: lnameRef.current?.value,
-                business_name: business_nameRef.current?.value,
-                address: addressRef.current?.value,
-                contactnum: contactnumRef.current?.value,
-                gender: genderRef.current?.value,
-                bday: formattedDate,
-            }).then(res => {
-              console.log(res.data)
-              window.location.reload()
-            }).catch(err => console.log(err))
-            } 
+            const confirmUpdate = window.confirm('Are you sure you want to update this account?');
+            if (confirmUpdate) {
+                axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
+                    username: usernameRef.current?.value,
+                    password: passwordRef.current?.value,
+                    account_type: account_typeRef.current?.value,
+                    email: emailRef.current?.value,
+                    fname: fnameRef.current?.value,
+                    lname: lnameRef.current?.value,
+                    business_name: business_nameRef.current?.value,
+                    address: addressRef.current?.value,
+                    contactnum: contactnumRef.current?.value,
+                    gender: genderRef.current?.value,
+                    bday: formattedDate,
+                }).then(res => {
+                  console.log(res.data)
+                  window.location.reload()
+                }).catch(err => console.log(err))
+                } 
         } else {
-            alert('Pleaes select a birth')
+            toast.error('Please select a birth', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+                setIsBday(false);
         }
        
     }
@@ -285,6 +299,12 @@ export default function UpdateAccount(props: Account) {
                             InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                         />
                     </CardActions>
+                    
+                    <div style={{textAlign: 'center', marginLeft: 150, marginBottom: -20 }}>
+                        {!isBday && (
+                            <p style={{fontSize: 16, color: 'red'}}>Please select a birth</p>
+                        )}
+                    </div>
 
                     <CardActions>
                          <TextField
@@ -322,7 +342,6 @@ export default function UpdateAccount(props: Account) {
                             }}
                             />
                         </LocalizationProvider>
-
                     </CardActions>
             </Card>
         </DialogContent>
@@ -331,7 +350,6 @@ export default function UpdateAccount(props: Account) {
             <button className="btn-approve" autoFocus onClick={handleUpdate} >Save Changes</button>
         </DialogActions>
         </Dialog>
-    
         </div>
     )
 }

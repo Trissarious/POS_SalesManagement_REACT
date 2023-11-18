@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LOGOS from './LOGOS.png';
 export default function Navbar() {
 return (

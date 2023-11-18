@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link} from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import axios from 'axios';
 import './CSS FIles/TransactionDetails.css'; 
-import { Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
-import { Button } from 'react-bootstrap';
+import { Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
@@ -33,15 +32,11 @@ const TransactionDetails = () => {
     const navigate = useNavigate();
   
     useEffect(() => {
-      // Check for a valid JWT token on page load
       const token = localStorage.getItem('cashierToken');
   
       if (!token) {
-        // Redirect to the login page if there's no token
         navigate('/logincashier');
       } else {
-        // Verify the token on the server, handle token expiration, etc.
-        // If token is valid, setIsCashierLoggedIn(true)
       }
     }, [isCashierLoggedIn, navigate]);
 
@@ -54,14 +49,13 @@ const TransactionDetails = () => {
     const [password, setPassword] = useState('');
     const [openRefund, setOpenRefund] = React.useState(false);
     const [openReturn, setOpenReturn] = React.useState(false);
-    const [initialUsername, setInitialUsername] = useState('');
-    const [initialPassword, setInitialPassword] = useState('');
+    const [initialUsername] = useState('');
+    const [initialPassword] = useState('');
 
     useEffect(() => {
-        // Fetch transaction details using the provided URL
         axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
             .then((response) => {
-                console.log(response.data); // Log the response data
+                console.log(response.data);
                 const responseData: TransactionDetails = response.data;
                 setTransactionDetails(responseData);
             })
@@ -69,7 +63,6 @@ const TransactionDetails = () => {
                 console.error(error);
             });
 
-        // Fetch products related to this transaction
         axios.get(`http://localhost:8080/transaction/${id}/products`)
             .then((response) => {
                 const responseData: Product[] = response.data;

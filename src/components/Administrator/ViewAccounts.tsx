@@ -22,7 +22,7 @@ interface Account {
 }
 
 export default function ViewAccounts() {
-    const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser, setAdminUser } = useAuth();
+    const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser } = useAuth();
     const [accounts, setAccounts] = useState<Account[]>([]);
     const navigate = useNavigate();
 
@@ -62,9 +62,8 @@ export default function ViewAccounts() {
       setIsAdminLoggedIn(true)
 
       // Fetch user data from API
-      axios.get('http://localhost:8080/user/getUserData').then((response) => {
+      axios.get('http://localhost:8080/user/getAllUser').then((response) => {
         const userData = response.data;
-        setAdminUser(userData.username);
       }).catch((error) => {
         console.error(error);
       });

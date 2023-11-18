@@ -1,5 +1,5 @@
 import React from "react";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, styled, tableCellClasses } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, styled, tableCellClasses } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {

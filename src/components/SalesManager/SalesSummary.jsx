@@ -4,23 +4,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import axios from 'axios';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
-import dashboard from './Images/dashboard.png';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import item_page from './Images/item_page.png';
 import sales_summry from './Images/sales_summary.png';
 import logout from './Images/logout.png';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function SalesSummary() {
   const { isSalesmanLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
-  const [refundss, setRefunds] = useState(0);
-  const [returnss, setReturns] = useState(0);
-  const [ setGrossSales] = useState(0);
+  const [setRefunds] = useState(0);
+  const [setReturns] = useState(0);
+  const [setGrossSales] = useState(0);
   const [setNetSales] = useState(0);
   
 
@@ -52,7 +49,7 @@ export default function SalesSummary() {
           }
           return total;
         }, 0);
-  
+
         const netSales = grossSales - (refunds + returns);
   
         setRefunds(refunds);
@@ -63,7 +60,7 @@ export default function SalesSummary() {
       .catch((error) => {
         console.error('Error fetching transactions:', error);
       });
-  }, []);
+  }, [setRefunds, setReturns, setGrossSales, setNetSales]);
   
   // Fetch all transactions when the component mounts
   useEffect(() => {
@@ -105,17 +102,6 @@ export default function SalesSummary() {
     setIsDrawerOpen(false);
   };
 
-  const [navigatorColor, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
-  // Function to highlight the color of the navigator if you are on the page using the color '#daede5'
-  useEffect(() => {
-    if (location.pathname === '/salessummary') {
-      setNavigatorColor('#daede5');
-    } else {
-      setNavigatorColor('#213458');
-    }
-  }, [location]);
-
-  
   const grossSales = transactions.reduce((total, transaction) => {
     if (!transaction.refunded && !transaction.returned) {
       return total + transaction.total_price;
@@ -368,17 +354,17 @@ export default function SalesSummary() {
 
             <ListItem button component={Link} to="/salessummary" className={location.pathname === '/salessummary' ? 'active-link' : ''}>
               <h2 style={{ fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, margin: 'auto', marginLeft: 5, marginRight: 90 }}>Sales Summary</h2>
-              <img src={sales_summry} className="img_cashiering" />
+              <img src={sales_summry} className="img_cashiering" alt='sales_summary' />
             </ListItem>
 
             <ListItem button component={Link} to="/itempage" className={location.pathname === '/itempage' ? 'active-link' : ''}>
               <h2 style={{ fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', padding: 2, margin: '#213458', marginRight: 160, marginLeft: 5 }}>Item Page</h2>
-              <img src={item_page} className="img_cashiering" />
+              <img src={item_page} className="img_cashiering" alt='item_page' />
             </ListItem>
 
             <ListItem button onClick={handleLogout} className={location.pathname === '/logout' ? 'active-link' : ''}>
               <h2 style={{ fontFamily: 'Poppins', fontSize: 25, fontWeight: 'bold', color: '#213458', padding: 2, marginRight: 200, marginLeft: 5 }} >Log Out</h2>
-              <img src={logout} className='img_cashiering' />
+              <img src={logout} className='img_cashiering' alt='logout' />
             </ListItem>
           </List>
         </Drawer>
@@ -423,7 +409,7 @@ export default function SalesSummary() {
         </ResponsiveContainer>
       </div>
 
-      <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
+      {/* <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} /> */}
 
     </div>
   );

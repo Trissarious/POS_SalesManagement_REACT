@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS FIles/LoginCashier.css';  
-import { TextField, IconButton, InputAdornment, Input, Typography } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 import { useAuth } from '../AccountLoginValid/AuthContext';
@@ -14,7 +14,7 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { isCashierLoggedIn, setIsCashierLoggedIn } = useAuth(); // Get the context
+  const { setIsCashierLoggedIn } = useAuth(); // Get the context
 
 
   useEffect(() => {
