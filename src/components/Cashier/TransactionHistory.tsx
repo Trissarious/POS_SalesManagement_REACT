@@ -52,7 +52,7 @@ const TransactionHistory = () => {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:8080/transaction/getAllTransaction')
+        axios.get('https://dilven-pos-sales-management-database-2.onrender.com/transaction/getAllTransaction')
             .then((response) => {
                 setTransactions(response.data);
             })
