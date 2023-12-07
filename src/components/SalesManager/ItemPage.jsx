@@ -77,7 +77,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
     useEffect(() => {
       // Fetch product data from the API when the component mounts
-      axios.get('http://localhost:8080/product/getAllProduct')
+      axios.get('https://dilven-pos-sales-management-database-2.onrender.com/product/getAllProduct')
         .then((response) => {
           // Set the product data in the state
           setProducts(response.data);
@@ -111,7 +111,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
         // Send a request to update the product's quantity on the server
         axios
-          .put(`http://localhost:8080/product/putQuantity?productid=${updatedProductData.productid}`, updatedProductData)
+          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/putQuantity?productid=${updatedProductData.productid}`, updatedProductData)
           .then((response) => {
             // Assuming the server returns a successful response
             console.log('Product quantity updated successfully.');
@@ -146,7 +146,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
         // Make an API call to update the product on the server with the new name and price
         axios
-          .put(`http://localhost:8080/product/putProduct?productid=${updatedProduct.productid}`, updatedProduct)
+          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/putProduct?productid=${updatedProduct.productid}`, updatedProduct)
           .then((response) => {
             // Assuming the server returns the updated product
             const updatedProductData = response.data;
@@ -174,7 +174,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       if (window.confirm('Are you sure you want to delete this product?')) {
         // Send a request to update the isDeleted flag on the server
         axios
-          .put(`http://localhost:8080/product/deleteProduct/${productId}`)
+          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/deleteProduct/${productId}`)
           .then((response) => {
             // Assuming the server returns a successful response
             console.log('Product soft deleted successfully.');
@@ -219,7 +219,7 @@ const handleAddProduct = () => {
 
     // Send a POST request to add the new product
     axios
-      .post('http://localhost:8080/product/postProduct', newProductData)
+      .post('https://dilven-pos-sales-management-database-2.onrender.com/product/postProduct', newProductData)
       .then((response) => {
         // Assuming the server successfully added the new product
         console.log('Product added successfully.');
@@ -250,7 +250,7 @@ const [mostPurchasedProduct, setMostPurchasedProduct] = useState(null);
 useEffect(() => {
   // Fetch the product with the highest purchase count from the API
   axios
-    .get('http://localhost:8080/product/most-purchased')
+    .get('https://dilven-pos-sales-management-database-2.onrender.com/product/most-purchased')
     .then((response) => {
       // Set the most purchased product in the state
       setMostPurchasedProduct(response.data);
