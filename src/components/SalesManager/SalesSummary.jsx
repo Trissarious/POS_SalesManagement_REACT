@@ -22,7 +22,7 @@ export default function SalesSummary() {
   
 
   useEffect(() => {
-    axios.get('http://localhost:8080/transaction/getAllTransaction')
+    axios.get('https://dilven-pos-sales-management-database-2.onrender.com/transaction/getAllTransaction')
       .then((response) => {
         const allTransactions = response.data;
         setTransactions(allTransactions);
@@ -64,7 +64,7 @@ export default function SalesSummary() {
   
   // Fetch all transactions when the component mounts
   useEffect(() => {
-    axios.get('http://localhost:8080/transaction/getAllTransaction')
+    axios.get('https://dilven-pos-sales-management-database-2.onrender.com/transaction/getAllTransaction')
       .then((response) => {
         setTransactions(response.data);
       })
