@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const ACCOUNT_BASE_URL = "http://localhost:8080/user/getAllUser";
-const USERNAME_BASE_URL = "http://localhost:8080/user/getByUser?username=";
+const ACCOUNT_BASE_URL = "https://dilven-pos-sales-management-database-2.onrender.com/user/getAllUser";
+const USERNAME_BASE_URL = "https://dilven-pos-sales-management-database-2.onrender.com/user/getByUser?username=";
 
 class AccountService{
     getAccount() {
