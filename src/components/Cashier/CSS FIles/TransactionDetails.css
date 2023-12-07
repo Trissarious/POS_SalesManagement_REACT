@@ -93,10 +93,8 @@
 
 .btn-cancel:hover, .refund-button:hover, .return-button:hover{
     opacity: 0.6;
-    transform: scale(1.0.5);
   }
 
 .btn-approve:hover {
     background-color: rgb(52, 179, 52);
-    transform: scale(1.0.5);
 }
