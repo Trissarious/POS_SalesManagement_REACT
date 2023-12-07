@@ -31,7 +31,7 @@ export default function ChangePassword() {
 
   try {
       const response = await axios.put(
-        `http://localhost:8080/user/changepassword?resetToken=${resetToken}`,
+        `https://dilven-pos-sales-management-database-2.onrender.com/user/changepassword?resetToken=${resetToken}`,
         {
           password: password,
         }
