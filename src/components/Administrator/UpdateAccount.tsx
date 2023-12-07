@@ -86,7 +86,7 @@ export default function UpdateAccount(props: Account) {
             });
             const confirmUpdate = window.confirm('Are you sure you want to update this account?');
             if (confirmUpdate) {
-                axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
+                axios.put('https://dilven-pos-sales-management-database-2.onrender.com/user/putUser?userid=' + props.userid, {
                     username: usernameRef.current?.value,
                     password: passwordRef.current?.value,
                     account_type: account_typeRef.current?.value,
