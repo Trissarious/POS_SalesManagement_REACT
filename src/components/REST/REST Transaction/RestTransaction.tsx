@@ -25,7 +25,7 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
 
     
     function addTransaction(transaction:Transaction){
-        axios.post("http://localhost:8080/transaction/postTransaction",{
+        axios.post("https://dilven-pos-sales-management-database-2.onrender.com/transaction/postTransaction",{
             total_quantity: transaction.total_quantity,
             total_price: transaction.total_price,
             tendered_bill: transaction.tendered_bill,
@@ -50,7 +50,7 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
     }
 
     function editTransaction(transaction:Transaction){
-        axios.put("http://localhost:8080/transaction/putTransaction?transactionid=" + transaction.transactionid,{
+        axios.put("https://dilven-pos-sales-management-database-2.onrender.com/transaction/putTransaction?transactionid=" + transaction.transactionid,{
             total_quantity: transaction.total_quantity,
             total_price: transaction.total_price,
             tendered_bill: transaction.tendered_bill,
@@ -85,7 +85,7 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
 
 
 function getTransactionByid (transactionid:number|undefined){
-    axios.get("http://localhost:8080/transaction/getByTransactionid?transactionid=" + transactionid,{
+    axios.get("https://dilven-pos-sales-management-database-2.onrender.com/transaction/getByTransactionid?transactionid=" + transactionid,{
 }).then((response) => {
     setTransaction(response.data);
     console.log(response.data);
@@ -96,7 +96,7 @@ function getTransactionByid (transactionid:number|undefined){
 }
 
 function deleteByIDTransaction (transactionid:number|undefined){
-    axios.delete("localhost:8080/transaction/deleteTransaction/" + transactionid,{
+    axios.delete("https://dilven-pos-sales-management-database-2.onrender.com/transaction/deleteTransaction/" + transactionid,{
     }).then((response) => {
     setTransaction(response.data);
     console.log(response.data);    
