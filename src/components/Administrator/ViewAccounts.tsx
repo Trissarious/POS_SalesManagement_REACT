@@ -41,7 +41,7 @@ export default function ViewAccounts() {
 
     // Fetch Account data
     useEffect(() => {
-        axios.get('http://localhost:8080/user/getAllUser')
+        axios.get('https://dilven-pos-sales-management-database-2.onrender.com/user/getAllUser')
             .then((response) => {
                 setAccounts(response.data);
             })
@@ -62,7 +62,7 @@ export default function ViewAccounts() {
       setIsAdminLoggedIn(true)
 
       // Fetch user data from API
-      axios.get('http://localhost:8080/user/getAllUser').then((response) => {
+      axios.get('https://dilven-pos-sales-management-database-2.onrender.com/user/getAllUser').then((response) => {
         const userData = response.data;
       }).catch((error) => {
         console.error(error);
