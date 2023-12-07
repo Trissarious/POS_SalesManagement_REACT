@@ -296,6 +296,7 @@ export default function UpdateAccount(props: Account) {
                             inputRef={addressRef}
                             defaultValue={props.address}
                             inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
+                            style={{marginBottom: 15}}
                             InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                         />
                     </CardActions>
