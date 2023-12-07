@@ -45,7 +45,7 @@ const LoginAdmin = () => {
         });
     } else {
       // Send a POST request to the server
-      axios.post('http://localhost:8080/user/loginad', loginRequest)
+      axios.post('https://dilven-pos-sales-management-database-2.onrender.com/user/loginad', loginRequest)
         .then((response) => {
           if (response.status === 200) {
             const token = response.data.token;
