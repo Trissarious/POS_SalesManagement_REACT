@@ -9,7 +9,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { RestAccount } from "../REST/REST Account/RestAccount";
-import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -86,7 +85,7 @@ export default function UpdateAccount(props: Account) {
             });
             const confirmUpdate = window.confirm('Are you sure you want to update this account?');
             if (confirmUpdate) {
-                axios.put('https://dilven-pos-sales-management-database-2.onrender.com/user/putUser?userid=' + props.userid, {
+                axios.put('http://localhost:8080/user/putUser?userid=' + props.userid, {
                     username: usernameRef.current?.value,
                     password: passwordRef.current?.value,
                     account_type: account_typeRef.current?.value,

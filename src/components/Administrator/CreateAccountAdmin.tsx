@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const post_account = 'https://dilven-pos-sales-management-database-2.onrender.com/user/postUser';
+const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
   {
     value: 'Administrator',
