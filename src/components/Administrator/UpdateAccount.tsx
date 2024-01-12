@@ -146,11 +146,8 @@ export default function UpdateAccount(props: Account) {
     }
 
     const handleDelete = async () => {
-        const isConfirmedDelete = window.confirm(`Are you sure you want to delete '${props.username}?'`);
-        if (isConfirmedDelete) {
             deleteByID(props.userid);
             window.location.reload();
-        }
     }
 
     return (
@@ -178,26 +175,27 @@ export default function UpdateAccount(props: Account) {
             </button>
 
             {/* Dialog for Delete */}
-            <Dialog open = {openDelete} onClose={handleClickCloseDelete}>
-                <DialogContent>
-                    <Card sx={{maxWidth: 700, borderRadius: 5, background: "#f7f5f5", maxHeight: 500, color: "#213458"}}>
-                        <CardContent>
-                            <Typography gutterBottom variant="h4" component="div" sx = {{fontFamily: "Poppins", fontWeight: 'bold'}} align="center">
-                                Are you sure you want to delete
-                            </Typography>
+            <Dialog open = {openDelete} onClose={handleClickCloseDelete} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                <DialogTitle sx={{fontSize: '1.6rem', color: 'red', fontWeight: 'bold'}}>
+                    Warning
+                </DialogTitle>
 
-                            <Typography gutterBottom variant="h3" component="div" sx = {{fontFamily: "Poppins", fontWeight: 'bold', color: "red"}} align="center">
-                                {props.username}?
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                <DialogContent>
+                <DialogContentText sx={{fontSize: '1.6rem'}}>
+                    Are you sure you want to delete
+                    <span style={{fontWeight: 'bold'}}> '{props.username}'? </span> 
+                    This action cannot be undone, and all your data will be permanently lost.
+                </DialogContentText>
                 </DialogContent>
+
+                <Typography sx={{fontWeight: 'bold', fontSize: '1.6rem'}} align="center">
+                </Typography>
+                    
                 <DialogActions>
-                    <button className="btn-cancel" onClick={handleClickClose}>Cancel</button>
-                    <button className="btn-approve" autoFocus onClick={handleUpdate} >Save Changes</button>
+                    <Button sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleClickCloseDelete}>CANCEL</Button>
+                    <Button sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleDelete}>DELETE</Button>
                 </DialogActions>
             </Dialog>
-            
 
             {/* DIALOG FOR REFUND */}
             <Dialog open={open} onClose={handleClickClose}>
