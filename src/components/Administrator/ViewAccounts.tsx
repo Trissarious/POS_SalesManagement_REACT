@@ -22,53 +22,53 @@ interface Account {
 }
 
 export default function ViewAccounts() {
-    const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser } = useAuth();
-    const [accounts, setAccounts] = useState<Account[]>([]);
-    const navigate = useNavigate();
+  const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser } = useAuth();
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
 
-
-
-    const [searchInput, setSearchInput] = useState('');
-    const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
-
-    const handleSearch = (searchValue: string) => {
-        setSearchInput(searchValue);
-        const filtered = accounts.filter((account) =>
-            String(account.username).includes(searchValue)
-        );
-        setFilteredAccounts(filtered);
-    };
+  const handleSearch = (searchValue: string) => {
+    setSearchInput(searchValue);
+    const filtered = accounts.filter((account) =>
+      String(account.username).includes(searchValue)
+    );
+    setFilteredAccounts(filtered);
+  };
 
     // Fetch Account data
     useEffect(() => {
         axios.get('http://localhost:8080/user/getAllUser')
             .then((response) => {
                 setAccounts(response.data);
-            })
+                console.log("response:", response.data)
+              })
             .catch((error) => {
                 console.error(error);
             });
     }, []);
     
     // Token
-  useEffect(() => {
-    // Check for a valid JWT token on page load
-    const token = localStorage.getItem('adminToken');
-
-    if (!token) {
-      // Redirect to the login page if there's no token
-      navigate('/loginadmin');
-    } else {
-      setIsAdminLoggedIn(true)
-
+    useEffect(() => {
+      const token = localStorage.getItem('adminLoggedIn');
+      if (!token) {
+        navigate('/loginadmin');
+      } else {
+        setIsAdminLoggedIn(true);
       // Fetch user data from API
-      axios.get('http://localhost:8080/user/getAllUser').then((response) => {
-        const userData = response.data;
-      }).catch((error) => {
-        console.error(error);
-      });
+      axios.get('http://localhost:8080/user/getAllUser')
+        .then((response) => {
+          // Filter users based on business_name
+          const filteredUsers = response.data.filter((user: Account) =>
+            user.business_name === localStorage.getItem('adminBusinessName')
+          );
+          setAccounts(filteredUsers);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, [isAdminLoggedIn, navigate]);
+  }, [isAdminLoggedIn, navigate, adminUser]);
 
 
 
