@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import './CSS Files/LoginAdmin.css';
 import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
+import { PasswordOutlined, Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,13 +26,9 @@ const LoginAdmin = () => {
 
   const handleLogin = () => {
     // Create a request object with the username and password
-    const loginRequest = {
-      username: username,
-      password: password,
-    };
 
     // Check if the username and password are not empty
-    if (!loginRequest.username || !loginRequest.password) {
+    if (!username || !password) {
       toast.error('Please enter both your username and password', {
         position: "top-center",
         autoClose: 2000,
@@ -45,15 +41,17 @@ const LoginAdmin = () => {
         });
     } else {
       // Send a POST request to the server
-      axios.post('http://localhost:8080/user/loginad', loginRequest)
+      axios.post('http://localhost:8080/user/loginad', {
+        username: username,
+        password: password
+      })
         .then((response) => {
           if (response.status === 200) {
             const token = response.data.token;
-            const username = response.data.username; // Assuming the API returns the username
-            console.log('Username from API response:', username);
+            console.log('Username from API response:');
             localStorage.setItem('adminToken', token);
             localStorage.setItem('adminLoggedIn', 'true');
-            localStorage.setItem('adminUsername', username); // Store the username in local storage
+            localStorage.setItem('adminUsername', username);
             setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
           } else {

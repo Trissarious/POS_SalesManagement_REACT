@@ -27,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
+      <AuthProvider>
       <BrowserRouter>
       <Navbar/>
             <Routes>
@@ -48,6 +49,7 @@ function App() {
               <Route path = "/imageUpload" element = {<ImageUploadAccount/>}/>
             </Routes>
         </BrowserRouter> 
+      </AuthProvider>
     </div>
   );
 }

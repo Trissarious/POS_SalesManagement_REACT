@@ -20,12 +20,12 @@ const AdminMainPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
-    const storedUsername = localStorage.getItem('adminUsername');
-    console.log('Stored username:', storedUsername); // Add this line
+    const storedUsername = localStorage.getItem('adminUsername');  // Use 'adminUsername' here
+    console.log('Stored username:', storedUsername);
     if (!token) {
       navigate('/loginadmin');
     } else {
-      setUsername(storedUsername || 'Admin'); // Set the username, default to 'Admin' if it's not available
+      setUsername(storedUsername || '');
     }
   }, [isAdminLoggedIn, navigate]);
 
