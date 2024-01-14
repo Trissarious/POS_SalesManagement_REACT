@@ -73,11 +73,8 @@ export default function ViewAccounts() {
   return (
     <div className="confirm-forgot-password">
       <div className="profile-container">
-        <div className="profile-picture">
-          <img src="/path-to-your-image" alt="Profile" />
-        </div>
-
         <div className="profile-name">
+          {localStorage.getItem('adminUsername')}
         </div>
 
       </div>

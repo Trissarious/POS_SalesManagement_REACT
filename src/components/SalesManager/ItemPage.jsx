@@ -35,25 +35,17 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
   const handleLogout = () => {
-    // Delete the 'cashierToken' from local storage
     localStorage.removeItem('salesmanToken');
-    // Clear the login state
     localStorage.removeItem('salesmanLoggedIn');
-    // Redirect to the login page
     navigate('/loginsales');
   };
 
   useEffect(() => {
-    // Check for a valid JWT token on page load
     const token = localStorage.getItem('salesmanToken');
 
     if (!token) {
-      // Redirect to the login page if there's no token
       navigate('/loginsales');
-    } else {
-      // Verify the token on the server, handle token expiration, etc.
-      // If token is valid, setIsCashierLoggedIn(true)
-    }
+    } 
   }, [isSalesmanLoggedIn, navigate]);
 
   //SEARCH BAR FILTERING
@@ -77,7 +69,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
     useEffect(() => {
       // Fetch product data from the API when the component mounts
-      axios.get('https://dilven-pos-sales-management-database-2.onrender.com/product/getAllProduct')
+      axios.get('http://localhost:8080/product/getAllProduct')
         .then((response) => {
           // Set the product data in the state
           setProducts(response.data);
@@ -111,7 +103,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
         // Send a request to update the product's quantity on the server
         axios
-          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/putQuantity?productid=${updatedProductData.productid}`, updatedProductData)
+          .put(`http://localhost:8080/product/putQuantity?productid=${updatedProductData.productid}`, updatedProductData)
           .then((response) => {
             // Assuming the server returns a successful response
             console.log('Product quantity updated successfully.');
@@ -146,7 +138,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
         // Make an API call to update the product on the server with the new name and price
         axios
-          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/putProduct?productid=${updatedProduct.productid}`, updatedProduct)
+          .put(`http://localhost:8080/product/putProduct?productid=${updatedProduct.productid}`, updatedProduct)
           .then((response) => {
             // Assuming the server returns the updated product
             const updatedProductData = response.data;
@@ -174,7 +166,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       if (window.confirm('Are you sure you want to delete this product?')) {
         // Send a request to update the isDeleted flag on the server
         axios
-          .put(`https://dilven-pos-sales-management-database-2.onrender.com/product/deleteProduct/${productId}`)
+          .put(`http:localhost:8080/product/deleteProduct/${productId}`)
           .then((response) => {
             // Assuming the server returns a successful response
             console.log('Product soft deleted successfully.');
@@ -202,7 +194,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       setIsAddProductDialogOpen(true);
     };
 
-    const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false);
+const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false);
 const [newProductName, setNewProductName] = useState('');
 const [newPrice, setNewPrice] = useState(0);
 const [newQuantity, setNewQuantity] = useState(0);
@@ -214,17 +206,15 @@ const handleAddProduct = () => {
       productname: newProductName,
       price: newPrice,
       quantity: newQuantity,
-      isDeleted: false, // Set isDeleted to false for new products
+      isDeleted: false,
     };
 
     // Send a POST request to add the new product
     axios
-      .post('https://dilven-pos-sales-management-database-2.onrender.com/product/postProduct', newProductData)
+      .post('http://localhost/product/postProduct', newProductData)
       .then((response) => {
-        // Assuming the server successfully added the new product
-        console.log('Product added successfully.');
+        alert('Product added successfully.');
 
-        // Add the new product to the local product data
         const addedProduct = response.data;
         setProducts([...products, addedProduct]);
 
@@ -238,11 +228,7 @@ const handleAddProduct = () => {
       })
       .catch((error) => {
         console.error('Error adding product:', error);
-        // Handle the error, display an error message, or implement error handling as needed
-      });
-  } else {
-    // Handle invalid input or display an error message
-  }
+      }); }
 };
 
 const [mostPurchasedProduct, setMostPurchasedProduct] = useState(null);
@@ -250,7 +236,7 @@ const [mostPurchasedProduct, setMostPurchasedProduct] = useState(null);
 useEffect(() => {
   // Fetch the product with the highest purchase count from the API
   axios
-    .get('https://dilven-pos-sales-management-database-2.onrender.com/product/most-purchased')
+    .get('http://localhost:8080/product/most-purchased')
     .then((response) => {
       // Set the most purchased product in the state
       setMostPurchasedProduct(response.data);
@@ -301,26 +287,28 @@ useEffect(() => {
             </Drawer>
 
         <div className='center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', backgroundColor: "#1D7D814D"}}>
-          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 1190}}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
+          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 1174, marginLeft: 10}}>
             ITEMS
           </Typography>
           <Button
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            style={{ marginLeft: '1rem', backgroundColor: 'green', fontSize: 12 }}
+            style={{ marginLeft: '.5rem', backgroundColor: '#4BB543', fontSize: 15 }}
             onClick={() => openAddProductDialog()}
           >
             Add Product
           </Button>
         </div>
+
+        {/* Most Purchased */}
         {mostPurchasedProduct && (
-        <div style={{ backgroundColor: "#1D7D814D", marginTop: -10}}>
-          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 1174 }}>
+        <div style={{ marginTop: -10}}>
+          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 1174, marginLeft: 10 }}>
             Most Purchased Product 
           </Typography>
-          <Typography variant="h4" style={{fontWeight: 'bolder', color: 'green', marginLeft: 10, fontFamily: 'Poppins'}}>
+          <Typography variant="h4" style={{fontWeight: 'bolder', color: '#4BB543', marginLeft: 10, fontFamily: 'Poppins'}}>
             {mostPurchasedProduct.productname}
           </Typography>
           <Typography variant="h4" style={{marginLeft: 10}}>
@@ -377,9 +365,8 @@ useEffect(() => {
 
                   <Button
                     variant="contained"
-                    color='success'
                     onClick={() => openEditDialog(product)}
-                    style={{fontSize: 12}}
+                    style={{fontSize: 12, backgroundColor: '#4BB543'}}
                   >
                     Edit
                   </Button>
