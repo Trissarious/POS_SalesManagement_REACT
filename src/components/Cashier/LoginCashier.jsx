@@ -47,7 +47,7 @@ const LoginCashier = () => { // Accept the setIsLoggedIn prop
       });
   } else {
     // Send a POST request to the server
-    axios.post('https://dilven-pos-sales-management-database-2.onrender.com/user/logincash', loginRequest)
+    axios.post('http://localhost:8080/user/logincash', loginRequest)
       .then((response) => {
         if (response.status === 200) {
           const token = response.data.token;

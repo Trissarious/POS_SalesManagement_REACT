@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -6,7 +6,6 @@ export interface Account{
     userid: number,
     username: string,
     password: string,
-    account_type: string,
     email: string,
     fname: string,
     mname: string,
@@ -25,10 +24,9 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
 
     
     function addAccount(account:Account){
-        axios.post("https://dilven-pos-sales-management-database-2.onrender.com/user/postUser",{
+        axios.post("http://localhost:8080/user/postUser",{
             username: account.username,
             password: account.password,
-            account_Type: account.account_type,
             email: account.email,
             fname: account.fname,
             mname: account.mname,
@@ -49,10 +47,9 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
     }
 
     function editAccount(account:Account){
-        axios.put("https://dilven-pos-sales-management-database-2.onrender.com/user/putUser?userid=" + account.userid,{
+        axios.put("http://localhost:8080/product/getByProduct?productid=" + account.userid,{
             username: account.username,
             password: account.password,
-            account_Type: account.account_type,
             email: account.email,
             fname: account.fname,
             mname: account.mname,
@@ -71,31 +68,26 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
         })
     }
 
-    function getAccountbyId (userid:number|undefined) {
-        axios.get("https://dilven-pos-sales-management-database-2.onrender.com/user/getByUser?userid=" + userid,{
-        }).then((response) => {
-            setAccount(response.data);
-            console.log(response.data);
-        })
-        .catch((error) => {
-            setError(error.message);
-        })
+    function getAccountbyId (userid:number|undefined){
+        axios.get("http:localhost:8080/user/getByUser?userid=" + userid,{
+    }).then((response) => {
+        setAccount(response.data);
+        console.log(response.data);
+    })
+    .catch((error) => {
+        setError(error.message);
+    })
     }
 
-    function deleteByID (userid:number|undefined){
-        const confirm = window.confirm(`Are you sure you want to delete the account for this account?`);
-        if (confirm) {
-            axios.delete("https://dilven-pos-sales-management-database-2.onrender.com/user/deleteAccount/" + userid,{
-            }).then((response) => {
-                setAccount(response.data);
-                console.log(response.data);  
-                window.location.reload()  
-            })
-            .catch((error) => {
-                setError(error.message);
-            })
-        }
-        
-    }
+function deleteByID (userid:number|undefined){
+    axios.delete("http://localhost:8080/user/deleteAccount/" + userid,{
+    }).then((response) => {
+    setAccount(response.data);
+    console.log(response.data);    
+    })
+.catch((error) => {
+    setError(error.message);
+    })
+}
     return[deleteByID,getAccountbyId,editAccount,addAccount,account,error]
 }

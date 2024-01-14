@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -16,7 +16,7 @@ export const RestProduct = ():[ (productid:number)=> void,(productid:number)=>vo
 
     
     function addProduct(product:Product){
-        axios.post("https://dilven-pos-sales-management-database-2.onrender.com/product/postProduct",{
+        axios.post("http://localhost:8080/product/postProduct",{
             productname: product.productname,
             price: product.price,
             quantity: product.quantity,
@@ -31,7 +31,7 @@ export const RestProduct = ():[ (productid:number)=> void,(productid:number)=>vo
     }
 
     function editProduct(product:Product){
-        axios.put("https://dilven-pos-sales-management-database-2.onrender.com/product/getByProduct?productid=" + product.productid,{
+        axios.put("http://localhost:8080/product/getByProduct?productid=" + product.productid,{
             productname: product.productname,
             price: product.price,
             quantity: product.quantity,
@@ -44,20 +44,8 @@ export const RestProduct = ():[ (productid:number)=> void,(productid:number)=>vo
         })
     }
 
-//     function getByProductname (productname:string|undefined){
-//         axios.get("http://localhost:8080/product/getByProduct?productname=" + productname,{
-//     }).then((response) => {
-//         setProduct(response.data);
-//         console.log(response.data);
-//     })
-//     .catch((error) => {
-//         setError(error.message);
-//     })
-// }
-
-
 function getProductByid (productid:number|undefined){
-    axios.get("https://dilven-pos-sales-management-database-2.onrender.com/product/getByProduct?productID=" + productid,{
+    axios.get("http://localhost:8080/product/getByProduct?productID=" + productid,{
 }).then((response) => {
     setProduct(response.data);
     console.log(response.data);
@@ -68,7 +56,7 @@ function getProductByid (productid:number|undefined){
 }
 
 function deleteByID (productid:number|undefined){
-    axios.delete("https://dilven-pos-sales-management-database-2.onrender.com1/product/deleteProduct/" + productid,{
+    axios.delete("http://localhost:8081/product/deleteProduct/" + productid,{
     }).then((response) => {
     setProduct(response.data);
     console.log(response.data);    

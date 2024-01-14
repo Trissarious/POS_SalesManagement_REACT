@@ -45,14 +45,17 @@ const LoginAdmin = () => {
         });
     } else {
       // Send a POST request to the server
-      axios.post('https://dilven-pos-sales-management-database-2.onrender.com/user/loginad', loginRequest)
+      axios.post('http://localhost:8080/user/loginad', loginRequest)
         .then((response) => {
+          login: console.log("response is", response)
           if (response.status === 200) {
             const token = response.data.token;
             const username = response.data.username; // Assuming the API returns the username
             console.log('Username from API response:', username);
             localStorage.setItem('adminToken', token);
             localStorage.setItem('adminLoggedIn', 'true');
+            localStorage.setItem('adminUsername', username); // Store the username in local storage
+            localStorage.setItem('adminBusinessName', response.data.business_name); //Store businessname in local storage
             localStorage.setItem('adminUsername', username); // Store the username in local storage
             setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
