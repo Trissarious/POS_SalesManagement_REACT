@@ -287,37 +287,36 @@ useEffect(() => {
             </Drawer>
 
         <div className='center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
-          <Typography variant="h1" style={{ fontWeight: 'bold', marginRight: 1174, marginLeft: 10}}>
+ 
+          <Typography variant="h1" style={{ fontWeight: 'bold', width: '1500px'}}>
             ITEMS
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            style={{ marginLeft: '.5rem', backgroundColor: '#4BB543', fontSize: 15 }}
-            onClick={() => openAddProductDialog()}
-          >
-            Add Product
-          </Button>
-        </div>
 
         {/* Most Purchased */}
         {mostPurchasedProduct && (
         <div style={{ marginTop: -10}}>
-          <Typography variant="h3" style={{ fontWeight: 'bold', marginRight: 1174, marginLeft: 10 }}>
+          <Typography variant="h3" style={{ fontWeight: 'bold', width: '1500px'}}>
             Most Purchased Product 
           </Typography>
-          <Typography variant="h4" style={{fontWeight: 'bolder', color: '#4BB543', marginLeft: 10, fontFamily: 'Poppins'}}>
+          <Typography variant="h4" style={{fontWeight: 'bolder', color: '#4BB543', width: '1500px', fontFamily: 'Poppins'}}>
             {mostPurchasedProduct.productname}
           </Typography>
-          <Typography variant="h4" style={{marginLeft: 10}}>
+          <Typography variant="h4" style={{ wdith: '1500px' }}>
             Purchase Count: {mostPurchasedProduct.purchaseCount}
           </Typography>
         </div>
-      )}
+        )}
 
-          
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          style={{ backgroundColor: '#4BB543', fontSize: 15, marginRight: '1330px' }}
+          onClick={() => openAddProductDialog()}
+        >
+          Add Product
+        </Button>
+
        {/*Search Bar */}
        <TextField
           type="text"
