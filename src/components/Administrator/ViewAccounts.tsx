@@ -59,8 +59,8 @@ export default function ViewAccounts() {
       axios.get('http://localhost:8080/user/getAllUser')
         .then((response) => {
           // Filter users based on business_name
-          const filteredUsers = response.data.filter((user: Account) =>
-            user.business_name === localStorage.getItem('adminBusinessName')
+          const filteredUsers = response.data.filter((username: Account) =>
+            username.business_name === localStorage.getItem('adminBusinessName')
           );
           setAccounts(filteredUsers);
         })
@@ -69,8 +69,6 @@ export default function ViewAccounts() {
         });
     }
   }, [isAdminLoggedIn, navigate, adminUser]);
-
-
 
   return (
     <div className="confirm-forgot-password">

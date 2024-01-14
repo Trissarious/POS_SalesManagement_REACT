@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import "./CSS Files/./AdminMainPage.css";
+import { Typography } from '@mui/material';
 
 const AdminMainPage = () => {
   const { isAdminLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
 
   const handleLogout = () => {
     const confirm = window.confirm('Are you sure you want to log out?')
@@ -21,12 +21,12 @@ const AdminMainPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     const storedUsername = localStorage.getItem('adminUsername');
-    console.log('Stored username:', storedUsername); // Add this line
+    const storedBusinessName = localStorage.getItem('adminBusinessName')
+    console.log('Stored username:', storedUsername);
+    console.log('Business Name: ', storedBusinessName)
     if (!token) {
       navigate('/loginadmin');
-    } else {
-      setUsername(storedUsername || 'Admin'); // Set the username, default to 'Admin' if it's not available
-    }
+    } 
   }, [isAdminLoggedIn, navigate]);
 
   return (

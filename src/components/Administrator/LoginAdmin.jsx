@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import './CSS Files/LoginAdmin.css';
 import { TextField, IconButton, InputAdornment, Typography } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
+import { PasswordOutlined, Visibility, VisibilityOff } from '@mui/icons-material'; // Import visibility icons
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,7 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [business_name, setBusiness_Name] = useState('');
   const { setIsAdminLoggedIn } = useAuth(); // Get the context
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Get the navigate function
@@ -25,14 +26,7 @@ const LoginAdmin = () => {
   }, [navigate]);
 
   const handleLogin = () => {
-    // Create a request object with the username and password
-    const loginRequest = {
-      username: username,
-      password: password,
-    };
-
-    // Check if the username and password are not empty
-    if (!loginRequest.username || !loginRequest.password) {
+    if (!username || !password) {
       toast.error('Please enter both your username and password', {
         position: "top-center",
         autoClose: 2000,
@@ -45,18 +39,19 @@ const LoginAdmin = () => {
         });
     } else {
       // Send a POST request to the server
-      axios.post('http://localhost:8080/user/loginad', loginRequest)
+      axios.post('http://localhost:8080/user/loginad', {
+        username: username,
+        password: password,
+        business_name: business_name
+      })
         .then((response) => {
-          login: console.log("response is", response)
           if (response.status === 200) {
             const token = response.data.token;
-            const username = response.data.username; // Assuming the API returns the username
-            console.log('Username from API response:', username);
+            console.log('Username from API response:');
             localStorage.setItem('adminToken', token);
             localStorage.setItem('adminLoggedIn', 'true');
-            localStorage.setItem('adminUsername', username); // Store the username in local storage
-            localStorage.setItem('adminBusinessName', response.data.business_name); //Store businessname in local storage
-            localStorage.setItem('adminUsername', username); // Store the username in local storage
+            localStorage.setItem('adminUsername', username);
+            localStorage.setItem('adminBusinessName', response.data.business_name);
             setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
           } else {
