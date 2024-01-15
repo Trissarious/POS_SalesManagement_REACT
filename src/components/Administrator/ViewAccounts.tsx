@@ -25,6 +25,8 @@ import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import UpdateAccount from './UpdateAccount';
 
 const drawerWidth: number = 300;
 
@@ -156,6 +158,22 @@ export default function ViewAccounts() {
             });
     }, []);
 
+    const columns: GridColDef[] = [
+      { field: 'userid', headerName: 'ID', width: 70 },
+      { field: 'username', headerName: 'Username', width: 130 },
+      { field: 'account_type', headerName: 'Account Type', width: 130 },
+      { field: 'business_name', headerName: 'Business Name', width: 150 },
+      { field: 'fname', headerName: 'First Name', width: 130 },
+      { field: 'lname', headerName: 'Last Name', width: 130 },
+      { field: 'gender', headerName: 'Gender', width: 130 },
+      { field: 'address', headerName: 'Address', width: 150 },
+      { field: 'contactnum', headerName: 'Phone', width: 130 },
+      { field: 'email', headerName: 'Email', width: 130 },
+      { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <UpdateAccount {...params.row} /> }
+    ];
+    
+    const data = searchInput ? filteredAccounts.map((account) => ({ id: account.userid, ...account })) : accounts.map((account) => ({ id: account.userid, ...account }));
+
   return (
     <ThemeProvider theme={themeDilven}>
       <Box sx={{ display: 'flex' }}>
@@ -264,21 +282,34 @@ export default function ViewAccounts() {
             <Grid container spacing={3}>
               {/* Input Details to create account */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
 
                   <input 
                     type="text" 
+                    className="form__field"
                     placeholder='Search username'
                     onChange={(e) => handleSearch(e.target.value)}
                     style={{
                       width: '50%',
                       fontSize: 16,
-                      fontWeight: 'bold',
-                      padding: 10
+                      padding: 10,
+                      marginBottom: 10,
+                      borderRadius: 5,
                     }}
                   />
 
-                  
+                  <div style={{ height: 700, width: '100%' }}>
+                  {searchInput && filteredAccounts.length === 0 ? (
+                    <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px', fontWeight: 'bolder' }}>Account not found.</p>
+                  ) : (
+                      <DataGrid
+                        sx={{ fontSize: 15 }}
+                        rows={data}
+                        columns={columns}
+                        pageSizeOptions={[5, 10]}
+                      />
+                  )}
+                </div>
                   
                 </Paper>
               </Grid>

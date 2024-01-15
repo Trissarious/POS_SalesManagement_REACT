@@ -156,8 +156,7 @@ export default function UpdateAccount(props: Account) {
                 className="btn btn-success btn-lg"
                 style={{
                     marginRight: 5,
-                    padding: '10px 40px', 
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: 'medium'
                 }} 
                 onClick={handleClickOpen}>Edit</button>
@@ -166,8 +165,7 @@ export default function UpdateAccount(props: Account) {
                 className="btn btn-danger btn-lg"
                 style={{
                     marginRight: 5,
-                    padding: '10px 40px', 
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: 'medium'
                 }} 
                 onClick = { handleClickOpenDelete }
