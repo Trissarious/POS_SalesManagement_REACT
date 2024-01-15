@@ -15,13 +15,13 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
 import './CSS Files/CreateAccountAdmin.css';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { ManageAccounts } from '@mui/icons-material';
+import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { toast } from 'react-toastify';
 import { previousDay } from 'date-fns';
@@ -310,40 +310,45 @@ export default function Dashboard() {
           <List component="nav">
             <Link to="/#" className='side-nav'>
               <IconButton color="inherit">
-                <HomeIcon sx={{fontSize: 27}}/>
+                <HomeIcon sx={{fontSize: 15}}/>
               </IconButton>
               <Button>Home</Button>
             </Link>
 
             <Link to="/adminmainpage" className='side-nav'>
               <IconButton color="inherit">
-                <ShieldIcon sx={{fontSize: 27}}/>
+                <ShieldIcon sx={{fontSize: 15}}/>
               </IconButton>
               <Button>Admin Main</Button>
             </Link>
 
             <Link to="/createaccountadmin" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
               <IconButton color="inherit">
-                <PersonAddIcon sx={{fontSize: 27}}/>
+                <PersonAddIcon sx={{fontSize: 15}}/>
               </IconButton>
               <Button>Create an Account</Button>
             </Link>
 
             <Link to="/viewaccounts" className='side-nav'>
               <IconButton color="inherit">
-                <ManageAccounts sx={{fontSize: 27}}/>
+                <ManageAccounts sx={{fontSize: 15}}/>
               </IconButton>
               <Button>View Accounts</Button>
             </Link>
 
             <Link to="/loginadmin"  className='side-nav'>
               <IconButton color="inherit">
-                <LogoutIcon sx={{fontSize: 27}}/>
+                <LogoutIcon sx={{fontSize: 15}}/>
               </IconButton>
               <Button>Logout</Button>
             </Link>
           </List>
         </Drawer>
+
+        {/* Check if fields are empty */}
+        {!isFormValid && (
+          <p>Please fill in all required fields.</p>
+        )}
         <Box
           component="main"
           sx={{
@@ -362,7 +367,193 @@ export default function Dashboard() {
               {/* Input Details to create account */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}}>
-                  
+                  <Paper sx={{ 
+                      p: 2, 
+                      display: 'flex', 
+                      flexDirection: 'row',
+                      fontSize: 15, 
+                      boxShadow: 'none',
+                      }}>
+                    <TextField
+                      type='text'
+                      variant='outlined'
+                      fullWidth
+                      label='Username'
+                      value={username}
+                      style={{marginRight: 10}}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                      inputProps={{
+                        style: {fontSize: 16}
+                      }}
+                      InputLabelProps={{
+                        style:{fontSize: 16}
+                      }}
+                    />
+                    
+                    <TextField
+                      select
+                      fullWidth
+                      label="Account Type"
+                      variant="outlined"
+                      value={selectedAccountType}
+                      style={{marginBottom: '-30px'}}
+                      onChange={(e: ChangeEvent<{ value: unknown }>) =>
+                        setSelectedAccountType(e.target.value as string)
+                      }
+                      InputProps={{
+                        style: {
+                          fontSize: 16,
+                          height: 'auto',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                      FormHelperTextProps={{
+                        style: {
+                          fontSize: 12,
+                        },
+                      }}
+                      helperText="Please select your account type."
+                    >
+                      {Account_Type.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          <Typography sx={{ fontSize: 16}}>
+                            {option.label}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Paper>
+
+                  <Paper sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    flexDirection: 'row',
+                    fontSize: 15, 
+                    boxShadow: 'none',
+                    }}>
+                    <TextField
+                      type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                      label="Password"
+                      variant="outlined"
+                      value={password}
+                      fullWidth
+                      onChange={handlePasswordChange}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                      style={{ marginRight: '10px'}}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton onClick={togglePasswordVisibility}>
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+
+                  <TextField
+                    type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                    label="Confirm Password"
+                    variant="outlined"
+                    value={confirmPassword}
+                    fullWidth
+                    onChange={handleConfirmPasswordChange}
+                    inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+                    InputLabelProps={{
+                      style: { fontSize: 16, fontFamily: 'Poppins' },
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={togglePasswordVisibility}>
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  </Paper>
+
+                  <Paper sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    flexDirection: 'row',
+                    fontSize: 15, 
+                    boxShadow: 'none',
+                    marginTop: '-20px'
+                    }}>
+                    <TextField
+                      type= 'text'
+                      label="First Name"
+                      variant="outlined"
+                      value={fname}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setFname(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                      style={{ marginRight: '10px'}}
+                    />
+
+                    <TextField
+                      type= 'text'
+                      label="Last Name"
+                      variant="outlined"
+                      value={lname}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setLname(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                    />
+                  </Paper>
+
+                  <Paper sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    flexDirection: 'row',
+                    fontSize: 15, 
+                    boxShadow: 'none',
+                    marginTop: '-20px'
+                    }}>
+                    <TextField
+                      type= 'text'
+                      label="Business Name"
+                      variant="outlined"
+                      value={business_name}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setBusiness_name(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                      style={{ marginRight: '10px'}}
+                    />
+
+                    <TextField
+                      type= 'text'
+                      label="Address"
+                      variant="outlined"
+                      value={address}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                    />
+                  </Paper>
+
                 </Paper>
               </Grid>
             </Grid>
