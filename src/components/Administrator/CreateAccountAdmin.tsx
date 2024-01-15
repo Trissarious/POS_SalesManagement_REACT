@@ -28,7 +28,7 @@ import { previousDay } from 'date-fns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { error } from 'console';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const drawerWidth: number = 300;
 
@@ -302,8 +302,23 @@ export default function Dashboard() {
             >
               Create an Account
             </Typography>
+
+            <Typography
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}>
+              <span className='nav-user' style={{ float: 'right', marginRight: 10}}>
+                  <IconButton color="inherit">
+                  <AccountCircleIcon sx={{fontSize: 30}}/>
+                  </IconButton>
+                  {localStorage.getItem('adminUsername')}
+              </span>
+            </Typography>
           </Toolbar>
         </AppBar>
+
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -316,7 +331,7 @@ export default function Dashboard() {
               px: [1],
             }}
           >
-            {localStorage.getItem('adminUsername')} {/* Display Username */}
+            {localStorage.getItem('adminBusinessName')}
           </Toolbar>
           <Divider />
           <List component="nav">
@@ -370,7 +385,7 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Input Details to create account */}
               <Grid item xs={12}>
@@ -480,9 +495,9 @@ export default function Dashboard() {
                     value={confirmPassword}
                     fullWidth
                     onChange={handleConfirmPasswordChange}
-                    inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+                    inputProps={{ style: { fontSize: 16} }}
                     InputLabelProps={{
-                      style: { fontSize: 16, fontFamily: 'Poppins' },
+                      style: { fontSize: 16},
                     }}
                     InputProps={{
                       endAdornment: (
@@ -633,7 +648,6 @@ export default function Dashboard() {
                       InputProps={{
                         style: {
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                           minHeight: '2.5em',
                           height: 'auto',
                           textOverflow: 'ellipsis',
@@ -641,21 +655,20 @@ export default function Dashboard() {
                           overflow: 'hidden',
                         },
                       }}
-                      style={{ marginBottom: '10px', width: 600 }}
+                      style={{ marginBottom: '10px', width: 709, marginRight: 9 }}
                       InputLabelProps={{
-                        style: { fontSize: 16, fontFamily: 'Poppins' },
+                        style: { fontSize: 16},
                       }}
                       FormHelperTextProps={{
                         style: {
                           fontSize: 12,
-                          fontFamily: 'Poppins',
                         },
                       }}
                       helperText="Please select your gender."
                     >
                       {Gender.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
-                          <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
+                          <Typography sx={{ fontSize: 16 }}>
                             {option.label}
                           </Typography>
                         </MenuItem>
@@ -668,7 +681,7 @@ export default function Dashboard() {
                         onChange={handleDateChange}
                         sx={{
                           marginBottom: '10px',
-                          width: 600,
+                          width: 709,
                           '& .MuiInputBase-input': {
                             fontSize: '16px', // Adjust the input font size
                           },

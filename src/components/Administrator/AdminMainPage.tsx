@@ -55,10 +55,15 @@ return (
         <div className="profile-name" 
           style= 
             {{
-               backgroundColor: '#1D7D81', 
-               color: 'white', padding: 20, 
-               fontWeight: 'bold', width: '50%', 
-               justifyContent: 'center' 
+              backgroundColor: '#1D7D81', 
+              color: 'white',
+              padding: 20, 
+              fontWeight: 'bold', 
+              width: '50%', 
+              justifyContent: 'center',
+              margin: 'auto',
+              display: 'flex',
+              alignContent: 'center'
             }}>
           {localStorage.getItem('adminFirstName')}
         </div>
