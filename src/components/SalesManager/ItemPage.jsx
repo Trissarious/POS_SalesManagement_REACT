@@ -105,17 +105,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         axios
           .put(`http://localhost:8080/product/putQuantity?productid=${updatedProductData.productid}`, updatedProductData)
           .then((response) => {
-            // Assuming the server returns a successful response
             console.log('Product quantity updated successfully.');
     
-            // Update the local product data
             const updatedProducts = products.map((product) =>
               product.productid === updatedProductData.productid ? { ...product, quantity: updatedProductData.quantity } : product
             );
     
             setProducts(updatedProducts);
     
-            // Close the dialog
             setIsDialogOpen(false);
           })
           .catch((error) => {
@@ -427,21 +424,27 @@ useEffect(() => {
 </Dialog>
 
 <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-  <DialogTitle>Restock Product</DialogTitle>
+  <DialogTitle sx={{ fontSize: 15 }}> Restock Product </DialogTitle>
   <DialogContent>
     <TextField
+      sx={{fontSize: 15}}
       label="Restock Quantity"
       type="number"
       value={restockQuantity}
       onChange={(e) => setRestockQuantity(e.target.value)}
     />
   </DialogContent>
+
   <DialogActions>
-    <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-    <Button onClick={handleRestock} color="primary">
+    <Button onClick={() => setIsDialogOpen(false)} sx={{ fontSize: 15, fontWeight: 'bold' }}>
+      Cancel
+    </Button>
+
+    <Button onClick={handleRestock} color="primary" sx={{ fontSize: 15, fontWeight: 'bold' }}>
       Confirm Restock
     </Button>
   </DialogActions>
+
 </Dialog>
 <Dialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)}>
   <DialogTitle>Edit Product</DialogTitle>

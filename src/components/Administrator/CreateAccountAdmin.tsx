@@ -15,10 +15,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
   {
-    value: 'Administrator',
-    label: 'Administrator',
-  },
-  {
     value: 'Cashier',
     label: 'Cashier',
   },

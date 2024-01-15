@@ -12,7 +12,8 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [business_name, setBusiness_Name] = useState('');
+  const [business_name] = useState('');
+  const [fname] = useState('');
   const { setIsAdminLoggedIn } = useAuth(); // Get the context
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Get the navigate function
@@ -42,7 +43,8 @@ const LoginAdmin = () => {
       axios.post('http://localhost:8080/user/loginad', {
         username: username,
         password: password,
-        business_name: business_name
+        business_name: business_name,
+        fname: fname
       })
         .then((response) => {
           if (response.status === 200) {
@@ -52,6 +54,7 @@ const LoginAdmin = () => {
             localStorage.setItem('adminLoggedIn', 'true');
             localStorage.setItem('adminUsername', username);
             localStorage.setItem('adminBusinessName', response.data.business_name);
+            localStorage.setItem('adminFirstName', response.data.fname);
             setIsAdminLoggedIn(true);
             navigate('/adminmainpage');
           } else {

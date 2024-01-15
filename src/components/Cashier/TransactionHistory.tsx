@@ -61,8 +61,7 @@ const TransactionHistory = () => {
             });
     }, []);
 
-    const [, setNavigatorColor] = useState('#daede5'); // Set the default color of the navigator
-    // Function to highlight the color of the navigator if you are in the page using the color '#daede5'
+    const [, setNavigatorColor] = useState('#daede5');
     useEffect(() => {
         if (location.pathname === '/transactionhistory') {
             setNavigatorColor('#daede5');

@@ -5,6 +5,7 @@ import './CSS FIles/TransactionDetails.css';
 import { Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
+import { spawn } from 'child_process';
 
 interface Product {
     productid: number;
@@ -53,7 +54,7 @@ const TransactionDetails = () => {
     const [initialPassword] = useState('');
 
     useEffect(() => {
-        axios.get(`https://dilven-pos-sales-management-database-2.onrender.com/transaction/getByTransaction?transactionid=${id}`)
+        axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
             .then((response) => {
                 console.log(response.data);
                 const responseData: TransactionDetails = response.data;
@@ -63,7 +64,7 @@ const TransactionDetails = () => {
                 console.error(error);
             });
 
-        axios.get(`https://dilven-pos-sales-management-database-2.onrender.com/transaction/${id}/products`)
+        axios.get(`http://localhost:8080/transaction/${id}/products`)
             .then((response) => {
                 const responseData: Product[] = response.data;
                 setProducts(responseData);
@@ -226,11 +227,15 @@ const TransactionDetails = () => {
                         </tr>
                         <tr>
                             <th>Refunded</th>
-                            <td>{transactionDetails.refunded ? 'Yes' : 'No'}</td>
+                            <td style={{color: '#dc3545'}}>
+                                {transactionDetails.refunded ? 'Yes' : 'No'}
+                            </td>
                         </tr>
                         <tr>
                             <th>Returned</th>
-                            <td>{transactionDetails.returned ? 'Yes' : 'No'}</td>
+                            <td style={{color: '#dc3545'}}>
+                                {transactionDetails.returned ? 'Yes' : 'No'}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
