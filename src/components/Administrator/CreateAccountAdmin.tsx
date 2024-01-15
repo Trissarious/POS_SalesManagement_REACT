@@ -23,15 +23,18 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
 import ShieldIcon from '@mui/icons-material/Shield';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { previousDay } from 'date-fns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { error } from 'console';
 
-const drawerWidth: number = 240;
+const drawerWidth: number = 300;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
-
 
 interface Account {
   userid: number,
@@ -201,29 +204,30 @@ export default function Dashboard() {
   };
 
   const handleSubmit = () => {
-    if(isFormComplete()) {
-      if(selectedDate) {
+    if (isFormComplete()) {
+      if (selectedDate) {
         const formattedDate = selectedDate.toLocaleDateString('en-US', {
           year: 'numeric',
           month: '2-digit',
           day: '2-digit'
         });
-      
+  
         axios.post(post_account, {
           username: username,
-            password: password,
-            account_type: selectedAccountType,
-            email: email,
-            fname: fname,
-            lname: lname,
-            business_name: business_name,
-            address: address,
-            contactnum: contactnum,
-            gender: selectedGender,
-            bday: formattedDate,
-        }).then((res) => {
-          toast.success('Account created successfully.', {
-            position: "top-center",
+          password: password,
+          account_type: selectedAccountType,
+          email: email,
+          fname: fname,
+          lname: lname,
+          business_name: business_name,
+          address: address,
+          contactnum: contactnum,
+          gender: selectedGender,
+          bday: formattedDate,
+        })
+          .then((res) => {
+            toast.success('Account created successfully.', {
+              position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -231,18 +235,25 @@ export default function Dashboard() {
               draggable: true,
               progress: undefined,
               theme: "colored",
-          });
-          console.log(res.data);
-        }).catch((err) => console.log(err));
-          toast.error('Username has already been used. Please try again with a different username.', {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
+            });
+            console.log(res.data);
+          })
+          .catch((err) => {
+            if (err.response && err.response.status === 500) {
+              toast.error('Username has already been used. Please try again with a different username.', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            } else {
+              // Handle other errors here
+              console.log(err);
+            }
           });
       } else {
         alert('Please select a birth date');
@@ -269,6 +280,7 @@ export default function Dashboard() {
   };
 
   const passwordsMatch = password === confirmPassword;
+
 
   return (
     <ThemeProvider theme={themeDilven}>
@@ -344,11 +356,7 @@ export default function Dashboard() {
             </Link>
           </List>
         </Drawer>
-
-        {/* Check if fields are empty */}
-        {!isFormValid && (
-          <p>Please fill in all required fields.</p>
-        )}
+        
         <Box
           component="main"
           sx={{
@@ -367,6 +375,12 @@ export default function Dashboard() {
               {/* Input Details to create account */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}}>
+
+                  {/* Check if fields are empty */}
+                  {!isFormValid && (
+                    <p style={{color: 'red'}}>Please fill in all required fields.</p>
+                  )}
+
                   <Paper sx={{ 
                       p: 2, 
                       display: 'flex', 
@@ -480,7 +494,15 @@ export default function Dashboard() {
                       ),
                     }}
                   />
+
+                  
                   </Paper>
+                  {/* Validate if password match */}
+                  {!passwordsMatch && (
+                    <p style={{ color: 'red', fontSize: 12, marginBottom: 20, marginLeft: 30}}>
+                      Passwords do not match.
+                    </p>
+                  )}
 
                   <Paper sx={{ 
                     p: 2, 
@@ -554,12 +576,138 @@ export default function Dashboard() {
                     />
                   </Paper>
 
+                  <Paper sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    flexDirection: 'row',
+                    fontSize: 15, 
+                    boxShadow: 'none',
+                    marginTop: '-20px'
+                    }}>
+                    <TextField
+                      type= 'text'
+                      label="Email"
+                      variant="outlined"
+                      value={email}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                      style={{ marginRight: '10px'}}
+                    />
+
+                    <TextField
+                      type= 'text'
+                      label="Contact Number"
+                      variant="outlined"
+                      value={contactnum}
+                      fullWidth
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setContactnum(e.target.value)}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
+                    />
+                  </Paper>
+
+                  <Paper sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    flexDirection: 'row',
+                    fontSize: 15, 
+                    boxShadow: 'none',
+                    marginTop: '-20px'
+                    }}>
+
+                    <TextField
+                      select
+                      label="Gender"
+                      variant="outlined"
+                      fullWidth
+                      value={selectedGender}
+                      onChange={(e: ChangeEvent<{ value: unknown }>) =>
+                        setSelectedGender(e.target.value as string)
+                      }
+                      InputProps={{
+                        style: {
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          minHeight: '2.5em',
+                          height: 'auto',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                        },
+                      }}
+                      style={{ marginBottom: '10px', width: 600 }}
+                      InputLabelProps={{
+                        style: { fontSize: 16, fontFamily: 'Poppins' },
+                      }}
+                      FormHelperTextProps={{
+                        style: {
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                        },
+                      }}
+                      helperText="Please select your gender."
+                    >
+                      {Gender.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
+                            {option.label}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </TextField>
+
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        sx={{
+                          marginBottom: '10px',
+                          width: 600,
+                          '& .MuiInputBase-input': {
+                            fontSize: '16px', // Adjust the input font size
+                          },
+                          '& .MuiPickersDay-day': {
+                            fontSize: '16px', // Adjust the day font size
+                          },
+                          '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
+                            fontSize: '16px', // Adjust the year font size
+                          },
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Paper>
+
+                  <Button
+                    variant='contained'
+                    sx={{ mt: 3, mb: 2 }}
+                    type='submit'
+                    onClick={handleSubmit}
+                    style={{ 
+                      display: 'flex',
+                      margin: 'auto',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 15,
+                      width: 500,
+                      padding: 10,
+                      backgroundColor: '#4BB543'
+                    }}
+                  >
+                    Create Account
+                  </Button>
                 </Paper>
               </Grid>
             </Grid>
           </Container>
         </Box>
       </Box>
+      <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
     </ThemeProvider>
   );
 }
