@@ -3,6 +3,7 @@ import { Link, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import "./CSS Files/./AdminMainPage.css";
 import { Typography } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 interface Account {
@@ -25,17 +26,6 @@ const AdminMainPage = () => {
       navigate('/loginadmin');
     }
   };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('adminToken');
-  //   const storedUsername = localStorage.getItem('adminUsername');
-  //   const storedBusinessName = localStorage.getItem('adminBusinessName')
-  //   console.log('Stored username:', storedUsername);
-  //   console.log('Business Name: ', storedBusinessName)
-  //   if (!token) {
-  //     navigate('/loginadmin');
-  //   } 
-  // }, [isAdminLoggedIn, navigate]);
 
   // Token
   useEffect(() => {

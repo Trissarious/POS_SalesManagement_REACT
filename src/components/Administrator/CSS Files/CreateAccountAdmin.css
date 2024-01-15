@@ -106,3 +106,23 @@
 .error-message {
   color: red;
 }
+
+.side-nav {
+  display: flex;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.side-nav Button {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  text-transform: none;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.side-nav:hover {
+  transition: .2s;
+  background-color: #f2f2f2;
+  text-decoration: none;
+}

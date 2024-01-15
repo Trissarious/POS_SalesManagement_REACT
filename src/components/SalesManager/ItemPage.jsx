@@ -208,7 +208,7 @@ const handleAddProduct = () => {
 
     // Send a POST request to add the new product
     axios
-      .post('http://localhost/product/postProduct', newProductData)
+      .post('http://localhost:8080/product/postProduct', newProductData)
       .then((response) => {
         alert('Product added successfully.');
 

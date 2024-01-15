@@ -4,7 +4,7 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 import './CSS Files/ViewAccounts.css'
 import axios from "axios";
 import UpdateAccount from "./UpdateAccount";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Account {
   userid: number,

@@ -28,7 +28,6 @@ function App() {
     <div className="App">
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
       <BrowserRouter>
-      <Navbar/>
             <Routes>
               <Route path = "/" element = {<StartingScreen/>}/>
               <Route path = "/loginsales" element = {<LoginSalesManager/>}></Route>

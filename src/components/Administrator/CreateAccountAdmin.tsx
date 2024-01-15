@@ -1,16 +1,52 @@
-import React, { useState, ChangeEvent } from 'react';
-import './CSS Files/./CreateAccountAdmin.css';
+import * as React from 'react';
+import { styled, createTheme, ThemeProvider, createMuiTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import { useAuth } from '../AccountLoginValid/AuthContext';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button,IconButton,InputAdornment,MenuItem,TextField,Typography} from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Button, IconButton } from '@mui/material';
+import './CSS Files/CreateAccountAdmin.css';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { ManageAccounts } from '@mui/icons-material';
+import ShieldIcon from '@mui/icons-material/Shield';
+import { toast } from 'react-toastify';
+import { previousDay } from 'date-fns';
+
+const drawerWidth: number = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+
+interface Account {
+  userid: number,
+  username: string,
+  account_type: string,
+  password: string,
+  email: string,
+  fname: string,
+  lname: string,
+  business_name: string,
+  address: string,
+  contactnum: string,
+  gender: string,
+  bday: string
+}
 
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
@@ -39,7 +75,95 @@ const Gender = [
   },
 ];
 
-export default function CreateAccountAdmin() {
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(9),
+        },
+      }),
+    },
+  }),
+);
+
+
+const defaultTheme = createTheme();
+
+export default function Dashboard() {
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
+  const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser } = useAuth();
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
+
+  // Token
+  useEffect(() => {
+    const token = localStorage.getItem('adminLoggedIn');
+    if (!token) {
+      navigate('/loginadmin');
+    } else {
+      setIsAdminLoggedIn(true);
+    // Fetch user data from API
+    axios.get('http://localhost:8080/user/getAllUser')
+      .then((response) => {
+        // Filter users based on business_name
+        const filteredUsers = response.data.filter((username: Account) =>
+          username.business_name === localStorage.getItem('adminBusinessName')
+        );
+        setAccounts(filteredUsers);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  }, [isAdminLoggedIn, navigate, adminUser]);
+
+  const themeDilven = createTheme({
+    palette: {
+      primary: {
+        main: '#1D7D81',
+      },
+    },
+  });
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -59,31 +183,34 @@ export default function CreateAccountAdmin() {
     setSelectedDate(date);
   };
 
-  // Function to check if all required fields are filled
+  //Function to check if all required fields are all filled
   const isFormComplete = () => {
     return (
-      username.trim() !== '' &&
+         username.trim() !== '' &&
       password.trim() !== '' &&
       selectedAccountType.trim() !== '' &&
       fname.trim() !== '' &&
       lname.trim() !== '' &&
       selectedDate !== null &&
-      contactnum.trim() !== ''
+      contactnum.trim() !== '' &&
+      address.trim() !== '' &&
+      selectedGender.trim() !== '' &&
+      email.trim() !== '' &&
+      business_name.trim() !== ''
     );
   };
 
-  const handleSubmit = async () => {
-    if (isFormComplete()) {
-      if (selectedDate) {
-        // The form is complete, so proceed with the Axios POST request
+  const handleSubmit = () => {
+    if(isFormComplete()) {
+      if(selectedDate) {
         const formattedDate = selectedDate.toLocaleDateString('en-US', {
           year: 'numeric',
           month: '2-digit',
-          day: '2-digit',
+          day: '2-digit'
         });
-
+      
         axios.post(post_account, {
-            username: username,
+          username: username,
             password: password,
             account_type: selectedAccountType,
             email: email,
@@ -94,9 +221,9 @@ export default function CreateAccountAdmin() {
             contactnum: contactnum,
             gender: selectedGender,
             bday: formattedDate,
-          }).then((res) => {
-            toast.success('Account created successfully.', {
-              position: "top-center",
+        }).then((res) => {
+          toast.success('Account created successfully.', {
+            position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -104,21 +231,21 @@ export default function CreateAccountAdmin() {
               draggable: true,
               progress: undefined,
               theme: "colored",
-              });
-            console.log(res.data);
-          }).catch((err) => console.log(err));
-            toast.error('Username has already been used. Please try again with a different username.', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
+          });
+          console.log(res.data);
+        }).catch((err) => console.log(err));
+          toast.error('Username has already been used. Please try again with a different username.', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       } else {
-        alert('Please select a birth date.');
+        alert('Please select a birth date');
       }
     } else {
       setFormValid(false);
@@ -144,306 +271,104 @@ export default function CreateAccountAdmin() {
   const passwordsMatch = password === confirmPassword;
 
   return (
-    <div className="register-div">
-      {!isFormValid && (
-        <p className="error-message">Please fill in all required fields.</p>
-      )}
-      <h1 className="h1-register">Create an Account</h1>
-      <div className="container-fluid center-form">
-        <div className="left-column">
-          <TextField
-            type="text"
-            variant="outlined"
-            label="Username"
-            value={username}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
+    <ThemeProvider theme={themeDilven}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
+            sx={{
+              pr: '24px',
             }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-
-          <TextField
-            type={showPassword ? 'text' : 'password'} // Toggle password visibility
-            label="Password"
-            variant="outlined"
-            value={password}
-            fullWidth
-            onChange={handlePasswordChange}
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <TextField
-            type={showPassword ? 'text' : 'password'} // Toggle password visibility
-            label="Confirm Password"
-            variant="outlined"
-            value={confirmPassword}
-            fullWidth
-            onChange={handleConfirmPasswordChange}
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {!passwordsMatch && (
-            <p style={{ color: 'red', fontSize: 12 }}>
-              Passwords do not match.
-            </p>
-          )}
-
-          <TextField
-            select
-            label="Account Type"
-            variant="outlined"
-            fullWidth
-            value={selectedAccountType}
-            onChange={(e: ChangeEvent<{ value: unknown }>) =>
-              setSelectedAccountType(e.target.value as string)
-            }
-            InputProps={{
-              style: {
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                minHeight: '2.5em',
-                height: 'auto',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            FormHelperTextProps={{
-              style: {
-                fontSize: 12,
-                fontFamily: 'Poppins',
-              },
-            }}
-            helperText="Please select your account type."
           >
-            {Account_Type.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
-                  {option.label}
-                </Typography>
-              </MenuItem>
-            ))}
-          </TextField>
 
-          <TextField
-            type="text"
-            variant="outlined"
-            label="Business Name"
-            value={business_name}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setBusiness_name(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
+            <Typography
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Create an Account
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              justifyContent: 'center',
+              color: '#4BB543',
+              px: [1],
             }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-
-          <TextField
-            variant="outlined"
-            type="text"
-            label="Address"
-            value={address}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setAddress(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-        </div>
-
-        <div className="right-column">
-          <TextField
-            type="text"
-            variant="outlined"
-            label="First Name"
-            value={fname}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setFname(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-
-          <TextField
-            type="text"
-            label="Last Name"
-            variant="outlined"
-            value={lname}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLname(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-
-          <TextField
-            select
-            label="Gender"
-            variant="outlined"
-            fullWidth
-            value={selectedGender}
-            onChange={(e: ChangeEvent<{ value: unknown }>) =>
-              setSelectedGender(e.target.value as string)
-            }
-            InputProps={{
-              style: {
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                minHeight: '2.5em',
-                height: 'auto',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            // Use FormHelperTextProps to set the font size of the helper text
-            FormHelperTextProps={{
-              style: {
-                fontSize: 12, // Adjust the font size as needed
-                fontFamily: 'Poppins',
-              },
-            }}
-            helperText="Please select your gender."
           >
-            {Gender.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                <Typography sx={{ fontSize: 16, fontFamily: 'Poppins' }}>
-                  {option.label}
-                </Typography>
-              </MenuItem>
-            ))}
-          </TextField>
+            {localStorage.getItem('adminUsername')} {/* Display Username */}
+          </Toolbar>
+          <Divider />
+          <List component="nav">
+            <Link to="/#" className='side-nav'>
+              <IconButton color="inherit">
+                <HomeIcon sx={{fontSize: 27}}/>
+              </IconButton>
+              <Button>Home</Button>
+            </Link>
 
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              value={selectedDate}
-              onChange={handleDateChange}
-              sx={{
-                marginBottom: '10px',
-                width: 600,
-                '& .MuiInputBase-input': {
-                  fontSize: '16px', // Adjust the input font size
-                },
-                '& .MuiPickersDay-day': {
-                  fontSize: '16px', // Adjust the day font size
-                },
-                '& .MuiPickersYear-root, .MuiPickersYear-yearButton': {
-                  fontSize: '16px', // Adjust the year font size
-                },
-              }}
-            />
-          </LocalizationProvider>
+            <Link to="/adminmainpage" className='side-nav'>
+              <IconButton color="inherit">
+                <ShieldIcon sx={{fontSize: 27}}/>
+              </IconButton>
+              <Button>Admin Main</Button>
+            </Link>
 
-          <TextField
-            type="text"
-            variant="outlined"
-            label="Email"
-            value={email}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
+            <Link to="/createaccountadmin" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
+              <IconButton color="inherit">
+                <PersonAddIcon sx={{fontSize: 27}}/>
+              </IconButton>
+              <Button>Create an Account</Button>
+            </Link>
 
-          <TextField
-            type="text"
-            label="Contact Number"
-            variant="outlined"
-            value={contactnum}
-            fullWidth
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setContactnum(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            InputLabelProps={{
-              style: { fontSize: 16, fontFamily: 'Poppins' },
-            }}
-            style={{ marginBottom: '10px', width: 600 }}
-          />
-        </div>
+            <Link to="/viewaccounts" className='side-nav'>
+              <IconButton color="inherit">
+                <ManageAccounts sx={{fontSize: 27}}/>
+              </IconButton>
+              <Button>View Accounts</Button>
+            </Link>
 
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          type="submit"
-          onClick={handleSubmit}
-          style={{
-            fontSize: 20,
-            fontFamily: 'Poppins',
-            width: 500,
-            padding: 10,
-            backgroundColor: '#4BB543',
+            <Link to="/loginadmin"  className='side-nav'>
+              <IconButton color="inherit">
+                <LogoutIcon sx={{fontSize: 27}}/>
+              </IconButton>
+              <Button>Logout</Button>
+            </Link>
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
           }}
         >
-          Create Account
-        </Button>
-
-        <Link to="/loginadmin" style={{textDecoration: 'none'}}> {/* Add this Link */}
-          <div className="forgot-password">
-            <span className='forgot-password-text'>Already have an account?</span>
-          </div>
-        </Link>
-      </div>
-      <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
-    </div>
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              {/* Input Details to create account */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}}>
+                  
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }
