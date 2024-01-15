@@ -136,6 +136,26 @@ export default function ViewAccounts() {
     },
   });
 
+  const handleSearch = (searchValue: string) => {
+    setSearchInput(searchValue);
+    const filtered = accounts.filter((account) =>
+      String(account.username).includes(searchValue)
+    );
+    setFilteredAccounts(filtered);
+  };
+
+    // Fetch Account data
+    useEffect(() => {
+        axios.get('http://localhost:8080/user/getAllUser')
+            .then((response) => {
+                setAccounts(response.data);
+                console.log("response:", response.data)
+              })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
   return (
     <ThemeProvider theme={themeDilven}>
       <Box sx={{ display: 'flex' }}>
@@ -246,6 +266,19 @@ export default function ViewAccounts() {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}}>
 
+                  <input 
+                    type="text" 
+                    placeholder='Search username'
+                    onChange={(e) => handleSearch(e.target.value)}
+                    style={{
+                      width: '50%',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      padding: 10
+                    }}
+                  />
+
+                  
                   
                 </Paper>
               </Grid>
