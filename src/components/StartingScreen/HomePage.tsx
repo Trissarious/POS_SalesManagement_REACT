@@ -5,7 +5,7 @@ import Navbar from '../Global Configuration/NavBar';
 
 const HomePage = () => {
   return (
-    <div>
+    <div className='body-home'>
       <Navbar/>
     <section className="home">
         <div className="home-content">
@@ -14,7 +14,7 @@ const HomePage = () => {
             <p>Empower Your Business with Seamless Point of Sale and Sales Management Solutions – Elevate Efficiency, 
                 Boost Profits, and Streamline Operations with <b>Dilven</b>.</p>
             <div className="btn-box">
-                <Link to={'/startingscreen'} className='link'>Login</Link>
+                <Link to={'/startingscreen'} className='link'>Home</Link>
                 <Link to={'/createaccountusers'} className='link'>Sign Up</Link>
             </div>
         </div>

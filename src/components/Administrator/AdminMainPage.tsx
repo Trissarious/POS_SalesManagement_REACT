@@ -5,6 +5,7 @@ import "./CSS Files/./AdminMainPage.css";
 import { Typography } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import Navbar from '../Global Configuration/NavBar';
 
 interface Account {
   userid: number,
@@ -50,37 +51,41 @@ const AdminMainPage = () => {
 
 
 return (
-  <div className="center-bod">
-    <div className="profile-container">
-        <div className="profile-name" 
-          style= 
-            {{
-              backgroundColor: '#1D7D81', 
-              color: 'white',
-              padding: 20, 
-              fontWeight: 'bold', 
-              width: '50%', 
-              justifyContent: 'center',
-              margin: 'auto',
-              display: 'flex',
-              alignContent: 'center'
-            }}>
-          {localStorage.getItem('adminFirstName')}
-        </div>
-    <div className="button-container">
-      <Link to="/createaccountadmin">
-        <button className="button1">Create New Account</button>
-      </Link>
-      <br></br>
-      <Link to="/viewaccounts">
-        <button className="button2">View Accounts</button>
-      </Link>
-      <br></br>
-      <button className= "button2" onClick={handleLogout}>Sign Out</button>
-    </div>
-    <Outlet />
+  <div>
+    <Navbar/>
+    <div className="starting-screen">
+      <div className="profile-container">
+          <div className="profile-name" 
+            style= 
+              {{
+                backgroundColor: '#1D7D81', 
+                color: 'white',
+                padding: 20, 
+                fontWeight: 'bold', 
+                width: '50%', 
+                justifyContent: 'center',
+                margin: 'auto',
+                display: 'flex',
+                alignContent: 'center'
+              }}>
+            {localStorage.getItem('adminFirstName')}
+          </div>
+      <div className="button-container">
+        <Link to="/createaccountadmin">
+          <button className="btn-salesmanager">Create New Account</button>
+        </Link>
+        <br></br>
+        <Link to="/viewaccounts">
+          <button className="btn-salesmanager">View Accounts</button>
+        </Link>
+        <br></br>
+        <button className= "btn-salesmanager" onClick={handleLogout}>Sign Out</button>
+      </div>
+      <Outlet />
+      </div>
     </div>
   </div>
+
   );
 };
 

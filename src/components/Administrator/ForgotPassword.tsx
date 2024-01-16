@@ -14,6 +14,7 @@ import  { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../Global Configuration/NavBar';
 
 const defaultTheme = createTheme();
 
@@ -65,70 +66,70 @@ export default function ChangePassword() {
   };
 
   return (
-    <>
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5" style={{fontSize: 30}}>
-            Reset your Password
-          </Typography>
+    <div>
+      <Navbar/>
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5" style={{fontSize: 30}}>
+              Reset your Password
+            </Typography>
 
-          <Box component="form"noValidate sx={{ mt: 2, width: 450}}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="Email"
-              label="Email"
-              type='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="current-password"
-              inputProps={{style: {fontSize: 16}}}
-              InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-            />
+            <Box component="form"noValidate sx={{ mt: 2, width: 450}}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="Email"
+                label="Email"
+                type='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="current-password"
+                inputProps={{style: {fontSize: 16}}}
+                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+              />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={handleSubmit} 
-              sx={{ mt: 3, mb: 2 }}
-              style={{fontSize: 15}}
-            >
-              Send Link
-            </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={handleSubmit} 
+                sx={{ mt: 3, mb: 2 }}
+                style={{fontSize: 15}}
+              >
+                Send Link
+              </Button>
 
-            <Grid container>
-              <Grid item xs>
-                <Link href="/loginadmin" variant="body2" style={{fontSize: 14}}>
-                  Remember your password?
-                </Link>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/loginadmin" variant="body2" style={{fontSize: 14}}>
+                    Remember your password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/createaccountadmin" variant="body2" style={{fontSize: 14}}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="/createaccountadmin" variant="body2" style={{fontSize: 14}}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
 
-    <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
-
-    </>
+      <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
+    </div>
   );
 }

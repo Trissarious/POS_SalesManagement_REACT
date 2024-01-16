@@ -8,8 +8,8 @@ const StartingScreen = () => {
     <div>
       <Navbar/>
       <div className="starting-screen">
-        <h1 className='h1-startingscreen'>POS</h1>
-        <h1 className='h1-startingscreen'>SALES MANAGEMENT</h1>
+        <h1 className='h1-startingscreen'>Dilven</h1>
+        <h1 className='h1-startingscreen'>POS Sales</h1>
         <div className="button-container">
                   <Link to="/loginsales"><button className='btn-salesmanager'>Sales Manager</button></Link>
                   <br></br>

@@ -6,6 +6,8 @@ import { PasswordOutlined, Visibility, VisibilityOff } from '@mui/icons-material
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../Global Configuration/NavBar';
+
 
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
@@ -91,59 +93,61 @@ const LoginAdmin = () => {
   };
 
   return (
-    <div className="starting-screen">
-      <Typography style={{color: "#213458", fontSize: 60, fontWeight: 'bolder', fontFamily: 'Poppins', marginBottom: 20}}>Login as Administrator</Typography>
-        <div className="centered-content">
-          <div className="input-container">
-          <TextField
-            type="text"
-            label="Username"
-            variant="outlined"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-        />
-        </div>
-        <div className="input-container">
-          <TextField
-            type={showPassword ? 'text' : 'password'} // Toggle password visibility
-            fullWidth
-            label="Password"
-            value={password}
-            variant='outlined'
-            onChange={(e) => setPassword(e.target.value)}
-            inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
-            InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <IconButton onClick={togglePasswordVisibility}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
+    <div>
+      <Navbar/>
+      <div className="starting-screen">
+        <Typography style={{color: "#213458", fontSize: 60, fontWeight: 'bolder', fontFamily: 'Poppins', marginBottom: 20}}>Login as Administrator</Typography>
+          <div className="centered-content">
+            <div className="input-container">
+            <TextField
+              type="text"
+              label="Username"
+              variant="outlined"
+              fullWidth
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+              InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
           />
-        </div>
-        <button className='btn-login-salesmanager' onClick={handleLogin}>
-          Login
-        </button>
-        <br />
-      <Link to="/createaccountusers">
-        <button className='btn-register'>
-        Don't Have An Account? </button > 
-      </Link>
-      <Link to="/forgotpassword" style={{textDecoration: 'none'}}> {/* Add this Link */}
-          <div className="forgot-password">
-            <span className='forgot-password-text'>Forgot Password?</span>
           </div>
+          <div className="input-container">
+            <TextField
+              type={showPassword ? 'text' : 'password'} // Toggle password visibility
+              fullWidth
+              label="Password"
+              value={password}
+              variant='outlined'
+              onChange={(e) => setPassword(e.target.value)}
+              inputProps={{style: {fontSize: 24, fontFamily: 'Poppins'}}}
+              InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton onClick={togglePasswordVisibility}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </div>
+          <button className='btn-login-salesmanager' onClick={handleLogin}>
+            Login
+          </button>
+          <br />
+        <Link to="/createaccountusers">
+          <button className='btn-register'>
+          Don't Have An Account? </button > 
         </Link>
+        <Link to="/forgotpassword">
+            <div className="forgot-password">
+              <span className='forgot-password-text'>Forgot Password?</span>
+            </div>
+          </Link>
+      </div>
+
+      <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
     </div>
-
-    <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
-
   </div>
   );
 };

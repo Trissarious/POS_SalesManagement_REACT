@@ -40,13 +40,11 @@ cursor: pointer;
 .forgot-password {
 margin-bottom: 100px;
 margin-top: 10px;
-text-align: right;
-text-decoration: none;
+text-align: left;
 }
 
 .forgot-password-text {
-    color: #49c3c7;
     font-size: small;
     font-weight: lighter;
-    text-decoration: none;
+    font-family: sans-serif;
 }
