@@ -93,9 +93,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-
-const defaultTheme = createTheme();
-
 export default function ViewAccounts() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -115,7 +112,6 @@ export default function ViewAccounts() {
       navigate('/loginadmin');
     } else {
       setIsAdminLoggedIn(true);
-    // Fetch user data from API
     axios.get('http://localhost:8080/user/getAllUser')
       .then((response) => {
         // Filter users based on business_name
@@ -172,8 +168,6 @@ export default function ViewAccounts() {
       { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <UpdateAccount {...params.row} /> }
     ];
     
-    const data = searchInput ? filteredAccounts.map((account) => ({ id: account.userid, ...account })) : accounts.map((account) => ({ id: account.userid, ...account }));
-
   return (
     <ThemeProvider theme={themeDilven}>
       <Box sx={{ display: 'flex' }}>
@@ -184,7 +178,6 @@ export default function ViewAccounts() {
               pr: '24px',
             }}
           >
-
             <Typography
               component="h1"
               variant="h4"
@@ -304,7 +297,8 @@ export default function ViewAccounts() {
                   ) : (
                       <DataGrid
                         sx={{ fontSize: 15 }}
-                        rows={data}
+                        rows={searchInput ? filteredAccounts.map((account) => ({ id: account.userid, ...account })) : accounts.filter((account) =>
+                         account.business_name === localStorage.getItem('adminBusinessName')).map((account) => ({ id: account.userid, ...account }))}
                         columns={columns}
                         pageSizeOptions={[5, 10]}
                       />
