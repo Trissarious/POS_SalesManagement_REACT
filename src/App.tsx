@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import './components/Global Configuration/NavBar.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Navbar from './components/Global Configuration/NavBar';
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
 import SalesSummary from './components/SalesManager/SalesSummary';
@@ -21,6 +20,7 @@ import ViewAccounts from './components/Administrator/ViewAccounts';
 import { AuthProvider } from './components/AccountLoginValid/AuthContext';
 import ImageUploadAccount from './components/Administrator/ImageUploadAccount';
 import CreateAccountUsers from './components/Administrator/CreateAccountUsers';
+import HomePage from './components/StartingScreen/HomePage';
 
 function App() {
 
@@ -30,7 +30,8 @@ function App() {
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
       <BrowserRouter>
             <Routes>
-              <Route path = "/" element = {<StartingScreen/>}/>
+              <Route path = "/" element = {<HomePage/>}/>
+              <Route path = "/startingscreen" element = {<StartingScreen/>}/>
               <Route path = "/loginsales" element = {<LoginSalesManager/>}></Route>
               <Route path = "/salessummary"  element = {<SalesSummary/>}></Route>
               <Route path = "/itempage"  element = {<ItemPage/>}></Route>

@@ -168,7 +168,7 @@ export default function ViewAccounts() {
       { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <UpdateAccount {...params.row} /> }
     ];
     
-    //Logout Function
+    // Logout Function
     const [openLogout, setOpenLogout] = React.useState(false);
     const handleClickOpenLogout = () => { setOpenLogout(true); }
     const handleClickCloseLogout = () => { setOpenLogout(false); }
