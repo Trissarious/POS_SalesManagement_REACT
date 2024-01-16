@@ -15,7 +15,7 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
 import './CSS Files/CreateAccountAdmin.css';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -166,6 +166,19 @@ export default function Dashboard() {
       },
     },
   });
+
+  // Logout Function
+  const [openLogout, setOpenLogout] = React.useState(false);
+  const handleClickOpenLogout = () => { setOpenLogout(true); }
+  const handleClickCloseLogout = () => { setOpenLogout(false); }
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminLoggedIn')
+    localStorage.removeItem('adminUsername');
+    localStorage.removeItem('adminBusinessName');
+    navigate('/loginadmin');
+  }
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -363,12 +376,27 @@ export default function Dashboard() {
               <Button>View Accounts</Button>
             </Link>
 
-            <Link to="/loginadmin"  className='side-nav'>
+            <Link onClick={handleClickOpenLogout} to="" className='side-nav'>
               <IconButton color="inherit">
                 <LogoutIcon sx={{fontSize: 15}}/>
               </IconButton>
               <Button>Logout</Button>
             </Link>
+
+            <Dialog open = {openLogout} onClose={handleClickCloseLogout}>
+              <DialogTitle sx={{fontSize: '1.6rem', color: 'red', fontWeight: 'bold'}}>
+                Warning!
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText sx={{fontSize: '1.6rem'}}>
+                  Are you sure you want to logout?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleClickCloseLogout}>Cancel</Button>
+                <Button  sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleLogout}>Confirm</Button>
+              </DialogActions>
+            </Dialog>
           </List>
         </Drawer>
         
