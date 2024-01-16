@@ -20,6 +20,7 @@ import AdminMainPage from './components/Administrator/AdminMainPage';
 import ViewAccounts from './components/Administrator/ViewAccounts';
 import { AuthProvider } from './components/AccountLoginValid/AuthContext';
 import ImageUploadAccount from './components/Administrator/ImageUploadAccount';
+import CreateAccountUsers from './components/Administrator/CreateAccountUsers';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
               <Route path = "/adminmainpage" element = {<AdminMainPage/>}/>
               <Route path = "/viewaccounts" element = {<ViewAccounts/>}/>
               <Route path = "/imageUpload" element = {<ImageUploadAccount/>}/>
+              <Route path = "/createaccountusers" element = {<CreateAccountUsers/>}/>
             </Routes>
         </BrowserRouter> 
     </div>
