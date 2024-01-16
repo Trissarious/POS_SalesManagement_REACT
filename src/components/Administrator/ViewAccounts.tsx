@@ -292,18 +292,18 @@ export default function ViewAccounts() {
                   />
 
                   <div style={{ height: 700, width: '100%' }}>
-                  {searchInput && filteredAccounts.length === 0 ? (
-                    <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px', fontWeight: 'bolder' }}>Account not found.</p>
-                  ) : (
+                    {searchInput && filteredAccounts.length === 0 ? (
+                      <p style={{ marginTop: '100px', textAlign: 'center', fontSize: '30px', fontWeight: 'bolder' }}>Account not found.</p>
+                    ) : (
                       <DataGrid
                         sx={{ fontSize: 15 }}
                         rows={searchInput ? filteredAccounts.map((account) => ({ id: account.userid, ...account })) : accounts.filter((account) =>
-                         account.business_name === localStorage.getItem('adminBusinessName')).map((account) => ({ id: account.userid, ...account }))}
+                          account.business_name === localStorage.getItem('adminBusinessName') && String(account.username).includes(searchInput)).map((account) => ({ id: account.userid, ...account }))}
                         columns={columns}
                         pageSizeOptions={[5, 10]}
                       />
-                  )}
-                </div>
+                    )}
+                  </div>
                   
                 </Paper>
               </Grid>
