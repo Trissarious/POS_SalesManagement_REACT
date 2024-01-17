@@ -20,6 +20,7 @@ import ViewAccounts from './components/Administrator/ViewAccounts';
 import { AuthProvider } from './components/AccountLoginValid/AuthContext';
 import CreateAccountUsers from './components/Administrator/CreateAccountUsers';
 import HomePage from './components/StartingScreen/HomePage';
+import Transaction_Details from './components/Cashier/Transaction_Details';
 
 function App() {
 
@@ -38,7 +39,7 @@ function App() {
               <Route path = "/cashier-main" element ={<CashierMainPage />}/>
               <Route path = "/cashiering"  element = {<Cashiering/>}></Route>
               <Route path = "/transactionhistory"  element = {<TransactionHistory/>}></Route>
-              <Route path = "/transactions/:id" element ={<TransactionDetails />} />
+              <Route path = "/transactions/:id" element ={<Transaction_Details />} />
               <Route path = "/loginadmin" element = {<LoginAdmin/>}/>
               <Route path = "/createaccountadmin" element = {<CreateAccountAdmin/>}/>
               <Route path = "/forgotpassword" element = {<ForgotPassword/>}/>
@@ -46,6 +47,7 @@ function App() {
               <Route path = "/adminmainpage" element = {<AdminMainPage/>}/>
               <Route path = "/viewaccounts" element = {<ViewAccounts/>}/>
               <Route path = "/createaccountusers" element = {<CreateAccountUsers/>}/>
+
             </Routes>
         </BrowserRouter> 
     </div>

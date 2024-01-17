@@ -24,8 +24,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import './CSS FIles/TransactionHistory.css';
-import TransactionDetails from './TransactionDetails';
 import Transaction_Details from './Transaction_Details';
+import ViewTransactionLink from './ViewTransactionLink';
 
 const drawerWidth: number = 300;
 
@@ -141,16 +141,21 @@ export default function TransactionHistory () {
 
 
     const columns: GridColDef[] = [
-        { field: 'transactionid', headerName: 'ID', width: 70 },
-        { field: 'date_time', headerName: 'Date/Time', width: 200},
-        { field: 'cashier', headerName: 'Cashier', flex: 1 },
-        { field: 'total_quantity', headerName: 'Total Quantity', flex: 1 },
-        { field: 'total_price', headerName: 'Total Price', flex: 1 },
-        { field: 'customer_name', headerName: 'Customer Name', flex: 1 },
-        { field: 'refunded', headerName: 'Refunded', flex: 1 },
-        { field: 'returned', headerName: 'Returned', flex: 1 },
-        { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <Transaction_Details {...params.row} /> }
-
+      { field: 'transactionid', headerName: 'ID', width: 70 },
+      { field: 'date_time', headerName: 'Date/Time', width: 200},
+      { field: 'cashier', headerName: 'Cashier', flex: 1 },
+      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1 },
+      { field: 'total_price', headerName: 'Total Price', flex: 1 },
+      { field: 'customer_name', headerName: 'Customer Name', flex: 1 },
+      { field: 'refunded', headerName: 'Refunded', flex: 1 },
+      { field: 'returned', headerName: 'Returned', flex: 1 },
+      // { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <Transaction_Details {...params.row} /> },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        flex: 1,
+        renderCell: (params) => <ViewTransactionLink transactionid={params.row.transactionid.toString()} />
+      }
     ];
 
     const getRowId = (row: Transaction) => row.transactionid;

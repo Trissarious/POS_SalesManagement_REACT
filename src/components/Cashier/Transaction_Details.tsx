@@ -6,6 +6,7 @@ import { Button, Card, CardActions, CardContent, Container, Dialog, DialogAction
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import ViewTransactionLink from './ViewTransactionLink';
 
 interface Product {
     productid: number;
@@ -29,7 +30,7 @@ interface TransactionDetails {
 }
 
 
-const Transaction_Details = (props_transaction: TransactionDetails) => {
+const Transaction_Details = () => {
     const { isCashierLoggedIn } = useAuth();
     const navigate = useNavigate();
   
@@ -54,11 +55,20 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
     const [initialUsername] = useState('');
     const [initialPassword] = useState('');
 
+    useEffect(() => {
+        const token = localStorage.getItem('cashierToken');
+    
+        if (!token) {
+          navigate('/logincashier');
+        } else {
+        }
+      }, [isCashierLoggedIn, navigate]);
+
     const handleLoginForRefund = () => {
         const loginRequest = {
-          username: username,
-          password: password,
-        };
+        username: username,
+        password: password,
+    };
     
         // Check if the username and password are not empty
         if (!loginRequest.username || !loginRequest.password) {
@@ -171,26 +181,29 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
 
     // View function
     useEffect(() => {
-        axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
-            .then((response) => {
-                console.log(response.data);
-                const responseData: TransactionDetails = response.data;
-                setTransactionDetails(responseData);
-                if (id) {
-                    axios.get(`http://localhost:8080/transaction/${id}/products`)
-                        .then((response) => {
-                            console.log('Products response:', response.data);
-                            const responseData: Product = response.data;
-                        })
-                        .catch((error) => {
-                            console.error('Error fetching products:', error);
-                        });
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (id) {
+            axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
+                .then((response) => {
+                    console.log(response.data);
+                    const responseData: TransactionDetails = response.data;
+                    setTransactionDetails(responseData);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+    
+            axios.get(`http://localhost:8080/transaction/${id}/products`)
+                .then((response) => {
+                    console.log('Products response:', response.data);
+                    const responseData: Product[] = response.data;
+                    setProducts(responseData);
+                })
+                .catch((error) => {
+                    console.error('Error fetching products:', error);
+                });
+        }
     }, [id]);
+    
 
     // Product Table for Grid
     const columns: GridColDef[] = [
@@ -204,6 +217,9 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
 
     return (
         <div>
+            {transactionDetails && ( // Check if transactionDetails is not null or undefined
+                <ViewTransactionLink transactionid={transactionDetails.transactionid.toString()} />
+            )}  
             <button
                 className="btn btn-success btn-lg"
                 style={{
@@ -222,7 +238,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 type="text"
                                 label="Transaction ID"
                                 variant="outlined"
-                                defaultValue={props_transaction.transactionid}
+                                defaultValue={transactionDetails?.transactionid}
                                 fullWidth
                                 InputProps={{readOnly: true}}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
@@ -233,7 +249,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 label="Date/Time"
                                 variant="outlined"
                                 fullWidth
-                                defaultValue={props_transaction.date_time}
+                                defaultValue={transactionDetails?.date_time}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                                 InputProps={{readOnly: true}}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
@@ -247,7 +263,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 variant="outlined"
                                 fullWidth
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={props_transaction.total_price}
+                                defaultValue={transactionDetails?.total_price}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
                             />
@@ -257,7 +273,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 variant="outlined"
                                 fullWidth
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={props_transaction.total_quantity}
+                                defaultValue={transactionDetails?.total_quantity}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
                             />
@@ -270,7 +286,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 variant="outlined"
                                 fullWidth
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={props_transaction.tendered_bill}
+                                defaultValue={transactionDetails?.tendered_bill}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
                             />
@@ -279,7 +295,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 label="Balance"
                                 variant="outlined"
                                 fullWidth
-                                defaultValue={props_transaction.balance}
+                                defaultValue={transactionDetails?.balance}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
@@ -292,7 +308,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 label="Customer Name"
                                 variant="outlined"
                                 fullWidth
-                                defaultValue={props_transaction.customer_name}
+                                defaultValue={transactionDetails?.customer_name}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
@@ -305,7 +321,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 label="Customer Email"
                                 variant="outlined"
                                 fullWidth
-                                defaultValue={props_transaction.customer_email}
+                                defaultValue={transactionDetails?.customer_email}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
@@ -318,7 +334,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                                 label="Customer Number"
                                 variant="outlined"
                                 fullWidth
-                                defaultValue={props_transaction.customer_num}
+                                defaultValue={transactionDetails?.customer_num}
                                 inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
                                 InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
                                 InputProps={{readOnly: true}}
@@ -328,7 +344,7 @@ const Transaction_Details = (props_transaction: TransactionDetails) => {
                         <div style={{ width: '100%', height: '30vh' }}>
                             <DataGrid
                                 sx={{ fontSize: 15 }}
-                                rows={products}
+                                rows={products.map((product) => ({ id: product.productid, ...product}))}
                                 columns={columns}
                                 pageSizeOptions={[5, 10]}
                                 getRowId={getRowId}
