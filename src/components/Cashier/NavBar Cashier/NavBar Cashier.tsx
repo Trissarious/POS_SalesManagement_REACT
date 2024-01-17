@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
-import { useAuth } from '../AccountLoginValid/AuthContext';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+// import LOGOS from '../../Global Configuration/LOGOS.png';
+import LOGOS2 from './LOGOS2.png';
+import { useEffect } from 'react';
+import { useAuth } from '../../AccountLoginValid/AuthContext';
 import axios from 'axios';
-import NavbarCashier from './NavBar Cashier/NavBar Cashier';
+import { IconButton, Typography } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React from 'react';
 
-export default function CashierMainPage() {
+export default function NavbarCashier() {
   const { isCashierLoggedIn, setIsCashierLoggedIn, cashierUser } = useAuth();
   const navigate = useNavigate();
 
@@ -41,23 +45,22 @@ export default function CashierMainPage() {
       navigate('/logincashier');
     }
 
-  return (
-    <div>
-      <NavbarCashier/>
-      <div className="center-bod">
-        <div className="button-container">
-          <Link to="/cashiering">
-            <button className="button1">Perform Transaction</button>
-          </Link>
-          <br></br>
-          <Link to="/transactionhistory">
-            <button className="button2">Transaction History</button>
-          </Link>
-          <br></br>
-          <button className= "button2" onClick={handleLogout}>Logout</button>
-        </div>
-        <Outlet />
-      </div>
+return (
+    <nav className="navbar navbar-custom">
+    <div className="container-fluid">
+     <Link 
+        style={{ color: '#FFF', textDecoration: 'none', fontSize: 20 }} 
+        to='/'>
+          <img src={LOGOS2}  alt="Logo" className="navbar-logo" />
+          <span className='navbar-title'>DILVEN POS</span>
+      </Link>
+      <Typography sx={{  fontFamily: 'sans-serif', color: '#FFF', textDecoration: 'none', fontSize: 20, textAlign: 'right', marginLeft: 190 }}>
+        <IconButton color="inherit">
+        <AccountCircleIcon sx={{fontSize: 30}}/>
+        </IconButton>
+        {localStorage.getItem('cashierUsername')}
+      </Typography>
     </div>
-  );
+  </nav>
+);
 }

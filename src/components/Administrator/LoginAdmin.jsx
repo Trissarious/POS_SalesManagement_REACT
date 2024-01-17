@@ -7,8 +7,6 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Global Configuration/NavBar';
-
-
 import { useAuth } from '../AccountLoginValid/AuthContext';
 
 const LoginAdmin = () => {
@@ -110,6 +108,7 @@ const LoginAdmin = () => {
               InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
           />
           </div>
+
           <div className="input-container">
             <TextField
               type={showPassword ? 'text' : 'password'} // Toggle password visibility
@@ -131,9 +130,8 @@ const LoginAdmin = () => {
               }}
             />
           </div>
-          <button className='btn-login-salesmanager' onClick={handleLogin}>
-            Login
-          </button>
+          
+          <button className='btn-login-salesmanager' onClick={handleLogin}> Login </button>
           <br />
         <Link to="/createaccountusers">
           <button className='btn-register'>
