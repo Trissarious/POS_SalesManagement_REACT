@@ -1,12 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams} from 'react-router-dom';
-import axios from 'axios';
-import './CSS FIles/TransactionDetails.css'; 
-import { Button, Card, CardActions, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import * as React from 'react';
+import { styled, createTheme, ThemeProvider, createMuiTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import { useAuth } from '../AccountLoginValid/AuthContext';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Card, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
+import ShieldIcon from '@mui/icons-material/Shield';
+import { ToastContainer, toast } from 'react-toastify';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import './CSS FIles/TransactionHistory.css';
 import ViewTransactionLink from './ViewTransactionLink';
+
+const drawerWidth: number = 300;
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
 
 interface Product {
     productid: number;
@@ -29,6 +53,23 @@ interface TransactionDetails {
     returned: boolean;
 }
 
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })<AppBarProps>(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  }));
 
 const Transaction_Details = () => {
     const { isCashierLoggedIn } = useAuth();
@@ -215,23 +256,82 @@ const Transaction_Details = () => {
     
     const getRowId = (row: Product) => row.productid;
 
-    return (
-        <div>
-            {transactionDetails && ( // Check if transactionDetails is not null or undefined
-                <ViewTransactionLink transactionid={transactionDetails.transactionid.toString()} />
-            )}  
-            <button
-                className="btn btn-success btn-lg"
-                style={{
-                    marginRight: 5,
-                    fontSize: 15,
-                    fontWeight: 'medium'
-            }} 
-            onClick={handleClickOpen}>View</button>
+    const themeDilven = createTheme({
+        palette: {
+          primary: {
+            main: '#1D7D81',
+          },
+        },
+      });
 
-            <Dialog open={open} onClose={handleClickClose}>
-                <DialogContent>
-                    <Card sx={{maxWidth: 900, maxHeight: 1000}}>
+    // Logout Function
+    const [openLogout, setOpenLogout] = React.useState(false);
+    const handleClickOpenLogout = () => { setOpenLogout(true); }
+    const handleClickCloseLogout = () => { setOpenLogout(false); }
+  
+    const handleLogout = () => {
+        localStorage.removeItem('cashierToken');
+        localStorage.removeItem('cashierLoggedIn')
+        localStorage.removeItem('cashierUsername');
+        localStorage.removeItem('cashierBusinessName');
+        navigate('/logincash');
+    }
+
+    return (
+           <ThemeProvider theme={themeDilven}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar position="absolute" open={open}>
+                <Toolbar
+                    sx={{
+                    pr: '24px',
+                    }}
+                >
+                    <Typography
+                    component="h1"
+                    variant="h4"
+                    color="inherit"
+                    noWrap
+                    sx={{ flexGrow: 1 }}
+                    >
+                    Transaction Details
+                    </Typography>
+
+                    <Typography
+                    component="h1"
+                    variant="h4"
+                    color="inherit"
+                    noWrap
+                    sx={{ flexGrow: 1 }}>
+                    <span className='nav-user' style={{ float: 'right', marginRight: 10}}>
+                        <IconButton color="inherit">
+                        <AccountCircleIcon sx={{fontSize: 30}}/>
+                        </IconButton>
+                        {localStorage.getItem('cashierUsername')}
+                    </span>
+                    </Typography>
+                </Toolbar>
+                </AppBar>
+                
+                <Box
+                component="main"
+                sx={{
+                    backgroundColor: (theme) =>
+                    theme.palette.mode === 'light'
+                        ? theme.palette.grey[100]
+                        : theme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
+                >
+                <Toolbar />
+                <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+                    <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
+                            <div>
+                            <Card sx={{maxWidth: 900, maxHeight: 1000}}>
                         <Typography sx={{fontSize: 15, margin: 'auto', color: 'black', marginLeft: 2}}>Transaction Details</Typography>
                         <CardActions>
                             <TextField
@@ -340,137 +440,25 @@ const Transaction_Details = () => {
                                 InputProps={{readOnly: true}}
                                 />
                         </CardActions>
-
-                        <div style={{ width: '100%', height: '30vh' }}>
+                    </Card>
+                            </div>
+                            <div style={{ height: 700, width: '50%' }}>
                             <DataGrid
                                 sx={{ fontSize: 15 }}
-                                rows={products.map((product) => ({ id: product.productid, ...product}))}
+                                rows={products}
                                 columns={columns}
                                 pageSizeOptions={[5, 10]}
                                 getRowId={getRowId}
                             />
-                        </div>
-
-                        <DialogActions>
-                            <button className="btn btn-success btn-lg"
-                                style={{
-                                    marginRight: 5,
-                                    fontSize: 15,
-                                    fontWeight: 'medium'
-                                }} autoFocus onClick={handleClickOpenRefund}> Refund
-                            </button>
-                            <button className="btn btn-success btn-lg"
-                                style={{
-                                    marginRight: 5,
-                                    fontSize: 15,
-                                    fontWeight: 'medium'
-                                }} autoFocus onClick={handleClickOpenReturn}> Return
-                            </button>
-                            <button className="btn btn-danger btn-lg"
-                                style={{
-                                    marginLeft: 5,
-                                    fontSize: 15,
-                                    fontWeight: 'medium'
-                                }} autoFocus onClick={handleClickClose}> Cancel
-                            </button>
-                        </DialogActions>
-                    </Card>
-                </DialogContent>
-            </Dialog>
-
-            {/* DIALOG FOR REFUND */}
-            <Dialog open={openRefund} onClose={handleClickCloseRefund}>
-            <DialogContent>
-                <Card sx={{maxWidth: 900, borderRadius: 5, backgroundColor: '#f7f5f5', maxHeight: 1000, color: '#213458'}}>
-                    <CardContent>
-                        <Typography gutterBottom variant='h2' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
-                            Want to Refund Transaction?
-                        </Typography>
-                        <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db', marginTop: 5, color: '#213458'}}>
-                            <Typography gutterBottom variant='h5' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, padding: 1, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
-                                Request for Manager To Approve Refund Request
-                            </Typography>
-                        </Card>
-                    </CardContent>
-                        <CardActions sx={{marginTop: 3}}>
-                                <TextField
-                                    type="text"
-                                    label="Username"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-                                />
-                        </CardActions>
-                        <CardActions sx={{marginBottom: 5}}>
-                                <TextField
-                                    type='password'
-                                    fullWidth
-                                    label="Password"
-                                    value={password}
-                                    variant='outlined'
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
-                                    InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-                                />
-                        </CardActions>
-                </Card>
-            </DialogContent>
-            <DialogActions>
-                <button className="btn-cancel" onClick={handleClickCloseRefund}>Cancel</button>
-                <button className="btn-approve" onClick={handleLoginForRefund}>Approve</button>
-            </DialogActions>
-            </Dialog>
-
-            {/* DIALOG FOR RETURN */}
-            <Dialog open={openReturn} onClose={handleClickCloseReturn}>
-            <DialogContent>
-                <Card sx={{maxWidth: 900, borderRadius: 5, backgroundColor: '#f7f5f5', maxHeight: 1000, color: '#213458'}}>
-                    <CardContent>
-                        <Typography gutterBottom variant='h2' component="div" sx={{fontFamily: "Poppins", fontWeight: 'bold'}} align='center'>
-                            Want to Return Transaction?
-                        </Typography>
-                        <Card sx={{maxWidth: 500, borderRadius: 5, backgroundColor: '#d3d3db', marginTop: 5, color: '#213458'}}>
-                            <Typography gutterBottom variant='h5' component="div" sx={{fontFamily: "Poppins", backgroundColor: '#d3d3db', borderRadius: 2, padding: 1, fontStyle: 'italic', fontWeight: 'medium'}} align='center'>
-                                Request for Manager To Approve Refund Request
-                            </Typography>
-                        </Card>
-                    </CardContent>
-                        <CardActions sx={{marginTop: 3}}>
-                                <TextField
-                                    type="text"
-                                    label="Username"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-                                />
-                        </CardActions>
-                        <CardActions sx={{marginBottom: 5}}>
-                                <TextField
-                                    type='password'
-                                    fullWidth
-                                    label="Password"
-                                    value={password}
-                                    variant='outlined'
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
-                                    InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
-                                />
-                        </CardActions>
-                </Card>
-            </DialogContent>
-            <DialogActions>
-                <button className="btn-cancel" onClick={handleClickCloseReturn}>Cancel</button>
-                
-                <button className="btn-approve" onClick={handleLoginForReturn}>Approve</button>
-            </DialogActions>
-            </Dialog>
-        </div>
+                            </div>
+                        </Paper>
+                    </Grid>
+                    </Grid>
+                </Container>
+                </Box>
+            </Box>
+            <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
+            </ThemeProvider>
     );
 };
 

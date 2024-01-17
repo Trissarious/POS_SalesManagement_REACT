@@ -93,9 +93,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function TransactionHistory () {
   const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
 
   const { isCashierLoggedIn, setIsCashierLoggedIn, cashierUser } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
