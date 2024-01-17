@@ -138,7 +138,7 @@ export default function TransactionHistory () {
             console.error(error);
         });
 }, []);
-  
+
 
     const columns: GridColDef[] = [
         { field: 'transactionid', headerName: 'ID', width: 70 },
