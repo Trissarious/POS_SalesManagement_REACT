@@ -39,7 +39,7 @@ function App() {
               <Route path = "/cashier-main" element ={<CashierMainPage />}/>
               <Route path = "/cashiering"  element = {<Cashiering/>}></Route>
               <Route path = "/transactionhistory"  element = {<TransactionHistory/>}></Route>
-              <Route path = "/transactions/:id" element ={<Transaction_Details />} />
+              <Route path = "/transactions/:id" element ={<Transaction_Details transactionid={0} total_quantity={0} total_price={0} tendered_bill={0} balance={0} customer_name={''} customer_num={''} customer_email={''} date_time={''} refunded={false} returned={false} />} />
               <Route path = "/loginadmin" element = {<LoginAdmin/>}/>
               <Route path = "/createaccountadmin" element = {<CreateAccountAdmin/>}/>
               <Route path = "/forgotpassword" element = {<ForgotPassword/>}/>

@@ -443,6 +443,9 @@ const Transaction_Details = () => {
                     </Card>
                             </div>
                             <div style={{ height: 700, width: '50%' }}>
+                            <Typography>
+                                Products Purchased
+                            </Typography>
                             <DataGrid
                                 sx={{ fontSize: 15 }}
                                 rows={products}
