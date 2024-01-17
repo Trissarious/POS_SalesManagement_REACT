@@ -64,8 +64,8 @@
 }
 
 .btn-approve {
-    background-color: green;
-    color: #DDDDDD;
+    background-color: #4BB543;
+    color: white;
     height: 50px;
     font-family: 'Poppins';
     font-weight: 600;
@@ -80,7 +80,7 @@
 .btn-cancel {
     background-color: #dc3545;
     font-size: 15px;
-    color: #DDDDDD;
+    color: white;
     height: 50px;
     font-family: 'Poppins';
     font-weight: 600;
@@ -92,9 +92,9 @@
 }
 
 .btn-cancel:hover, .refund-button:hover, .return-button:hover{
-    opacity: 0.6;
+    background-color: #c42232;
   }
 
 .btn-approve:hover {
-    background-color: rgb(52, 179, 52);
+    background-color: rgb(46, 167, 46);
 }

@@ -332,7 +332,6 @@ export default function ViewAccounts() {
                       />
                     )}
                   </div>
-                  
                 </Paper>
               </Grid>
             </Grid>
