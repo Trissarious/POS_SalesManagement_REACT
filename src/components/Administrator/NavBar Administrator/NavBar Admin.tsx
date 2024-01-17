@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import LOGOS from '../../Global Configuration/LOGOS.png';
+// import LOGOS from '../../Global Configuration/LOGOS.png';
+import LOGOS2 from './LOGOS2.png';
 import { useEffect } from 'react';
 import { useAuth } from '../../AccountLoginValid/AuthContext';
 import axios from 'axios';
@@ -38,7 +39,7 @@ return (
      <Link 
         style={{ color: '#FFF', textDecoration: 'none', fontSize: 20 }} 
         to='/'>
-          <img src={LOGOS}  alt="Logo" className="navbar-logo" />
+          <img src={LOGOS2}  alt="Logo" className="navbar-logo" />
           <span className='navbar-title'>DILVEN POS</span>
       </Link>
       <Typography sx={{  fontFamily: 'sans-serif', color: '#FFF', textDecoration: 'none', fontSize: 20, textAlign: 'right', marginLeft: 190 }}>
