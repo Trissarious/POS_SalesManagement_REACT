@@ -54,13 +54,9 @@ interface Account {
 const post_account = 'http://localhost:8080/user/postUser';
 const Account_Type = [
   {
-    value: 'Cashier',
-    label: 'Cashier',
-  },
-  {
-    value: 'Sales Manager',
-    label: 'Sales Manager',
-  },
+    value: 'Administrator',
+    label: 'Administrator',
+  }
 ];
 
 const Gender = [

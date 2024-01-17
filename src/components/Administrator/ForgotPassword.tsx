@@ -119,7 +119,7 @@ export default function ChangePassword() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/createaccountadmin" variant="body2" style={{fontSize: 14}}>
+                  <Link href="/createaccountusers" variant="body2" style={{fontSize: 14}}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

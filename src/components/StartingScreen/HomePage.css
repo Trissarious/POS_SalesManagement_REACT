@@ -117,8 +117,8 @@ body {
   width: 150px;
   height: 100%;
   font-size: 19px;
-  background: #1D7D81;
-  border: 2px solid #1D7D81;
+  background: #4BB543;
+  border: 2px solid #4BB543;
   border-radius: 8px;
   color: #ededed;
   text-decoration: none;
@@ -141,7 +141,7 @@ body {
   left: 0;
   width: 0;
   height: 100%;
-  background: #4BB543;
+  background: #1D7D81;
   z-index: -1;
   transition: .5s;
 }

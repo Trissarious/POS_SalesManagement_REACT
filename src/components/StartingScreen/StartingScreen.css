@@ -7,9 +7,16 @@
     height: 85vh;
 }
   
-  .h1-startingscreen {
+  .h1-startingscreen-dilven {
     font-size: 80px;
     color: #213458;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .h1-startingscreen {
+    font-size: 80px;
+    color: #4BB543;
     font-weight: bold;
     text-align: center;
   }
