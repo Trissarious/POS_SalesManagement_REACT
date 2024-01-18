@@ -85,7 +85,7 @@ const Transaction_Details = () => {
     }, [isCashierLoggedIn, navigate]);
 
     const { id } = useParams();
-    const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>();
+    const [transactionDetails, setTransactionDetails] = useState<TransactionDetails[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [refunded, setRefunded] = useState(false);
     const [returned, setReturned] = useState(false);
@@ -227,7 +227,7 @@ const Transaction_Details = () => {
                 .then((response) => {
                     console.log(response.data);
                     const responseData: TransactionDetails = response.data;
-                    setTransactionDetails(responseData);
+                    setTransactionDetails([responseData]);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -255,6 +255,21 @@ const Transaction_Details = () => {
     ];
     
     const getRowId = (row: Product) => row.productid;
+
+    // Transaction Table for Grid
+    const columns_transaction: GridColDef[] = [
+      { field: 'transactionid', headerName: 'Transaction ID', width: 70 },
+      { field: 'date_time', headerName: 'Date/Time', width: 200},
+      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1 },
+      { field: 'total_price', headerName: 'Total Price', flex: 1 },
+      { field: 'customer_name', headerName: 'Customer Name', flex: 1 },
+      { field: 'customer_email', headerName: 'Customer Name', flex: 1 },
+      { field: 'customer_num', headerName: 'Customer Name', flex: 1 },
+      { field: 'refunded', headerName: 'Refunded', flex: 1 },
+      { field: 'returned', headerName: 'Returned', flex: 1 },
+    ];
+    
+    const getRowId_Transaction = (row: TransactionDetails) => row.transactionid;
 
     const themeDilven = createTheme({
         palette: {
@@ -329,120 +344,20 @@ const Transaction_Details = () => {
                 <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
                     <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
-                            <div>
-                            <Card sx={{maxWidth: 900, maxHeight: 1000}}>
-                        <Typography sx={{fontSize: 15, margin: 'auto', color: 'black', marginLeft: 2}}>Transaction Details</Typography>
-                        <CardActions>
-                            <TextField
-                                type="text"
-                                label="Transaction ID"
-                                variant="outlined"
-                                defaultValue={transactionDetails?.transactionid}
-                                fullWidth
-                                InputProps={{readOnly: true}}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
+                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: '85vh'}}>             
+                            <div style={{ height: 500, width: '100%', marginBottom: '50px' }}>
+                            <Typography>
+                                Transaction Details
+                            </Typography>
+                            <DataGrid
+                                sx={{ fontSize: 15 }}
+                                rows={transactionDetails}
+                                columns={columns_transaction}
+                                pageSizeOptions={[5, 10]}
+                                getRowId={getRowId_Transaction}
                             />
-                            <TextField
-                                type="text"
-                                label="Date/Time"
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={transactionDetails?.date_time}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputProps={{readOnly: true}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                            />
-                        </CardActions>
-
-                         <CardActions>
-                            <TextField
-                                type="number"
-                                label="Total Price"
-                                variant="outlined"
-                                fullWidth
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={transactionDetails?.total_price}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                            <TextField
-                                type="number"
-                                label="Total Quantity"
-                                variant="outlined"
-                                fullWidth
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={transactionDetails?.total_quantity}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                        </CardActions>
-
-                        <CardActions>
-                            <TextField
-                                type="number"
-                                label="Tendered Bill"
-                                variant="outlined"
-                                fullWidth
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                defaultValue={transactionDetails?.tendered_bill}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                            <TextField
-                                type="number"
-                                label="Balance"
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={transactionDetails?.balance}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                        </CardActions>
-
-                        <CardActions>
-                            <TextField
-                                type="text"
-                                label="Customer Name"
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={transactionDetails?.customer_name}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                        </CardActions>
-
-                        <CardActions>
-                            <TextField
-                                type="text"
-                                label="Customer Email"
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={transactionDetails?.customer_email}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                            />
-                        </CardActions>
-
-                        <CardActions>
-                            <TextField
-                                type="number"
-                                label="Customer Number"
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={transactionDetails?.customer_num}
-                                inputProps={{style: {fontSize: 16, fontFamily: 'Poppins', color: '#213458'}}}
-                                InputLabelProps={{ style: { fontSize: 16, fontFamily: 'Poppins' } }}
-                                InputProps={{readOnly: true}}
-                                />
-                        </CardActions>
-                    </Card>
                             </div>
-                            <div style={{ height: 700, width: '50%' }}>
+                            <div style={{ height: 500, width: '100%', marginBottom: 50 }}>
                             <Typography>
                                 Products Purchased
                             </Typography>
