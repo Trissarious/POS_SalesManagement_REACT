@@ -17,8 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import './CSS FIles/TransactionDetails.css';
-import { LoginRounded } from '@mui/icons-material';
-import { el } from 'date-fns/locale';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const drawerWidth: number = 300;
 
@@ -294,25 +293,25 @@ const Transaction_Details = () => {
 
     // Product Table for Grid
     const columns: GridColDef[] = [
-        { field: 'productid', headerName: 'Product ID', flex: 1 },
-        { field: 'productname', headerName: 'Product Name',  flex: 1},
-        { field: 'price', headerName: 'Price',  flex: 1 },
-        { field: 'quantity', headerName: 'Quantity', flex: 1 },
+        { field: 'productid', headerName: 'Product ID', flex: 1, headerClassName: 'green-column-header' },
+        { field: 'productname', headerName: 'Product Name',  flex: 1, headerClassName: 'green-column-header'},
+        { field: 'price', headerName: 'Price',  flex: 1, headerClassName: 'green-column-header' },
+        { field: 'quantity', headerName: 'Quantity', flex: 1, headerClassName: 'green-column-header' },
     ];
     
     const getRowId = (row: Product) => row.productid;
 
     // Transaction Table for Grid
     const columns_transaction: GridColDef[] = [
-      { field: 'transactionid', headerName: 'Transaction ID', width: 70 },
-      { field: 'date_time', headerName: 'Date/Time', width: 200},
-      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1 },
-      { field: 'total_price', headerName: 'Total Price', flex: 1 },
-      { field: 'customer_name', headerName: 'Customer Name', flex: 1 },
-      { field: 'customer_email', headerName: 'Customer Name', flex: 1 },
-      { field: 'customer_num', headerName: 'Customer Name', flex: 1 },
-      { field: 'refunded', headerName: 'Refunded', flex: 1 },
-      { field: 'returned', headerName: 'Returned', flex: 1 },
+      { field: 'transactionid', headerName: 'Transaction ID', flex: 1, headerClassName: 'green-column-header' },
+      { field: 'date_time', headerName: 'Date/Time', flex: 1, headerClassName: 'green-column-header'},
+      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1, headerClassName: 'green-column-header' },
+      { field: 'total_price', headerName: 'Total Price', flex: 1, headerClassName: 'green-column-header' },
+      { field: 'customer_name', headerName: 'Customer Name', flex: 1, headerClassName: 'green-column-header' },
+      { field: 'customer_email', headerName: 'Customer Name', flex: 1, headerClassName: 'green-column-header' },
+      { field: 'customer_num', headerName: 'Customer Name', flex: 1, headerClassName: 'green-column-header'},
+      { field: 'refunded', headerName: 'Refunded', flex: 1, headerClassName: 'green-column-header'},
+      { field: 'returned', headerName: 'Returned', flex: 1, headerClassName: 'green-column-header'},
     ];
     
     const getRowId_Transaction = (row: TransactionDetails) => row.transactionid;
@@ -349,13 +348,13 @@ const Transaction_Details = () => {
                     }}
                 >
                     <Typography
-                    component="h1"
-                    variant="h4"
-                    color="inherit"
-                    noWrap
-                    sx={{ flexGrow: 1 }}
+                      component="h1"
+                      variant="h4"
+                      color="inherit"
+                      noWrap
+                      sx={{ flexGrow: 1 }}
                     >
-                    Transaction Details
+                      Transaction Details
                     </Typography>
 
                     <Typography
@@ -393,11 +392,20 @@ const Transaction_Details = () => {
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: '85vh'}}>  
                             {/* Displays Transaction Details */}
                             <div style={{ height: 500, width: '100%', marginBottom: '50px' }}>
-                              <Typography>
+                              <Typography 
+                                component="h1"
+                                variant="h4"
+                                color="inherit"
+                                noWrap
+                                sx={{ flexGrow: 1, fontWeight: 'bold'}}>
                                   Transaction Details
                               </Typography>
                               <DataGrid
-                                  sx={{ fontSize: 15 }}
+                                  sx={{ fontSize: 15,   
+                                    backgroundColor: (theme) =>
+                                    theme.palette.mode === 'light'
+                                      ? theme.palette.grey[100]
+                                      : theme.palette.grey[900],}}
                                   rows={transactionDetails}
                                   columns={columns_transaction}
                                   pageSizeOptions={[5, 10]}
@@ -407,11 +415,20 @@ const Transaction_Details = () => {
 
                             {/* Displays Products Purchased */}
                             <div style={{ height: 500, width: '100%', marginBottom: 50 }}>
-                              <Typography>
+                             <Typography 
+                                component="h1"
+                                variant="h4"
+                                color="inherit"
+                                noWrap
+                                sx={{ flexGrow: 1, fontWeight: 'bold' }}>
                                   Products Purchased
                               </Typography>
                               <DataGrid
-                                  sx={{ fontSize: 15 }}
+                                  sx={{ fontSize: 15,   
+                                    backgroundColor: (theme) =>
+                                    theme.palette.mode === 'light'
+                                      ? theme.palette.grey[100]
+                                      : theme.palette.grey[900],}}
                                   rows={products}
                                   columns={columns}
                                   pageSizeOptions={[5, 10]}

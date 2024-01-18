@@ -29,6 +29,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const drawerWidth: number = 300;
 
@@ -347,35 +348,35 @@ export default function CreateAccountAdmin() {
           <List component="nav">
             <Link to="/#" className='side-nav'>
               <IconButton color="inherit">
-                <HomeIcon sx={{fontSize: 15}}/>
+                <HomeIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Home</Button>
             </Link>
 
             <Link to="/adminmainpage" className='side-nav'>
               <IconButton color="inherit">
-                <ShieldIcon sx={{fontSize: 15}}/>
+                <AdminPanelSettingsIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Admin Main</Button>
             </Link>
 
             <Link to="/createaccountadmin" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
               <IconButton color="inherit">
-                <PersonAddIcon sx={{fontSize: 15}}/>
+                <PersonAddIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Create an Account</Button>
             </Link>
 
             <Link to="/viewaccounts" className='side-nav'>
               <IconButton color="inherit">
-                <ManageAccounts sx={{fontSize: 15}}/>
+                <ManageAccounts sx={{fontSize: 20}}/>
               </IconButton>
               <Button>View Accounts</Button>
             </Link>
 
             <Link onClick={handleClickOpenLogout} to="" className='side-nav'>
               <IconButton color="inherit">
-                <LogoutIcon sx={{fontSize: 15}}/>
+                <LogoutIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Logout</Button>
             </Link>

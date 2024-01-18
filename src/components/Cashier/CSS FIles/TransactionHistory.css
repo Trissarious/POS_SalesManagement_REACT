@@ -56,3 +56,8 @@
   background-color: #daede5;
   color: #213458; /* Set the desired text color for active link */
 }
+
+.column-header {
+    background-color: #3a6e70 !important;
+    color: white;
+  }

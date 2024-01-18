@@ -18,7 +18,7 @@ import axios from 'axios';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
+import { AddShoppingCart, ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -96,7 +96,6 @@ export default function TransactionHistory () {
 
   const { isCashierLoggedIn, setIsCashierLoggedIn, cashierUser } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
 
   // Token
@@ -138,18 +137,19 @@ export default function TransactionHistory () {
 
 
     const columns: GridColDef[] = [
-      { field: 'transactionid', headerName: 'ID', width: 70 },
-      { field: 'date_time', headerName: 'Date/Time', width: 200},
-      { field: 'cashier', headerName: 'Cashier', flex: 1 },
-      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1 },
-      { field: 'total_price', headerName: 'Total Price', flex: 1 },
-      { field: 'customer_name', headerName: 'Customer Name', flex: 1 },
-      { field: 'refunded', headerName: 'Refunded', flex: 1 },
-      { field: 'returned', headerName: 'Returned', flex: 1 },
+      { field: 'transactionid', headerName: 'ID', width: 70, headerClassName: 'column-header' },
+      { field: 'date_time', headerName: 'Date/Time', width: 200, headerClassName: 'column-header'},
+      { field: 'cashier', headerName: 'Cashier', flex: 1, headerClassName: 'column-header' },
+      { field: 'total_quantity', headerName: 'Total Quantity', flex: 1, headerClassName: 'column-header' },
+      { field: 'total_price', headerName: 'Total Price', flex: 1, headerClassName: 'column-header' },
+      { field: 'customer_name', headerName: 'Customer Name', flex: 1, headerClassName: 'column-header' },
+      { field: 'refunded', headerName: 'Refunded', flex: 1, headerClassName: 'column-header' },
+      { field: 'returned', headerName: 'Returned', flex: 1, headerClassName: 'column-header' },
       // { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <Transaction_Details {...params.row} /> },
       {
         field: 'actions',
         headerName: 'Actions',
+        headerClassName: 'column-header',
         flex: 1,
         renderCell: (params) => <ViewTransactionLink transactionid={params.row.transactionid.toString()} />
       }
@@ -170,136 +170,144 @@ export default function TransactionHistory () {
       navigate('/logincash');
     }
 
-  return (
-    <ThemeProvider theme={themeDilven}>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '24px',
-            }}
-          >
-            <Typography
-              component="h1"
-              variant="h4"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
+    return (
+      <ThemeProvider theme={themeDilven}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar position="absolute" open={open}>
+            <Toolbar
+              sx={{
+                pr: '24px',
+              }}
             >
-              Transaction History
-            </Typography>
+              <Typography
+                component="h1"
+                variant="h4"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                Transaction History
+              </Typography>
 
-            <Typography
-              component="h1"
-              variant="h4"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}>
-              <span className='nav-user' style={{ float: 'right', marginRight: 10}}>
-                  <IconButton color="inherit">
-                  <AccountCircleIcon sx={{fontSize: 30}}/>
-                  </IconButton>
-                  {localStorage.getItem('cashierUsername')}
-              </span>
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
+              <Typography
+                component="h1"
+                variant="h4"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}>
+                <span className='nav-user' style={{ float: 'right', marginRight: 10}}>
+                    <IconButton color="inherit">
+                    <AccountCircleIcon sx={{fontSize: 30}}/>
+                    </IconButton>
+                    {localStorage.getItem('cashierUsername')}
+                </span>
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          
+          <Drawer variant="permanent" open={open}>
+            <Toolbar
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '20px',
+                fontWeight: 'bold',
+                justifyContent: 'center',
+                color: '#4BB543',
+                px: [1],
+              }}
+            >
+              {localStorage.getItem('cashierUsername')} {/* Display Business Name */}
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+              <Link to="/#" className='side-nav'>
+                <IconButton color="inherit">
+                  <HomeIcon sx={{fontSize: 15}}/>
+                </IconButton>
+                <Button>Home</Button>
+              </Link>
+
+              <Link to="/cashier-main" className='side-nav'>
+                <IconButton color="inherit">
+                  <ShieldIcon sx={{fontSize: 15}}/>
+                </IconButton>
+                <Button>Cashier Main</Button>
+              </Link>
+
+              <Link to="/cashiering" className='side-nav'>
+                <IconButton color="inherit">
+                  <AddShoppingCart sx={{fontSize: 15}}/>
+                </IconButton>
+                <Button>Perform Transaction</Button>
+              </Link>
+
+              <Link to="/transactionhistory" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
+                <IconButton color="inherit">
+                  <ManageAccounts sx={{fontSize: 15}}/>
+                </IconButton>
+                <Button>Transactions</Button>
+              </Link>
+
+              <Link onClick={handleClickOpenLogout} to="" className='side-nav'>
+                <IconButton color="inherit">
+                  <LogoutIcon sx={{fontSize: 15}}/>
+                </IconButton>
+                <Button>Logout</Button>
+              </Link>
+
+              <Dialog open = {openLogout} onClose={handleClickCloseLogout}>
+                <DialogTitle sx={{fontSize: '1.6rem', color: 'red', fontWeight: 'bold'}}>
+                  Warning!
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText sx={{fontSize: '1.6rem'}}>
+                    Are you sure you want to logout?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleClickCloseLogout}>Cancel</Button>
+                  <Button  sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleLogout}>Confirm</Button>
+                </DialogActions>
+              </Dialog>
+            </List>
+          </Drawer>
+          
+          <Box
+            component="main"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              justifyContent: 'center',
-              color: '#4BB543',
-              px: [1],
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
             }}
           >
-            {localStorage.getItem('cashierUsername')} {/* Display Business Name */}
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            <Link to="/#" className='side-nav'>
-              <IconButton color="inherit">
-                <HomeIcon sx={{fontSize: 15}}/>
-              </IconButton>
-              <Button>Home</Button>
-            </Link>
-
-            <Link to="/cashier-main" className='side-nav'>
-              <IconButton color="inherit">
-                <ShieldIcon sx={{fontSize: 15}}/>
-              </IconButton>
-              <Button>Cashier Main</Button>
-            </Link>
-
-            <Link to="/transactionhistory" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
-              <IconButton color="inherit">
-                <ManageAccounts sx={{fontSize: 15}}/>
-              </IconButton>
-              <Button>Transactions</Button>
-            </Link>
-
-            <Link onClick={handleClickOpenLogout} to="" className='side-nav'>
-              <IconButton color="inherit">
-                <LogoutIcon sx={{fontSize: 15}}/>
-              </IconButton>
-              <Button>Logout</Button>
-            </Link>
-
-            <Dialog open = {openLogout} onClose={handleClickCloseLogout}>
-              <DialogTitle sx={{fontSize: '1.6rem', color: 'red', fontWeight: 'bold'}}>
-                Warning!
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText sx={{fontSize: '1.6rem'}}>
-                  Are you sure you want to logout?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleClickCloseLogout}>Cancel</Button>
-                <Button  sx={{fontSize: '15px', fontWeight: 'bold'}} onClick={handleLogout}>Confirm</Button>
-              </DialogActions>
-            </Dialog>
-          </List>
-        </Drawer>
-        
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
-                <div style={{ height: 700, width: '100%' }}>
-                <DataGrid
-                    sx={{ fontSize: 15 }}
-                    rows={transactions}
-                    columns={columns}
-                    pageSizeOptions={[5, 10]}
-                    getRowId={getRowId}
-                />
-                </div>
-                </Paper>
+            <Toolbar />
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
+                  <div style={{ height: 700, width: '100%' }}>
+                  <DataGrid
+                      sx={{ fontSize: 15,  }}
+                      rows={transactions}
+                      columns={columns}
+                      pageSizeOptions={[5, 10]}
+                      getRowId={getRowId}
+                  />
+                  <p>Click on the three dots on the right side of each column on the table for additional options. </p>
+                  </div>
+                  </Paper>
+                </Grid>
               </Grid>
-            </Grid>
-          </Container>
+            </Container>
+          </Box>
         </Box>
-      </Box>
-      <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
-    </ThemeProvider>
-  );
-}
+        <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
+      </ThemeProvider>
+    );
+  }

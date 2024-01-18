@@ -27,6 +27,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import UpdateAccount from './UpdateAccount';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const drawerWidth: number = 300;
 
@@ -155,17 +156,17 @@ export default function ViewAccounts() {
     }, []);
 
     const columns: GridColDef[] = [
-      { field: 'userid', headerName: 'ID', width: 70 },
-      { field: 'username', headerName: 'Username', width: 130 },
-      { field: 'account_type', headerName: 'Account Type', width: 130 },
-      { field: 'business_name', headerName: 'Business Name', width: 150 },
-      { field: 'fname', headerName: 'First Name', width: 130 },
-      { field: 'lname', headerName: 'Last Name', width: 130 },
-      { field: 'gender', headerName: 'Gender', width: 130 },
-      { field: 'address', headerName: 'Address', width: 150 },
-      { field: 'contactnum', headerName: 'Phone', width: 130 },
-      { field: 'email', headerName: 'Email', width: 130 },
-      { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <UpdateAccount {...params.row} /> }
+      { field: 'userid', headerName: 'ID', width: 70, headerClassName: 'column-header' },
+      { field: 'username', headerName: 'Username', width: 130, headerClassName: 'column-header' },
+      { field: 'account_type', headerName: 'Account Type', width: 130, headerClassName: 'column-header' },
+      { field: 'business_name', headerName: 'Business Name', width: 150, headerClassName: 'column-header' },
+      { field: 'fname', headerName: 'First Name', width: 130, headerClassName: 'column-header' },
+      { field: 'lname', headerName: 'Last Name', width: 130, headerClassName: 'column-header' },
+      { field: 'gender', headerName: 'Gender', width: 130, headerClassName: 'column-header' },
+      { field: 'address', headerName: 'Address', width: 150, headerClassName: 'column-header' },
+      { field: 'contactnum', headerName: 'Phone', width: 130, headerClassName: 'column-header' },
+      { field: 'email', headerName: 'Email', width: 130, headerClassName: 'column-header' },
+      { field: 'actions', headerName: 'Actions', flex: 1, headerClassName: 'column-header', renderCell: (params) => <UpdateAccount {...params.row} /> }
     ];
     
     // Logout Function
@@ -236,35 +237,35 @@ export default function ViewAccounts() {
           <List component="nav">
             <Link to="/#" className='side-nav'>
               <IconButton color="inherit">
-                <HomeIcon sx={{fontSize: 15}}/>
+                <HomeIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Home</Button>
             </Link>
 
             <Link to="/adminmainpage" className='side-nav'>
               <IconButton color="inherit">
-                <ShieldIcon sx={{fontSize: 15}}/>
+                <AdminPanelSettingsIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Admin Main</Button>
             </Link>
 
             <Link to="/createaccountadmin" className='side-nav'>
               <IconButton color="inherit">
-                <PersonAddIcon sx={{fontSize: 15}}/>
+                <PersonAddIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Create an Account</Button>
             </Link>
 
             <Link to="/viewaccounts" style={{backgroundColor: '#AFE1AF'}} className='side-nav'>
               <IconButton color="inherit">
-                <ManageAccounts sx={{fontSize: 15}}/>
+                <ManageAccounts sx={{fontSize: 20}}/>
               </IconButton>
               <Button>View Accounts</Button>
             </Link>
 
             <Link onClick={handleClickOpenLogout} to="" className='side-nav'>
               <IconButton color="inherit">
-                <LogoutIcon sx={{fontSize: 15}}/>
+                <LogoutIcon sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Logout</Button>
             </Link>

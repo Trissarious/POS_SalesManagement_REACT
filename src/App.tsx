@@ -7,7 +7,6 @@ import Cashiering from './components/Cashier/Cashiering';
 import SalesSummary from './components/SalesManager/SalesSummary';
 import ItemPage from './components/SalesManager/ItemPage';
 import TransactionHistory from './components/Cashier/TransactionHistory';
-import TransactionDetails from './components/Cashier/TransactionDetails';
 import LoginCashier from './components/Cashier/LoginCashier';
 import StartingScreen from './components/StartingScreen/StartingScreen';
 import LoginSalesManager from './components/SalesManager/LoginSalesManager';
@@ -23,8 +22,6 @@ import HomePage from './components/StartingScreen/HomePage';
 import Transaction_Details from './components/Cashier/Transaction_Details';
 
 function App() {
-
-  
   return (
     <div className="App">
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
