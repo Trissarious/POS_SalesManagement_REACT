@@ -284,7 +284,6 @@ export default function TransactionHistory () {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', fontSize: 15, fontFamily: 'sans-serif'}} style={{height: 800}}>
-
                 <div style={{ height: 700, width: '100%' }}>
                 <DataGrid
                     sx={{ fontSize: 15 }}
