@@ -12,11 +12,13 @@ import { useAuth } from '../AccountLoginValid/AuthContext';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, IconButton,  TextField } from '@mui/material';
+import { Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, IconButton,  TextField, setRef } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import './CSS FIles/TransactionDetails.css';
+import { LoginRounded } from '@mui/icons-material';
+import { el } from 'date-fns/locale';
 
 const drawerWidth: number = 300;
 
@@ -103,78 +105,130 @@ const Transaction_Details = () => {
         password: password,
     };
     
-        // Check if the username and password are not empty
-        if (!loginRequest.username || !loginRequest.password) {
-          window.alert('Please enter both your username and password');
-        } else {
-          // Send a POST request to the server
-          axios.post('http://localhost:8080/user/loginsales', loginRequest)
-            .then((response) => {
-              if (response.status === 200) {
-                // Insert code for approval ^-^
-                    const confirmed = window.confirm('Are you sure you want to refund?');
-                    if (confirmed) {
-                        setRefunded(true);
-                        axios.put(`http://localhost:8080/transaction/isRefunded?transactionid=${id}`, { refunded: true })
-                          .then((response) => {
-                              window.confirm(`Transaction ${id} has been refunded.`);
-                              console.log('Refund successful:', response.data);
-                              window.location.reload();
-                          })
-                          .catch((error) => {
-                              console.error(error);
-                              window.alert(`Failed to refund transaction ${id}.`);
-                          });
-                    }
-              } else {
-                window.alert('Please enter your username and password');
-              }
-            })
-            .catch((error) => {
-              console.error('Login failed:', error);
-              window.alert('The username or password you’ve entered is incorrect. Please try again.');
+    // Check if the username and password are not empty
+      if (!loginRequest.username || !loginRequest.password) {
+        toast.warning('Please enter both your username and password.', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        // Send a POST request to the server
+        axios.post('http://localhost:8080/user/loginsales', loginRequest)
+        .then((response) => {
+        if(response.status === 200) {
+        setRefunded(true);
+        axios.put(`http://localhost:8080/transaction/isRefunded?transactionid=${id}`, { refunded: true })
+        .then((response) => {
+          toast.success(`Transaction ${id} has been refunded successfully.`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        } 
+        else {
+          toast.error('Please enter your username and password.', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+        }).catch((error) => {
+            console.error('Login failed', error);
+            toast.error('The username or password you’ve entered is incorrect. Please try again.', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
             });
-          }   
+          })
+        }
       };
-
-      const handleLoginForReturn = () => {
-        const loginRequest = {
-          username: username,
-          password: password,
-        };
     
-        // Check if the username and password are not empty
-        if (!loginRequest.username || !loginRequest.password) {
-          window.alert('Please enter both your username and password');
-        } else {
-          // Send a POST request to the server
-          axios.post('http://localhost:8080/user/loginsales', loginRequest)
-            .then((response) => {
-              if (response.status === 200) {
-                // Insert code for approval ^-^
-                const confirmed = window.confirm('Are you sure you want to return item?');
-                if (confirmed) {
-                    setReturned(true);
-                    axios.put(`http://localhost:8080/transaction/isReturned?transactionid=${id}`, { returned: true })
-                      .then((response) => {
-                          window.confirm(`Transaction ${id} has been returned.`);
-                          console.log('Return successful:', response.data);
-                          window.location.reload();
-                      })
-                      .catch((error) => {
-                          console.error(error);
-                          window.alert(`Failed to return transaction ${id}.`);
-                      });
-                }
-              } else {
-                window.alert('Please enter your username and password');
-              }
-            })
-            .catch((error) => {
-              console.error('Login failed:', error);
-              window.alert('The username or password you’ve entered is incorrect. Please try again.');
+    const handleLoginForReturn = () => {
+      const loginRequest = {
+        username: username,
+        password: password,
+    };
+    
+    // Check if the username and password are not empty
+      if (!loginRequest.username || !loginRequest.password) {
+        toast.warning('Please enter both your username and password.', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        // Send a POST request to the server
+        axios.post('http://localhost:8080/user/loginsales', loginRequest)
+        .then((response) => {
+        if(response.status === 200) {
+        setRefunded(true);
+        axios.put(`http://localhost:8080/transaction/isReturned?transactionid=${id}`, { returned: true })
+        .then((response) => {
+          toast.success(`Transaction ${id} has been returned successfully.`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        } 
+        else {
+          toast.error('Please enter your username and password.', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+        }).catch((error) => {
+            console.error('Login failed', error);
+            toast.error('The username or password you’ve entered is incorrect. Please try again.', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
             });
-          }   
+          })
+        }
       };
 
     const handleClickOpenRefund = () => {

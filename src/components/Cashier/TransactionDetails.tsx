@@ -5,7 +5,6 @@ import './CSS FIles/TransactionDetails.css';
 import { Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AccountLoginValid/AuthContext';
-import { spawn } from 'child_process';
 
 interface Product {
     productid: number;
