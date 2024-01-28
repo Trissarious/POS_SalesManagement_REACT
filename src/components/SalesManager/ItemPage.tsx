@@ -42,6 +42,7 @@ import {
   ThemeProvider,
   createMuiTheme,
 } from "@mui/material/styles";
+import UpdateProduct from "./UpdateProducts";
 
 const initialSelectedAccounts: any[] | (() => any[]) = [];
 const url = "http://localhost:8080/user/getAllUser";
@@ -114,9 +115,9 @@ export default function ItemPage() {
 
   // Token
   useEffect(() => {
-    const token = localStorage.getItem("salesLoggedIn");
-    const storedUsername = localStorage.getItem("salesUsername");
-    const storedBusinessName = localStorage.getItem("salesBusinessName");
+    const token = localStorage.getItem("salesmanLoggedIn");
+    const storedUsername = localStorage.getItem("salesmanUsername");
+    const storedBusinessName = localStorage.getItem("salesmanBusinessName");
 
     if (!token) {
       navigate("/loginsales");
@@ -281,6 +282,7 @@ export default function ItemPage() {
       headerName: "Actions",
       headerClassName: "column-header",
       flex: 1,
+      renderCell: (params) => <UpdateProduct {...params.row} />
     },
   ];
 
@@ -325,7 +327,7 @@ export default function ItemPage() {
                 <IconButton color="inherit">
                   <AccountCircle sx={{ fontSize: 30 }} />
                 </IconButton>
-                {localStorage.getItem("salesUsername")}
+                {localStorage.getItem("salesmanUsername")}
               </span>
             </Typography>
           </Toolbar>
@@ -343,7 +345,7 @@ export default function ItemPage() {
               px: [1],
             }}
           >
-            {localStorage.getItem("salesUsername")}{" "}
+            {localStorage.getItem("salesmanBusinessName")}{" "}
             {/* Display Business Name */}
           </Toolbar>
           <Divider />

@@ -56,7 +56,7 @@ function getProductByid (productid:number|undefined){
 }
 
 function deleteByID (productid:number|undefined){
-    axios.delete("http://localhost:8081/product/deleteProduct/" + productid,{
+    axios.delete("http://localhost:8080/product/deleteProduct/" + productid,{
     }).then((response) => {
     setProduct(response.data);
     console.log(response.data);    

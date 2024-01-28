@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../AccountLoginValid/AuthContext";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -12,9 +12,37 @@ import {
   DialogTitle,
 } from "@mui/material";
 
+const TIMEOUT_DURATION = 30 * 60 * 1000;
+
 export default function CashierMainPage() {
   const { isCashierLoggedIn, setIsCashierLoggedIn, cashierUser } = useAuth();
   const navigate = useNavigate();
+
+  // Add a timeout duration so that user should login again
+  const [lastActivity, setLastActivity] = useState(Date.now());
+
+  //Update last activity timestamp on user interaction
+  const handleUserActivity = () => {
+    setLastActivity(Date.now());
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivity;
+
+      if (timeSinceLastActivity > TIMEOUT_DURATION) {
+        // Logout user and redirect to login page
+        localStorage.removeItem("cashierToken");
+        localStorage.removeItem("cashierLoggedIn");
+        localStorage.removeItem("cashierUsername");
+        localStorage.removeItem("cashierBusinessName");
+        navigate("/logincashier");
+      }
+    }, 1000); // check every second
+
+    return () => clearInterval(interval);
+  }, [lastActivity, navigate]);
 
   // Token
   useEffect(() => {

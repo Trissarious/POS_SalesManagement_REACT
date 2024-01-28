@@ -20,6 +20,7 @@ import CreateAccountUsers from './components/Administrator/CreateAccountUsers';
 import HomePage from './components/StartingScreen/HomePage';
 import Transaction_Details from './components/Cashier/Transaction_Details';
 import ItemPage from './components/SalesManager/ItemPage';
+import TransactionsSales from './components/SalesManager/Transactions';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               <Route path = "/adminmainpage" element = {<AdminMainPage/>}/>
               <Route path = "/viewaccounts" element = {<ViewAccounts/>}/>
               <Route path = "/createaccountusers" element = {<CreateAccountUsers/>}/>
+              <Route path = "/transactions" element = {<TransactionsSales/>}/>
 
             </Routes>
         </BrowserRouter> 

@@ -1,37 +1,45 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  styled,
+  createTheme,
+  ThemeProvider,
+  createMuiTheme,
+} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useAuth } from "../AccountLoginValid/AuthContext";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
-  Divider,
-  IconButton,
-  List,
   Button,
   Dialog,
-  DialogTitle,
-  DialogContentText,
   DialogActions,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
-import ShieldIcon from "@mui/icons-material/Shield";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   AddShoppingCart,
   ManageAccounts,
-  Visibility,
-  VisibilityOff,
+  Menu,
 } from "@mui/icons-material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MuiDrawer from "@mui/material/Drawer";
-import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import ViewTransactionLink from "../Cashier/ViewTransactionLink";
 
 const drawerWidth: number = 300;
 
@@ -39,14 +47,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-interface Product {
-  productid: number;
-  productname: string;
-  quantity: number;
-  price: number;
-}
-
-interface TransactionDetails {
+interface Transaction {
   transactionid: number;
   total_quantity: number;
   total_price: number;
@@ -104,48 +105,108 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const themeDilven = createTheme({
-  palette: {
-    primary: {
-      main: "#1D7D81",
-    },
-  },
-});
-const TIMEOUT_DURATION = 30 * 60 * 1000;
-
-export default function SalesSummary() {
+export default function TransactionsSales() {
   const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
 
+  const { isSalesManLoggedIn, setIsSalesManLoggedIn, salesUser } = useAuth();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const navigate = useNavigate();
 
-  // Add a timeout duration so that user should login again
-  const [lastActivity, setLastActivity] = useState(Date.now());
-
-  //Update last activity timestamp on user interaction
-  const handleUserActivity = () => {
-    setLastActivity(Date.now());
-  };
-
+  // Token
   useEffect(() => {
-    const interval = setInterval(() => {
-      const currentTime = Date.now();
-      const timeSinceLastActivity = currentTime - lastActivity;
+    const token = localStorage.getItem("salesmanLoggedIn");
+    const storedUsername = localStorage.getItem("salesmanUsername");
+    const storedBusinessName = localStorage.getItem("salesmanBusinessName");
 
-      if (timeSinceLastActivity > TIMEOUT_DURATION) {
-        // Logout user and redirect to login page
-        localStorage.removeItem("salesmanToken");
-        localStorage.removeItem("salesmanLoggedIn");
-        localStorage.removeItem("salesmanUsername");
-        localStorage.removeItem("salesmanBusinessName");
-        navigate("/loginsales");
-      }
-    }, 1000); // check every second
+    if (!token) {
+      navigate("/loginsales");
+    } else {
+    setIsSalesManLoggedIn(true);
+      axios
+      .get("http://localhost:8080/user/getAllUser")
+        .then((response) => {
+            console.log("Hello, ", storedUsername);
+            console.log("Business Name:", storedBusinessName);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [isSalesManLoggedIn, navigate, salesUser]);
 
-    return () => clearInterval(interval);
-  }, [lastActivity, navigate]);
+  const themeDilven = createTheme({
+    palette: {
+      primary: {
+        main: "#1D7D81",
+      },
+    },
+  });
+
+  // Fetch Transactions
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/transaction/getAllTransaction")
+      .then((response) => {
+        setTransactions(response.data);
+        console.log("response:", response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const columns: GridColDef[] = [
+    {
+      field: "transactionid",
+      headerName: "ID",
+      width: 70,
+      headerClassName: "column-header",
+    },
+    {
+      field: "date_time",
+      headerName: "Date/Time",
+      width: 200,
+      headerClassName: "column-header",
+    },
+    {
+      field: "cashier",
+      headerName: "Cashier",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "total_quantity",
+      headerName: "Total Quantity",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "total_price",
+      headerName: "Total Price",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "customer_name",
+      headerName: "Customer Name",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "refunded",
+      headerName: "Refunded",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "returned",
+      headerName: "Returned",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+  ];
+
+  const getRowId = (row: Transaction) => row.transactionid;
 
   // Logout Function
   const [openLogout, setOpenLogout] = React.useState(false);
@@ -181,8 +242,9 @@ export default function SalesSummary() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Transaction History
             </Typography>
+
             <Typography
               component="h1"
               variant="h4"
@@ -202,6 +264,7 @@ export default function SalesSummary() {
             </Typography>
           </Toolbar>
         </AppBar>
+
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -226,13 +289,9 @@ export default function SalesSummary() {
               <Button>Home</Button>
             </Link>
 
-            <Link
-              to="/salessummary"
-              className="side-nav"
-              style={{ backgroundColor: "#AFE1AF" }}
-            >
+            <Link to="/salessummary" className="side-nav">
               <IconButton color="inherit">
-                <ShieldIcon sx={{ fontSize: 15 }} />
+                <Menu sx={{ fontSize: 15 }} />
               </IconButton>
               <Button>Dashboard</Button>
             </Link>
@@ -244,7 +303,11 @@ export default function SalesSummary() {
               <Button>Products</Button>
             </Link>
 
-            <Link to="/transactions" className="side-nav">
+            <Link
+              to="/transactions"
+              style={{ backgroundColor: "#AFE1AF" }}
+              className="side-nav"
+            >
               <IconButton color="inherit">
                 <ManageAccounts sx={{ fontSize: 15 }} />
               </IconButton>
@@ -286,6 +349,7 @@ export default function SalesSummary() {
             </Dialog>
           </List>
         </Drawer>
+
         <Box
           component="main"
           sx={{
@@ -301,42 +365,43 @@ export default function SalesSummary() {
           <Toolbar />
           <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  {/* <Chart /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  {/* <Deposits /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {/* <Orders /> */}
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    fontSize: 15,
+                    fontFamily: "sans-serif",
+                  }}
+                  style={{ height: 800 }}
+                >
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ fontSize: 15 }}
+                      rows={transactions}
+                      columns={columns}
+                      pageSizeOptions={[5, 10]}
+                      getRowId={getRowId}
+                    />
+                    <p style={{ marginTop: 10 }}>
+                      Click on the three dots on the right side of each column
+                      on the table for additional options.
+                    </p>
+                    <p>
+                        Go to cashiering to view full details on transactions.
+                    </p>
+                  </div>
                 </Paper>
               </Grid>
             </Grid>
           </Container>
         </Box>
       </Box>
+      <ToastContainer
+        className="foo"
+        style={{ width: "600px", fontSize: 15 }}
+      />
     </ThemeProvider>
   );
 }
