@@ -304,7 +304,7 @@ const Transaction_Details = () => {
     // Transaction Table for Grid
     const columns_transaction: GridColDef[] = [
       { field: 'transactionid', headerName: 'Transaction ID', flex: 1, headerClassName: 'green-column-header' },
-      { field: 'date_time', headerName: 'Date/Time', flex: 1, headerClassName: 'green-column-header'},
+      { field: 'date_time', headerName: 'Date/Time', flex: 1.5, headerClassName: 'green-column-header'},
       { field: 'total_quantity', headerName: 'Total Quantity', flex: 1, headerClassName: 'green-column-header' },
       { field: 'total_price', headerName: 'Total Price', flex: 1, headerClassName: 'green-column-header' },
       { field: 'customer_name', headerName: 'Customer Name', flex: 1, headerClassName: 'green-column-header' },
@@ -482,7 +482,7 @@ const Transaction_Details = () => {
                                       value={username}
                                       onChange={(e) => setUsername(e.target.value)}
                                       inputProps={{style: {fontSize: 24, fontFamily: 'Poppins', color: '#213458'}}}
-                                  InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
+                                      InputLabelProps={{ style: { fontSize: 24, fontFamily: 'Poppins' } }}
                                   />
                           </CardActions>
                           <CardActions sx={{marginBottom: 5}}>
@@ -504,6 +504,7 @@ const Transaction_Details = () => {
                   <button className="btn-approve" onClick={handleLoginForRefund}>Approve</button>
               </DialogActions>
             </Dialog>
+            
 
             {/* DIALOG FOR RETURN */}
             <Dialog open={openReturn} onClose={handleClickCloseReturn}>

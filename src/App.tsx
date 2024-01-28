@@ -5,7 +5,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
 import SalesSummary from './components/SalesManager/SalesSummary';
-import ItemPage from './components/SalesManager/ItemPage';
 import TransactionHistory from './components/Cashier/TransactionHistory';
 import LoginCashier from './components/Cashier/LoginCashier';
 import StartingScreen from './components/StartingScreen/StartingScreen';
@@ -20,6 +19,7 @@ import { AuthProvider } from './components/AccountLoginValid/AuthContext';
 import CreateAccountUsers from './components/Administrator/CreateAccountUsers';
 import HomePage from './components/StartingScreen/HomePage';
 import Transaction_Details from './components/Cashier/Transaction_Details';
+import ItemPage from './components/SalesManager/ItemPage';
 
 function App() {
   return (

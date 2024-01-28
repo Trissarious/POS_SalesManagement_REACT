@@ -1,47 +1,36 @@
 import * as React from "react";
-import {
-  styled,
-  createTheme,
-  ThemeProvider,
-  createMuiTheme,
-} from "@mui/material/styles";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { useAuth } from "../AccountLoginValid/AuthContext";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
+  Divider,
+  IconButton,
+  List,
   Button,
   Dialog,
+  DialogTitle,
+  DialogContentText,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
 } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
-import LogoutIcon from "@mui/icons-material/Logout";
+import ShieldIcon from "@mui/icons-material/Shield";
 import {
   AddShoppingCart,
   ManageAccounts,
-  Menu,
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import "./CSS FIles/TransactionHistory.css";
-import MenuIcon from '@mui/icons-material/Menu';
-import ViewTransactionLink from "./ViewTransactionLink";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MuiDrawer from "@mui/material/Drawer";
 
 const drawerWidth: number = 300;
 
@@ -49,7 +38,14 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-interface Transaction {
+interface Product {
+  productid: number;
+  productname: string;
+  quantity: number;
+  price: number;
+}
+
+interface TransactionDetails {
   transactionid: number;
   total_quantity: number;
   total_price: number;
@@ -107,116 +103,21 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export default function TransactionHistory() {
+const themeDilven = createTheme({
+  palette: {
+    primary: {
+      main: "#1D7D81",
+    },
+  },
+});
+
+export default function SalesSummary() {
   const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-  const { isCashierLoggedIn, setIsCashierLoggedIn, cashierUser } = useAuth();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const navigate = useNavigate();
-
-  // Token
-  useEffect(() => {
-    const token = localStorage.getItem("cashierLoggedIn");
-    if (!token) {
-      navigate("/logincash");
-    } else {
-      setIsCashierLoggedIn(true);
-      axios
-        .get("http://localhost:8080/transaction/getAllTransaction")
-        .then((response) => {
-          console.log(localStorage.getItem("cashierBusinessName"));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [isCashierLoggedIn, navigate, cashierUser]);
-
-  const themeDilven = createTheme({
-    palette: {
-      primary: {
-        main: "#1D7D81",
-      },
-    },
-  });
-
-  // Fetch Transactions
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/transaction/getAllTransaction")
-      .then((response) => {
-        setTransactions(response.data);
-        console.log("response:", response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  const columns: GridColDef[] = [
-    {
-      field: "transactionid",
-      headerName: "ID",
-      width: 70,
-      headerClassName: "column-header",
-    },
-    {
-      field: "date_time",
-      headerName: "Date/Time",
-      width: 200,
-      headerClassName: "column-header",
-    },
-    {
-      field: "cashier",
-      headerName: "Cashier",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    {
-      field: "total_quantity",
-      headerName: "Total Quantity",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    {
-      field: "total_price",
-      headerName: "Total Price",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    {
-      field: "customer_name",
-      headerName: "Customer Name",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    {
-      field: "refunded",
-      headerName: "Refunded",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    {
-      field: "returned",
-      headerName: "Returned",
-      flex: 1,
-      headerClassName: "column-header",
-    },
-    // { field: 'actions', headerName: 'Actions', flex: 1, renderCell: (params) => <Transaction_Details {...params.row} /> },
-    {
-      field: "actions",
-      headerName: "Actions",
-      headerClassName: "column-header",
-      flex: 1,
-      renderCell: (params) => (
-        <ViewTransactionLink
-          transactionid={params.row.transactionid.toString()}
-        />
-      ),
-    },
-  ];
-
-  const getRowId = (row: Transaction) => row.transactionid;
 
   // Logout Function
   const [openLogout, setOpenLogout] = React.useState(false);
@@ -228,11 +129,11 @@ export default function TransactionHistory() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("cashierToken");
-    localStorage.removeItem("cashierLoggedIn");
-    localStorage.removeItem("cashierUsername");
-    localStorage.removeItem("cashierBusinessName");
-    navigate("/logincash");
+    localStorage.removeItem("salesmanToken");
+    localStorage.removeItem("salesmanLoggedIn");
+    localStorage.removeItem("salesmanUsername");
+    localStorage.removeItem("salesmanBusinessName");
+    navigate("/loginsales");
   };
 
   return (
@@ -252,9 +153,8 @@ export default function TransactionHistory() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Transaction History
+              Dashboard
             </Typography>
-
             <Typography
               component="h1"
               variant="h4"
@@ -269,12 +169,11 @@ export default function TransactionHistory() {
                 <IconButton color="inherit">
                   <AccountCircleIcon sx={{ fontSize: 30 }} />
                 </IconButton>
-                {localStorage.getItem("cashierUsername")}
+                {localStorage.getItem("salesmanUsername")}
               </span>
             </Typography>
           </Toolbar>
         </AppBar>
-
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -287,7 +186,7 @@ export default function TransactionHistory() {
               px: [1],
             }}
           >
-            {localStorage.getItem("cashierUsername")}{" "}
+            {localStorage.getItem("salesmanBusinessName")}{" "}
             {/* Display Business Name */}
           </Toolbar>
           <Divider />
@@ -299,25 +198,25 @@ export default function TransactionHistory() {
               <Button>Home</Button>
             </Link>
 
-            <Link to="/cashier-main" className="side-nav">
+            <Link
+              to="/salessummary"
+              className="side-nav"
+              style={{ backgroundColor: "#AFE1AF" }}
+            >
               <IconButton color="inherit">
-                <Menu sx={{ fontSize: 15 }} />
+                <ShieldIcon sx={{ fontSize: 15 }} />
               </IconButton>
-              <Button>Cashier Main</Button>
+              <Button>Dashboard</Button>
             </Link>
 
-            <Link to="/cashiering" className="side-nav">
+            <Link to="/itempage" className="side-nav">
               <IconButton color="inherit">
                 <AddShoppingCart sx={{ fontSize: 15 }} />
               </IconButton>
-              <Button>Perform Transaction</Button>
+              <Button>Products</Button>
             </Link>
 
-            <Link
-              to="/transactionhistory"
-              style={{ backgroundColor: "#AFE1AF" }}
-              className="side-nav"
-            >
+            <Link to="/transactions" className="side-nav">
               <IconButton color="inherit">
                 <ManageAccounts sx={{ fontSize: 15 }} />
               </IconButton>
@@ -359,7 +258,6 @@ export default function TransactionHistory() {
             </Dialog>
           </List>
         </Drawer>
-
         <Box
           component="main"
           sx={{
@@ -375,40 +273,42 @@ export default function TransactionHistory() {
           <Toolbar />
           <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    fontSize: 15,
-                    fontFamily: "sans-serif",
+                    height: 240,
                   }}
-                  style={{ height: 800 }}
                 >
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ fontSize: 15 }}
-                      rows={transactions}
-                      columns={columns}
-                      pageSizeOptions={[5, 10]}
-                      getRowId={getRowId}
-                    />
-                    <p>
-                      Click on the three dots on the right side of each column
-                      on the table for additional options.{" "}
-                    </p>
-                  </div>
+                  {/* <Chart /> */}
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  {/* <Deposits /> */}
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  {/* <Orders /> */}
                 </Paper>
               </Grid>
             </Grid>
           </Container>
         </Box>
       </Box>
-      <ToastContainer
-        className="foo"
-        style={{ width: "600px", fontSize: 15 }}
-      />
     </ThemeProvider>
   );
 }

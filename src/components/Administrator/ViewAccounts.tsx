@@ -21,13 +21,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { ManageAccounts, Visibility, VisibilityOff } from '@mui/icons-material';
+import { ManageAccounts, Menu, Visibility, VisibilityOff } from '@mui/icons-material';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import UpdateAccount from './UpdateAccount';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';import MenuIcon from '@mui/icons-material/Menu';
 
 const drawerWidth: number = 300;
 
@@ -244,7 +244,7 @@ export default function ViewAccounts() {
 
             <Link to="/adminmainpage" className='side-nav'>
               <IconButton color="inherit">
-                <AdminPanelSettingsIcon sx={{fontSize: 20}}/>
+                <Menu sx={{fontSize: 20}}/>
               </IconButton>
               <Button>Admin Main</Button>
             </Link>
@@ -332,6 +332,7 @@ export default function ViewAccounts() {
                         pageSizeOptions={[5, 10]}
                       />
                     )}
+                     <p>Click on the three dots on the right side of each column on the table for additional options. </p>
                   </div>
                 </Paper>
               </Grid>
