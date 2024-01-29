@@ -31,7 +31,8 @@ import {
 } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MuiDrawer from "@mui/material/Drawer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import GrossSales from "./GrossSales";
 
 const drawerWidth: number = 300;
 
@@ -111,41 +112,37 @@ const themeDilven = createTheme({
     },
   },
 });
-const TIMEOUT_DURATION = 30 * 60 * 1000;
+const TIMEOUT_DURATION = 60 * 60 * 1000;
 
 export default function SalesSummary() {
   const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   const navigate = useNavigate();
 
-  // Add a timeout duration so that user should login again
-  const [lastActivity, setLastActivity] = useState(Date.now());
+  // Timeout handling
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); 
 
-  //Update last activity timestamp on user interaction
-  const handleUserActivity = () => {
-    setLastActivity(Date.now());
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(handleLogout, TIMEOUT_DURATION);
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const currentTime = Date.now();
-      const timeSinceLastActivity = currentTime - lastActivity;
+    const handleUserActivity = () => {
+      resetTimeout();
+    };
 
-      if (timeSinceLastActivity > TIMEOUT_DURATION) {
-        // Logout user and redirect to login page
-        localStorage.removeItem("salesmanToken");
-        localStorage.removeItem("salesmanLoggedIn");
-        localStorage.removeItem("salesmanUsername");
-        localStorage.removeItem("salesmanBusinessName");
-        navigate("/loginsales");
-      }
-    }, 1000); // check every second
+    resetTimeout();
 
-    return () => clearInterval(interval);
-  }, [lastActivity, navigate]);
+    window.addEventListener("mousemove", handleUserActivity);
+    window.addEventListener("keypress", handleUserActivity);
+
+    return () => {
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("keypress", handleUserActivity);
+    }
+  }, []);
 
   // Logout Function
   const [openLogout, setOpenLogout] = React.useState(false);
@@ -322,9 +319,10 @@ export default function SalesSummary() {
                     display: "flex",
                     flexDirection: "column",
                     height: 240,
+                    fontSize: 16,
                   }}
                 >
-                  {/* <Deposits /> */}
+                  <GrossSales />
                 </Paper>
               </Grid>
               {/* Recent Orders */}

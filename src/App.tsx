@@ -4,7 +4,7 @@ import './components/Global Configuration/NavBar.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import CashierMainPage from './components/Cashier/CashierMainPage';
 import Cashiering from './components/Cashier/Cashiering';
-import SalesSummary from './components/SalesManager/SalesSummary';
+import SalesSummary from './components/SalesManager/Dashboard';
 import TransactionHistory from './components/Cashier/TransactionHistory';
 import LoginCashier from './components/Cashier/LoginCashier';
 import StartingScreen from './components/StartingScreen/StartingScreen';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "../AccountLoginValid/AuthContext";
 import {
@@ -14,37 +14,37 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import NavbarAdmin from "./NavBar Administrator/NavBar Admin";
 
-const TIMEOUT_DURATION = 30 * 60 * 1000;
+const TIMEOUT_DURATION = 60 * 60 * 1000;
 
 const AdminMainPage = () => {
   const { isAdminLoggedIn, setIsAdminLoggedIn, adminUser } = useAuth();
   const navigate = useNavigate();
 
-  // Add a timeout duration so that user should login again
-  const [lastActivity, setLastActivity] = useState(Date.now());
+  // Timeout handling
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); 
 
-  //Update last activity timestamp on user interaction
-  const handleUserActivity = () => {
-    setLastActivity(Date.now());
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(handleLogout, TIMEOUT_DURATION);
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const currentTime = Date.now();
-      const timeSinceLastActivity = currentTime - lastActivity;
+    const handleUserActivity = () => {
+      resetTimeout();
+    };
 
-      if (timeSinceLastActivity > TIMEOUT_DURATION) {
-        // Logout user and redirect to login page
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminLoggedIn");
-        localStorage.removeItem("adminUsername");
-        localStorage.removeItem("adminBusinessName");
-        navigate("/loginadmin");
-      }
-    }, 1000); // check every second
+    resetTimeout();
 
-    return () => clearInterval(interval);
-  }, [lastActivity, navigate]);
+    window.addEventListener("mousemove", handleUserActivity);
+    window.addEventListener("keypress", handleUserActivity);
+
+    return () => {
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("keypress", handleUserActivity);
+    }
+  }, []);
 
   // Token
   useEffect(() => {
@@ -70,6 +70,7 @@ const AdminMainPage = () => {
 
   // Logout Function
   const [openLogout, setOpenLogout] = React.useState(false);
+
   const handleClickOpenLogout = () => {
     setOpenLogout(true);
   };

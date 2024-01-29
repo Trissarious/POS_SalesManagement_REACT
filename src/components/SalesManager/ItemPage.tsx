@@ -45,8 +45,6 @@ import {
 import UpdateProduct from "./UpdateProducts";
 
 const initialSelectedAccounts: any[] | (() => any[]) = [];
-const url = "http://localhost:8080/user/getAllUser";
-const post_product = "http://localhost:8080/product/postProduct";
 
 interface Product {
   productid: number;
@@ -451,6 +449,7 @@ export default function ItemPage() {
                         fontWeight: 700,
                         color: "#3A6E70",
                         marginBottom: 20,
+                        fontFamily: 'Poppins'
                       }}
                     >
                       Most Purchased Product
@@ -470,7 +469,7 @@ export default function ItemPage() {
                       >
                         <CardContent>
                           Product Purchased <br></br>
-                          <span style={{ color: "lime" }}>
+                          <span style={{ color: "Turquoise", fontSize: 20 }}>
                             {mostPurchasedProduct?.productname}
                           </span>
                         </CardContent>
@@ -487,7 +486,7 @@ export default function ItemPage() {
                       >
                         <CardContent>
                           Purchased Count <br></br>
-                          <span style={{ color: "lime" }}>
+                          <span style={{ color: "Turquoise", fontSize: 20 }}>
                             {mostPurchasedProduct?.purchaseCount}
                           </span>
                         </CardContent>
