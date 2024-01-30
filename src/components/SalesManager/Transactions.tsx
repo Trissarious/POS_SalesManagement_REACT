@@ -236,7 +236,52 @@ export default function TransactionsSales() {
       .catch((error) => {
         console.error("Error fetching gross sales:", error);
       });
-    }, []);
+  }, []);
+
+  // Net Sales
+  const [netSales, setNetSales] = useState<number | null>(null);
+  useEffect(() => {
+    // Fetch the product with the highest purchase count from the API
+    axios
+      .get("http://localhost:8080/transaction/net-sales")
+      .then((response) => {
+        setNetSales(response.data);
+        console.log("Net Sales: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching net sales:", error);
+      });
+  }, []);
+
+  // Refunds
+  const [refunds, setRefunds] = useState<number | null>(null);
+  useEffect(() => {
+    // Fetch the product with the highest purchase count from the API
+    axios
+      .get("http://localhost:8080/transaction/refunded-prices")
+      .then((response) => {
+        setRefunds(response.data);
+        console.log("Refunds: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Refunds:", error);
+      });
+  }, []);
+
+  // Returns
+  const [returns, setReturns] = useState<number | null>(null);
+  useEffect(() => {
+    // Fetch the product with the highest purchase count from the API
+    axios
+      .get("http://localhost:8080/transaction/returned-prices")
+      .then((response) => {
+        setReturns(response.data);
+        console.log("Returns: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Returns:", error);
+      });
+  }, []);
 
   return (
     <ThemeProvider theme={themeDilven}>
@@ -401,13 +446,19 @@ export default function TransactionsSales() {
                           fontSize: 16,
                           marginRight: 10,
                           marginLeft: 10,
-                          height: 90
+                          height: 90,
                         }}
                       >
                         <CardContent>
                           Gross Sales <br></br>
-                          <Typography style={{ color: "white", fontSize: 20, fontWeight: 600 }}>
-                            ₱{total_price ? total_price.toFixed(2) : '0.00'}
+                          <Typography
+                            style={{
+                              color: "white",
+                              fontSize: 20,
+                              fontWeight: 600,
+                            }}
+                          >
+                            ₱{total_price ? total_price.toFixed(2) : "0.00"}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -426,7 +477,7 @@ export default function TransactionsSales() {
                         <CardContent>
                           Net Sales <br></br>
                           <span style={{ color: "white", fontSize: 20 }}>
-                            {/* Net Sales */}
+                            ₱{netSales ? netSales.toFixed(2) : "0.00"}
                           </span>
                         </CardContent>
                       </Card>
@@ -446,7 +497,7 @@ export default function TransactionsSales() {
                         <CardContent>
                           Returns <br></br>
                           <span style={{ color: "white", fontSize: 20 }}>
-                            {/* Returns */}
+                            ₱{returns ? returns.toFixed(2) : "0.00"}
                           </span>
                         </CardContent>
                       </Card>
@@ -466,7 +517,7 @@ export default function TransactionsSales() {
                         <CardContent>
                           Refunds <br></br>
                           <span style={{ color: "white", fontSize: 20 }}>
-                            {/* Refunds */}
+                            ₱{refunds ? refunds.toFixed(2) : "0.00"}
                           </span>
                         </CardContent>
                       </Card>
