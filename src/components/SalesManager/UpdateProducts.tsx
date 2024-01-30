@@ -57,6 +57,7 @@ export default function UpdateProduct(props: Product) {
       .catch((err) => console.log(err));
   };
 
+  // Delete Function
   const handleDelete = async () => {
       axios
         .put(`http://localhost:8080/product/deleteProduct/${props.productid}`, {

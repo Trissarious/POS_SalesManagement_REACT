@@ -460,7 +460,7 @@ export default function ItemPage() {
                           width: 300,
                           background:
                             "linear-gradient(to right, #249990, #3D5B9B)",
-                          color: "white",
+                          color: "Turquoise",
                           fontWeight: 700,
                           fontSize: 16,
                           marginRight: 10,
@@ -469,7 +469,7 @@ export default function ItemPage() {
                       >
                         <CardContent>
                           Product Purchased <br></br>
-                          <span style={{ color: "Turquoise", fontSize: 20 }}>
+                          <span style={{ color: "white", fontSize: 20 }}>
                             {mostPurchasedProduct?.productname}
                           </span>
                         </CardContent>
@@ -479,14 +479,14 @@ export default function ItemPage() {
                           width: 300,
                           background:
                             "linear-gradient(to right,  #3D5B9B ,#249990)",
-                          color: "white",
+                          color: "Turquoise",
                           fontWeight: 700,
                           fontSize: 16,
                         }}
                       >
                         <CardContent>
                           Purchased Count <br></br>
-                          <span style={{ color: "Turquoise", fontSize: 20 }}>
+                          <span style={{ color: "white", fontSize: 20 }}>
                             {mostPurchasedProduct?.purchaseCount}
                           </span>
                         </CardContent>
