@@ -5,6 +5,7 @@ import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import { Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import './CSS Files/Chart.css';
 
 interface Transaction {
   total_price: number;
@@ -33,7 +34,7 @@ export default function Chart() {
 
     transactionData.forEach((transaction) => {
       const date = new Date(transaction.date_time);
-      const hourKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:00`;
+      const hourKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
       if (hourlyTotals[hourKey]) {
         hourlyTotals[hourKey] += transaction.total_price;
@@ -44,7 +45,7 @@ export default function Chart() {
 
     return Object.keys(hourlyTotals).map((key) => ({
       time: key,
-      amount: hourlyTotals[key],
+      amount: parseFloat(hourlyTotals[key].toFixed(2)),
     }));
   };
 
@@ -52,13 +53,12 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Typography>Today</Typography>
+      <Typography variant='h4'sx={{ fontWeight: 600, color: 'rgb(58, 110, 112)', marginBottom: 2}}>Today</Typography>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
           dataset={dataWithGrossSales}
           margin={{
             top: 16,
-            right: 20,
             left: 70,
             bottom: 30,
           }}
@@ -69,21 +69,21 @@ export default function Chart() {
               tickNumber: 2,
               tickLabelStyle: {
                 ...(theme.typography.body2 as ChartsTextStyle),
-                fontSize: '16px',
+                fontSize: '14px', 
               },
             },
           ]}
           yAxis={[
             {
-              label: 'Sales ($)',
+              label: 'Sales (₱)',
               labelStyle: {
                 ...(theme.typography.body1 as ChartsTextStyle),
                 fill: theme.palette.text.primary,
-                fontSize: '16px',
+                fontSize: '14px', 
               },
               tickLabelStyle: {
                 ...(theme.typography.body2 as ChartsTextStyle),
-                fontSize: '16px',
+                fontSize: '14px', 
               },
               tickNumber: 3,
             },
