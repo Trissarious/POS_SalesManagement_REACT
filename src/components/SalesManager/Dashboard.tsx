@@ -26,6 +26,7 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import {
   AddShoppingCart,
   ManageAccounts,
+  Menu,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
@@ -33,6 +34,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MuiDrawer from "@mui/material/Drawer";
 import { useEffect, useRef, useState } from "react";
 import GrossSales from "./GrossSales";
+import axios from "axios";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Chart from "./Chart";
 
 const drawerWidth: number = 300;
 
@@ -40,14 +44,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-interface Product {
-  productid: number;
-  productname: string;
-  quantity: number;
-  price: number;
-}
-
-interface TransactionDetails {
+interface Transaction {
   transactionid: number;
   total_quantity: number;
   total_price: number;
@@ -119,7 +116,7 @@ export default function SalesSummary() {
   const navigate = useNavigate();
 
   // Timeout handling
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null); 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -141,7 +138,7 @@ export default function SalesSummary() {
     return () => {
       window.removeEventListener("mousemove", handleUserActivity);
       window.removeEventListener("keypress", handleUserActivity);
-    }
+    };
   }, []);
 
   // Logout Function
@@ -160,6 +157,74 @@ export default function SalesSummary() {
     localStorage.removeItem("salesmanBusinessName");
     navigate("/loginsales");
   };
+
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  // Fetch Transactions
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/transaction/getAllTransaction")
+      .then((response) => {
+        setTransactions(response.data);
+        console.log("response:", response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const columns: GridColDef[] = [
+    {
+      field: "transactionid",
+      headerName: "ID",
+      width: 70,
+      headerClassName: "column-header",
+    },
+    {
+      field: "date_time",
+      headerName: "Date/Time",
+      width: 200,
+      headerClassName: "column-header",
+    },
+    {
+      field: "cashier",
+      headerName: "Cashier",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "total_quantity",
+      headerName: "Total Quantity",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "total_price",
+      headerName: "Total Price",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "customer_name",
+      headerName: "Customer Name",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "refunded",
+      headerName: "Refunded",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+    {
+      field: "returned",
+      headerName: "Returned",
+      flex: 1,
+      headerClassName: "column-header",
+    },
+  ];
+
+  const getRowId = (row: Transaction) => row.transactionid;
 
   return (
     <ThemeProvider theme={themeDilven}>
@@ -229,7 +294,7 @@ export default function SalesSummary() {
               style={{ backgroundColor: "#AFE1AF" }}
             >
               <IconButton color="inherit">
-                <ShieldIcon sx={{ fontSize: 15 }} />
+                <Menu sx={{ fontSize: 15 }} />
               </IconButton>
               <Button>Dashboard</Button>
             </Link>
@@ -308,7 +373,7 @@ export default function SalesSummary() {
                     height: 240,
                   }}
                 >
-                  {/* <Chart /> */}
+                  <Chart />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -328,7 +393,16 @@ export default function SalesSummary() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {/* <Orders /> */}
+                  <Typography sx={{ fontSize: 20, fontWeight: 600,  color: '#3A6E70', fontFamily: "Poppins", marginBottom: 2 }}>Recent Orders</Typography>
+                  <div style={{ height: 500, width: "100%" }}>
+                    <DataGrid
+                      sx={{ fontSize: 15 }}
+                      rows={transactions}
+                      columns={columns}
+                      pageSizeOptions={[5, 10]}
+                      getRowId={getRowId}
+                    />
+                  </div>
                 </Paper>
               </Grid>
             </Grid>

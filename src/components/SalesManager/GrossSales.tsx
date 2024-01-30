@@ -39,9 +39,10 @@ export default function GrossSales() {
           fontSize: 22,
           color: "rgb(58, 110, 112)",
           fontFamily: "sans-serif",
+          fontWeight: 600
         }}
       >
-        Recent Deposits
+        Gross Sales
       </Typography>
       <Typography component="p" variant="h2">
         ₱{total_price ? total_price.toFixed(2) : '0.00'}
@@ -53,8 +54,7 @@ export default function GrossSales() {
       <div>
         <Link
           to="/transactions"
-          style={{ textDecoration: "none" }}
-          color="primary"
+          style={{ textDecoration: "none", color: 'green' }}
         >
           View Transactions
         </Link>
