@@ -3,36 +3,59 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import { Typography } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-// Generate Sales Data
-function createData(
-  time: string,
-  amount?: number,
-): { time: string; amount: number | null } {
-  return { time, amount: amount ?? null };
+interface Transaction {
+  total_price: number;
+  date_time: string;
 }
-
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00'),
-];
 
 export default function Chart() {
   const theme = useTheme();
+  const [transactionData, setTransactionData] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/transaction/getAllTransaction")
+      .then((response) => {
+        setTransactionData(response.data);
+        console.log("Transaction Data: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching transaction data:", error);
+      });
+  }, []);
+
+  // Process transaction data and calculate total prices by hour each day
+  const processData = () => {
+    const hourlyTotals: { [key: string]: number } = {};
+
+    transactionData.forEach((transaction) => {
+      const date = new Date(transaction.date_time);
+      const hourKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:00`;
+
+      if (hourlyTotals[hourKey]) {
+        hourlyTotals[hourKey] += transaction.total_price;
+      } else {
+        hourlyTotals[hourKey] = transaction.total_price;
+      }
+    });
+
+    return Object.keys(hourlyTotals).map((key) => ({
+      time: key,
+      amount: hourlyTotals[key],
+    }));
+  };
+
+  const dataWithGrossSales = processData();
 
   return (
     <React.Fragment>
       <Typography>Today</Typography>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
-          dataset={data}
+          dataset={dataWithGrossSales}
           margin={{
             top: 16,
             right: 20,
@@ -44,7 +67,10 @@ export default function Chart() {
               scaleType: 'point',
               dataKey: 'time',
               tickNumber: 2,
-              tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+              tickLabelStyle: {
+                ...(theme.typography.body2 as ChartsTextStyle),
+                fontSize: '16px',
+              },
             },
           ]}
           yAxis={[
@@ -53,9 +79,12 @@ export default function Chart() {
               labelStyle: {
                 ...(theme.typography.body1 as ChartsTextStyle),
                 fill: theme.palette.text.primary,
+                fontSize: '16px',
               },
-              tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 2500,
+              tickLabelStyle: {
+                ...(theme.typography.body2 as ChartsTextStyle),
+                fontSize: '16px',
+              },
               tickNumber: 3,
             },
           ]}

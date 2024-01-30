@@ -494,7 +494,7 @@ export default function ItemPage() {
                     </div>
                   </div>
 
-                  <div style={{ height: 500, width: "100%", marginTop: 50 }}>
+                  <div style={{ height: 530, width: "100%", marginTop: 20 }}>
                     <DataGrid
                       sx={{ fontSize: 15 }}
                       rows={products}

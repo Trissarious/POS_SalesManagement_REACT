@@ -22,6 +22,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
+  Card,
+  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
@@ -31,11 +33,7 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {
-  AddShoppingCart,
-  ManageAccounts,
-  Menu,
-} from "@mui/icons-material";
+import { AddShoppingCart, ManageAccounts, Menu } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -121,12 +119,12 @@ export default function TransactionsSales() {
     if (!token) {
       navigate("/loginsales");
     } else {
-    setIsSalesManLoggedIn(true);
+      setIsSalesManLoggedIn(true);
       axios
-      .get("http://localhost:8080/user/getAllUser")
+        .get("http://localhost:8080/user/getAllUser")
         .then((response) => {
-            console.log("Hello, ", storedUsername);
-            console.log("Business Name:", storedBusinessName);
+          console.log("Hello, ", storedUsername);
+          console.log("Business Name:", storedBusinessName);
         })
         .catch((error) => {
           console.error(error);
@@ -224,6 +222,21 @@ export default function TransactionsSales() {
     localStorage.removeItem("salesmanBusinessName");
     navigate("/loginsales");
   };
+
+  // Gross Sales
+  const [total_price, setTotal_Price] = useState<number | null>(null);
+  useEffect(() => {
+    // Fetch the product with the highest purchase count from the API
+    axios
+      .get("http://localhost:8080/transaction/gross-sales")
+      .then((response) => {
+        setTotal_Price(response.data);
+        console.log("Gross Sales: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching gross sales:", error);
+      });
+    }, []);
 
   return (
     <ThemeProvider theme={themeDilven}>
@@ -376,7 +389,91 @@ export default function TransactionsSales() {
                   }}
                   style={{ height: 800 }}
                 >
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div className="header_product">
+                    <div className="row">
+                      <Card
+                        style={{
+                          width: 200,
+                          background:
+                            "linear-gradient(to right, #249990, #3D5B9B)",
+                          color: "Turquoise",
+                          fontWeight: 700,
+                          fontSize: 16,
+                          marginRight: 10,
+                          marginLeft: 10,
+                          height: 90
+                        }}
+                      >
+                        <CardContent>
+                          Gross Sales <br></br>
+                          <Typography style={{ color: "white", fontSize: 20, fontWeight: 600 }}>
+                            ₱{total_price ? total_price.toFixed(2) : '0.00'}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                      <Card
+                        style={{
+                          width: 200,
+                          background:
+                            "linear-gradient(to right,  #3D5B9B ,#249990)",
+                          color: "Turquoise",
+                          fontWeight: 700,
+                          fontSize: 16,
+                          marginRight: 10,
+                          marginLeft: 10,
+                        }}
+                      >
+                        <CardContent>
+                          Net Sales <br></br>
+                          <span style={{ color: "white", fontSize: 20 }}>
+                            {/* Net Sales */}
+                          </span>
+                        </CardContent>
+                      </Card>
+
+                      <Card
+                        style={{
+                          width: 200,
+                          background:
+                            "linear-gradient(to right,  #3D5B9B ,#249990)",
+                          color: "Turquoise",
+                          fontWeight: 700,
+                          fontSize: 16,
+                          marginRight: 10,
+                          marginLeft: 10,
+                        }}
+                      >
+                        <CardContent>
+                          Returns <br></br>
+                          <span style={{ color: "white", fontSize: 20 }}>
+                            {/* Returns */}
+                          </span>
+                        </CardContent>
+                      </Card>
+
+                      <Card
+                        style={{
+                          width: 200,
+                          background:
+                            "linear-gradient(to right,  #3D5B9B ,#249990)",
+                          color: "Turquoise",
+                          fontWeight: 700,
+                          fontSize: 16,
+                          marginRight: 10,
+                          marginLeft: 10,
+                        }}
+                      >
+                        <CardContent>
+                          Refunds <br></br>
+                          <span style={{ color: "white", fontSize: 20 }}>
+                            {/* Refunds */}
+                          </span>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+
+                  <div style={{ height: 550, width: "100%", marginTop: 20 }}>
                     <DataGrid
                       sx={{ fontSize: 15 }}
                       rows={transactions}
@@ -389,7 +486,7 @@ export default function TransactionsSales() {
                       on the table for additional options.
                     </p>
                     <p>
-                        Go to cashiering to view full details on transactions.
+                      Go to cashiering to view full details on transactions.
                     </p>
                   </div>
                 </Paper>
