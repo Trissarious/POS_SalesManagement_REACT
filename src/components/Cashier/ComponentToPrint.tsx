@@ -18,6 +18,7 @@ interface ComponentToPrintProps {
     price: number;
     subtotal: number;
   }>;
+  cashier: string
   customer_name: string;
   customer_num: string;
   customer_email: string;
@@ -41,6 +42,7 @@ export const ComponentToPrint = forwardRef(
       total_price,
       total_quantity,
       balance,
+      cashier,
     } = props;
 
     // Styling the Product Table
@@ -82,6 +84,7 @@ export const ComponentToPrint = forwardRef(
             ))}
           </TableBody>
         </Table>
+        <h3 className="px-2">Cashier: {cashier}</h3>
         <h3 className="px-2">Customer Name: {customer_name}</h3>
         <h3 className="px-2">Customer Number: {customer_num}</h3>
         <h3 className="px-2">Customer Email: {customer_email}</h3>

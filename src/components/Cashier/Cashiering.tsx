@@ -171,6 +171,7 @@ export default function Cashiering() {
   const [customer_num, setCustomer_num] = useState("");
   const [customer_email, setCustomer_email] = useState("");
   const [date_time, setDate_time] = useState("");
+  const [cashier, setCashier] = useState("");
 
   //Fetch Product Table from Database
   useEffect(() => {
@@ -291,6 +292,7 @@ export default function Cashiering() {
           product: selectedProducts.map((productid) => ({
             productid: productid,
           })),
+          cashier: cashier
         })
         .then((res) => {
           console.log(res.data);
@@ -575,7 +577,7 @@ export default function Cashiering() {
               px: [1],
             }}
           >
-            {localStorage.getItem("cashierUsername")}{" "}
+            {localStorage.getItem("cashierBusinessName")}
             {/* Display Business Name */}
           </Toolbar>
           <Divider />
@@ -675,30 +677,54 @@ export default function Cashiering() {
                   style={{ height: 800 }}
                 >
                   <div>
+                    <div className="row">
                     {/*Search Bar */}
-                    <input
+                    <TextField
                       type="text"
                       placeholder="Search products"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       style={{
-                        width: "100%",
+                        width: "56.5%",
                         height: "40px",
                         margin: "10px 0",
-                        marginTop: "-30px",
-                        marginBottom: "10px",
+                        marginBottom: "40px",
+                        marginLeft: 15,
                         padding: "5px",
                         fontSize: "16px",
                       }}
+                      inputProps={{ style: { fontSize: 16 } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16 },
+                      }}
                     />
+
+                    {/* Display Cashier */}
+                    <TextField
+                      label='Cashier'
+                      value={localStorage.getItem('cashierFirstName')}
+                      onChange={(e) => setCashier(e.target.value)}
+                      style={{
+                        width: "40%",
+                        height: "40px",
+                        margin: "10px 0",
+                        marginLeft: 20,
+                        padding: "5px",
+                        fontSize: "16px",
+                        display: 'flex',
+                      }}
+                      inputProps={{ style: { fontSize: 16, color: 'green' } }}
+                      InputLabelProps={{
+                        style: { fontSize: 16, color: 'green' },
+                      }}
+                    />
+                    </div>
+            
                     {/* DISPLAYS PRODUCT TABLE */}
                     <div className="container-product">
                       <div className="col-lg-7">
                         {filteredProducts.length > 0 ? (
-                          <TableContainer
-                            component={Paper}
-                            sx={{ maxHeight: 720 }}
-                          >
+                          <TableContainer sx={{ maxHeight: 600 }}>
                             <Table
                               sx={{ maxWidth: 1000 }}
                               aria-label="customized table"
@@ -737,8 +763,8 @@ export default function Cashiering() {
                                       ₱{product?.price.toFixed(2)}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                      <label className="button-label">
-                                        ADD
+                                      <label className="btn btn-success btn-lg">
+                                        Add to cart
                                         <input
                                           type="checkbox"
                                           id="checkbox"
@@ -792,6 +818,7 @@ export default function Cashiering() {
                             <ComponentToPrint
                               ref={componentRef}
                               cart={cart}
+                              cashier={cashier}
                               customer_name={customer_name}
                               customer_num={customer_num}
                               customer_email={customer_email}
@@ -859,6 +886,7 @@ export default function Cashiering() {
                                       -{" "}
                                     </button>
                                     <button
+                                      style={{ marginLeft: 2 }}
                                       className="btn btn-success"
                                       onClick={() => {
                                         if (item) {
@@ -891,160 +919,184 @@ export default function Cashiering() {
                     </div>
                     <div className="row content">
                       {/* Customer Details */}
-                      <div className="col-lg-7">
-                        <div className="customer-details">
-                          <h3>Customer Name</h3>
+                      <div className="col-lg-8">
+                        <div className="customer-details" style={{ marginLeft: 8 }}>
                           <TextField
                             fullWidth
                             value={customer_name}
                             onChange={(e) => setCustomer_name(e.target.value)}
                             id="filled-required"
-                            variant="filled"
+                            variant="outlined"
+                            label="Customer Name"
                             size="small"
                             inputProps={{
                               style: {
-                                fontSize: 15,
+                                fontSize: 20,
                                 backgroundColor: "#f7f5f5",
                               },
                             }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            style={{ marginBottom: 10, marginTop: 20 }}
                           />
-                          <h3>Customer Number</h3>
+
                           <TextField
                             fullWidth
                             value={customer_num}
                             onChange={(e) => setCustomer_num(e.target.value)}
                             id="filled-required"
                             size="small"
-                            variant="filled"
+                            variant="outlined"
+                            label="Customer Number"
                             inputProps={{
                               style: {
-                                fontSize: 15,
+                                fontSize: 20,
                                 backgroundColor: "#f7f5f5",
                               },
                             }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            style={{ marginBottom: 10 }}
                           />
-                          <h3>Customer Email</h3>
                           <TextField
                             value={customer_email}
                             onChange={(e) => setCustomer_email(e.target.value)}
                             id="filled-required"
                             fullWidth
                             size="small"
-                            variant="filled"
+                            label="Customer Email"
+                            variant="outlined"
                             inputProps={{
                               style: {
-                                fontSize: 15,
+                                fontSize: 20,
                                 backgroundColor: "#f7f5f5",
                               },
                             }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            style={{ marginBottom: 10 }}
+                            
                           />
-                          <h3>Date and Time</h3>
                           <TextField
                             required
                             id="filled-required"
-                            label=""
                             fullWidth
                             value={date_time}
                             size="small"
-                            variant="filled"
+                            variant="outlined"
                             inputProps={{
                               style: {
-                                fontSize: 15,
+                                fontSize: 20,
                                 backgroundColor: "#f7f5f5",
                               },
                             }}
+                            style={{ marginBottom: 20 }}
+
                           />
                         </div>
                       </div>
 
                       <div className="col-lg-4">
-                        <div>
-                          <h2>
-                            {" "}
-                            Total Amount
-                            <TextField
-                              value={total_price.toFixed(2)}
-                              required
-                              size="small"
-                              id="filled-required"
-                              fullWidth
-                              variant="filled"
-                              inputProps={{
-                                readOnly: true,
-                                style: {
-                                  color: "green",
-                                  fontSize: 25,
-                                  fontWeight: "bold",
-                                  backgroundColor: "#f7f5f5",
-                                },
-                              }}
-                            />
-                          </h2>
-                          <h3>
-                            Total Quantity
-                            <TextField
-                              value={total_quantity}
-                              required
-                              id="filled-required"
-                              fullWidth
-                              size="small"
-                              variant="filled"
-                              inputProps={{
-                                style: {
-                                  fontSize: 15,
-                                  backgroundColor: "#f7f5f5",
-                                },
-                              }}
-                            />{" "}
-                          </h3>
-                          <h3>
-                            Tender
-                            <TextField
-                              value={tendered_bill}
-                              onChange={(e) => setTendered_bill(e.target.value)}
-                              required
-                              type="number"
-                              id="filled-required"
-                              fullWidth
-                              size="small"
-                              variant="filled"
-                              inputProps={{
-                                style: {
-                                  fontSize: 15,
-                                  backgroundColor: "#f7f5f5",
-                                },
-                              }}
-                            />{" "}
-                          </h3>
-                          <h3>
-                            Change
-                            <TextField
-                              value={balance.toFixed(2)}
-                              required
-                              id="filled-required"
-                              fullWidth
-                              size="small"
-                              variant="filled"
-                              inputProps={{
-                                style: {
-                                  color: "red",
-                                  fontSize: 20,
-                                  fontWeight: "bold",
-                                  backgroundColor: "#f7f5f5",
-                                },
-                              }}
-                            />
-                          </h3>
+                        <div style={{ marginRight: 8 }}>
+                          <TextField
+                            value={total_price.toFixed(2)}
+                            required
+                            size="small"
+                            id="filled-required"
+                            fullWidth
+                            variant="outlined"
+                            label="Total Amount"
+                            inputProps={{
+                              style: {
+                                fontSize: 20,
+                                backgroundColor: "#f7f5f5",
+                                color: 'red'
+
+                              },
+                            }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            style={{ marginBottom: 10, marginTop: 20 }}
+                          />
+
+                          <TextField
+                            value={total_quantity}
+                            required
+                            id="filled-required"
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            inputProps={{
+                              style: {
+                                fontSize: 20,
+                                backgroundColor: "#f7f5f5",
+                              },
+                            }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            label="Total Quantity"
+                            style={{ marginBottom: 10 }}
+
+                          />
+
+                          <TextField
+                            value={tendered_bill}
+                            onChange={(e) => setTendered_bill(e.target.value)}
+                            required
+                            type="number"
+                            id="filled-required"
+                            label="Tender"
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            inputProps={{
+                              style: {
+                                fontSize: 20,
+                                backgroundColor: "#f7f5f5",
+                                color: 'red'
+                              },
+                            }}
+                            InputLabelProps={{
+                              style: { fontSize: 16 },
+                            }}
+                            style={{ marginBottom: 10 }}
+
+                          />
+                          <TextField
+                            value={balance.toFixed(2)}
+                            required
+                            id="filled-required"
+                            label="Change"
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            inputProps={{
+                              style: {
+                                fontSize: 20,
+                                backgroundColor: "#f7f5f5",
+                                color: 'green'
+                              },
+                            }}
+                            InputLabelProps={{
+                              style: { fontSize: 16,},
+                            }}
+                            
+                          />
                         </div>
                       </div>
-                      <div></div>
                       {/* If the Total Amount is equal to zero, show a message */}
                       {total_price !== 0 ? (
                         <button
-                          className="button-record-transaction"
+                          className="btn btn-success btn-lg"
+                          style={{ fontSize: 24 }}
                           onClick={record_transaction}
                         >
-                          PAY NOW
+                          Pay Now
                         </button>
                       ) : (
                         <h1>Please add a product to the cart</h1>
@@ -1052,7 +1104,6 @@ export default function Cashiering() {
                     </div>
                     <div className="footer"></div>
                     <ToastContainer
-                      className="foo"
                       style={{ width: "500px", fontSize: 15 }}
                     />
                   </div>
@@ -1069,6 +1120,7 @@ export default function Cashiering() {
     </ThemeProvider>
   );
 }
+
 function handlePrint() {
   throw new Error("Function not implemented.");
 }
