@@ -57,7 +57,7 @@ const AdminMainPage = () => {
     } else {
       setIsAdminLoggedIn(true);
       axios
-        .get("http://localhost:8080/user/getAllUser")
+        .get("https://dilven-springboot.onrender.com/user/getAllUser")
         .then((response) => {
           console.log("Hello, ", storedFirstName);
           console.log("Business Name:", storedBusinessName);

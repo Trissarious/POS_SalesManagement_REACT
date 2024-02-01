@@ -37,7 +37,7 @@ export default function ChangePassword() {
     } else {
         try {
           // Send a POST request to the backend to initiate the password reset process
-          const response = await axios.post('http://localhost:8080/user/forgotpassword', { email: email });
+          const response = await axios.post('https://dilven-springboot.onrender.com/user/forgotpassword', { email: email });
           console.log(response.data);
           toast.success('Email verification sent successfully.', {
             position: "top-center",

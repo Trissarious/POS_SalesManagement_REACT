@@ -122,7 +122,7 @@ export default function ItemPage() {
     } else {
       setIsSalesManLoggedIn(true);
       axios
-        .get("http://localhost:8080/user/getAllUser")
+        .get("https://dilven-springboot.onrender.com/user/getAllUser")
         .then((response) => {
           console.log("Hello, ", storedUsername);
           console.log("Business Name:", storedBusinessName);
@@ -177,7 +177,7 @@ export default function ItemPage() {
         account: selectedAccounts.map((userid) => ({ userid: userid })),
       };
       axios
-        .post("http://localhost:8080/product/postProduct", newProductData)
+        .post("https://dilven-springboot.onrender.com/product/postProduct", newProductData)
         .then((response) => {
           toast.success("Product added successfully.", {
             position: "top-center",
@@ -227,7 +227,7 @@ export default function ItemPage() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/product/most-purchased")
+      .get("https://dilven-springboot.onrender.com/product/most-purchased")
       .then((response) => {
         // Set the most purchased product in the state
         setMostPurchasedProduct(response.data);
@@ -240,7 +240,7 @@ export default function ItemPage() {
   // Fetch Products
   useEffect(() => {
     axios
-      .get("http://localhost:8080/product/getAllProduct")
+      .get("https://dilven-springboot.onrender.com/product/getAllProduct")
       .then((response) => {
         setProducts(response.data);
         console.log("response:", response.data);

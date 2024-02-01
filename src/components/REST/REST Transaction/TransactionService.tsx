@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const TRANSACTION_BASE_URL = "http://localhost:8080/transaction/getAllTransaction";
-const TRANSACTIONID_BASE_URL = "http://localhost:8080/transaction/getByTransaction/?transactionid";
+const TRANSACTION_BASE_URL = "https://dilven-springboot.onrender.com/transaction/getAllTransaction";
+const TRANSACTIONID_BASE_URL = "https://dilven-springboot.onrender.com/transaction/getByTransaction/?transactionid";
 
 class TransactionService{
     getTransaction() {

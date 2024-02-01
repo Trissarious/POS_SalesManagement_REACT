@@ -18,7 +18,7 @@ export default function Chart() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/transaction/getAllTransaction")
+      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
       .then((response) => {
         setTransactionData(response.data);
         console.log("Transaction Data: ", response.data);

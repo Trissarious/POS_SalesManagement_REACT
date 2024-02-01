@@ -43,7 +43,7 @@ export default function UpdateProduct(props: Product) {
   const handleUpdate = async () => {
     axios
       .put(
-        `http://localhost:8080/product/putProduct?productid=` + props.productid,
+        `https://dilven-springboot.onrender.com/product/putProduct?productid=` + props.productid,
         {
           productname: productnameRef.current?.value,
           price: priceRef.current?.value,
@@ -60,7 +60,7 @@ export default function UpdateProduct(props: Product) {
   // Delete Function
   const handleDelete = async () => {
       axios
-        .put(`http://localhost:8080/product/deleteProduct/${props.productid}`, {
+        .put(`https://dilven-springboot.onrender.com/product/deleteProduct/${props.productid}`, {
           is_deleted: true,
         })
         .then((response) => {
