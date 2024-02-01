@@ -24,7 +24,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
 
     
     function addAccount(account:Account){
-        axios.post("http://localhost:8080/user/postUser",{
+        axios.post("https://dilven-springboot.onrender.com/user/postUser",{
             username: account.username,
             password: account.password,
             email: account.email,
@@ -47,7 +47,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
     }
 
     function editAccount(account:Account){
-        axios.put("http://localhost:8080/product/getByProduct?productid=" + account.userid,{
+        axios.put("https://dilven-springboot.onrender.com/product/getByProduct?productid=" + account.userid,{
             username: account.username,
             password: account.password,
             email: account.email,
@@ -69,7 +69,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
     }
 
     function getAccountbyId (userid:number|undefined){
-        axios.get("http:localhost:8080/user/getByUser?userid=" + userid,{
+        axios.get("https://dilven-springboot.onrender.com/user/getByUser?userid=" + userid,{
     }).then((response) => {
         setAccount(response.data);
         console.log(response.data);
@@ -80,7 +80,7 @@ export const RestAccount = ():[ (userid:number)=> void,(userid:number)=>void,(ac
     }
 
 function deleteByID (userid:number|undefined){
-    axios.delete("http://localhost:8080/user/deleteAccount/" + userid,{
+    axios.delete("https://dilven-springboot.onrender.com/user/deleteAccount/" + userid,{
     }).then((response) => {
     setAccount(response.data);
     console.log(response.data);    

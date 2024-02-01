@@ -55,8 +55,8 @@ import "./CSS FIles/Cashiering.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const initialSelectedProducts: any[] | (() => any[]) = [];
-const url = "http://localhost:8080/product/getAllProduct";
-const post_transaction = "http://localhost:8080/transaction/postTransaction";
+const url = "https://dilven-springboot.onrender.com/product/getAllProduct";
+const post_transaction = "https://dilven-springboot.onrender.com/transaction/postTransaction";
 
 //CASHIERING ADDED
 
@@ -123,7 +123,7 @@ export default function Cashiering() {
     } else {
       setIsCashierLoggedIn(true);
       axios
-        .get("http://localhost:8080/transaction/getAllTransaction")
+        .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
         .then((response) => {
           console.log(localStorage.getItem("cashierBusinessName"));
         })
@@ -205,7 +205,7 @@ export default function Cashiering() {
     try {
       // Make an HTTP request to update the product quantity in the database
       await axios.put(
-        `http://localhost:8080/product/decreaseQuantity/${productid}?quantityToDecrease=${quantityToDecrease}`
+        `https://dilven-springboot.onrender.com/product/decreaseQuantity/${productid}?quantityToDecrease=${quantityToDecrease}`
       );
     } catch (error) {
       console.error(error);
@@ -219,7 +219,7 @@ export default function Cashiering() {
     try {
       // Make an HTTP request to increment the purchase count in the database for the specified product
       await axios.put(
-        `http://localhost:8080/product/incrementPurchaseCount/${productid}?quantityPurchased=${quantityPurchased}`
+        `https://dilven-springboot.onrender.com/product/incrementPurchaseCount/${productid}?quantityPurchased=${quantityPurchased}`
       );
     } catch (error) {
       console.error(error);

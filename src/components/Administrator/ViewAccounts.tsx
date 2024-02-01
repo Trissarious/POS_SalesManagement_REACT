@@ -113,7 +113,7 @@ export default function ViewAccounts() {
       navigate('/loginadmin');
     } else {
       setIsAdminLoggedIn(true);
-    axios.get('http://localhost:8080/user/getAllUser')
+    axios.get('https://dilven-springboot.onrender.com/user/getAllUser')
       .then((response) => {
         // Filter users based on business_name
         const filteredUsers = response.data.filter((username: Account) =>
@@ -145,7 +145,7 @@ export default function ViewAccounts() {
 
     // Fetch Account data
     useEffect(() => {
-        axios.get('http://localhost:8080/user/getAllUser')
+        axios.get('https://dilven-springboot.onrender.com/user/getAllUser')
             .then((response) => {
                 setAccounts(response.data);
                 console.log("response:", response.data)

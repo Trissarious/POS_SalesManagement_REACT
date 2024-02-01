@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const PRODUCT_BASE_URL = "http://localhost:8081/product/getAllProduct";
-const PRODUCT_NAME_BASE_URL = "http://localhost:8081/product/getByProduct/?productname=";
+const PRODUCT_BASE_URL = "https://dilven-springboot.onrender.com/product/getAllProduct";
+const PRODUCT_NAME_BASE_URL = "https://dilven-springboot.onrender.com/product/getByProduct/?productname=";
 
 class ProductService{
     getProduct() {

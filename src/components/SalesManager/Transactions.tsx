@@ -121,7 +121,7 @@ export default function TransactionsSales() {
     } else {
       setIsSalesManLoggedIn(true);
       axios
-        .get("http://localhost:8080/user/getAllUser")
+        .get("https://dilven-springboot.onrender.com/user/getAllUser")
         .then((response) => {
           console.log("Hello, ", storedUsername);
           console.log("Business Name:", storedBusinessName);
@@ -143,7 +143,7 @@ export default function TransactionsSales() {
   // Fetch Transactions
   useEffect(() => {
     axios
-      .get("http://localhost:8080/transaction/getAllTransaction")
+      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
       .then((response) => {
         setTransactions(response.data);
         console.log("response:", response.data);
@@ -228,7 +228,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/gross-sales")
+      .get("https://dilven-springboot.onrender.com/transaction/gross-sales")
       .then((response) => {
         setTotal_Price(response.data);
         console.log("Gross Sales: ", response.data);
@@ -243,7 +243,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/net-sales")
+      .get("https://dilven-springboot.onrender.com/transaction/net-sales")
       .then((response) => {
         setNetSales(response.data);
         console.log("Net Sales: ", response.data);
@@ -258,7 +258,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/refunded-prices")
+      .get("https://dilven-springboot.onrender.com/transaction/refunded-prices")
       .then((response) => {
         setRefunds(response.data);
         console.log("Refunds: ", response.data);
@@ -273,7 +273,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/returned-prices")
+      .get("https://dilven-springboot.onrender.com/transaction/returned-prices")
       .then((response) => {
         setReturns(response.data);
         console.log("Returns: ", response.data);

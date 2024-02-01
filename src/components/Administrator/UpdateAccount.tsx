@@ -101,7 +101,7 @@ export default function UpdateAccount(props: Account) {
       );
       if (confirmUpdate) {
         axios
-          .put("http://localhost:8080/user/putUser?userid=" + props.userid, {
+          .put("https://dilven-springboot.onrender.com/user/putUser?userid=" + props.userid, {
             username: usernameRef.current?.value,
             password: passwordRef.current?.value,
             account_type: account_typeRef.current?.value,
