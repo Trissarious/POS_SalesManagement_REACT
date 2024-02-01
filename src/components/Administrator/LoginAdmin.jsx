@@ -18,6 +18,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Global Configuration/NavBar";
 import { useAuth } from "../AccountLoginValid/AuthContext";
 
+const config = { 
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }
+}
+
 const LoginAdmin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -50,7 +56,7 @@ const LoginAdmin = () => {
     } else {
       // Send a POST request to the server
       axios
-        .post("https://dilven-springboot.onrender.com/user/loginad", {
+        .post("https://dilven-springboot.onrender.com/user/loginad", config ,{
           username: username,
           password: password,
           business_name: business_name,
