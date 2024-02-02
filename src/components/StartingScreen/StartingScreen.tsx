@@ -15,7 +15,7 @@ const StartingScreen = () => {
                     <button className='btn-salesmanager'>Sales Manager</button>
                   </Link>
                   <br></br>
-                  <Link to="/logincashier">
+                  <Link to="/logincash">
                     <button className='btn-cashier'>Cashier</button>
                   </Link>
                   <br></br>

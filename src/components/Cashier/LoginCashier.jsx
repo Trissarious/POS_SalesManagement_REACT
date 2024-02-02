@@ -141,7 +141,7 @@ const LoginCashier  = () => {
             </div>
           </Link>
       </div>
-
+    {/* dasds */}
       <ToastContainer className="foo" style={{ width: "600px", fontSize: 15 }} />
     </div>
   </div>

@@ -18,12 +18,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Global Configuration/NavBar";
 import { useAuth } from "../AccountLoginValid/AuthContext";
 
-const config = { 
-  headers: {
-    "Content-Type": "multipart/form-data",
-  }
-}
-
 const LoginAdmin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -56,14 +50,15 @@ const LoginAdmin = () => {
     } else {
       // Send a POST request to the server
       axios
-        .post("https://dilven-springboot.onrender.com/user/loginad", config ,{
+        .post("https://dilven-springboot.onrender.com/user/loginad", {
           username: username,
           password: password,
           business_name: business_name,
           fname: fname,
         })
         .then((response) => {
-          if (response.status === 200) {
+          // if (response.status === 200)
+   
             const token = response.data.token;
             console.log("Username from API response:");
             localStorage.setItem("adminToken", token);
@@ -76,19 +71,19 @@ const LoginAdmin = () => {
             localStorage.setItem("adminFirstName", response.data.fname);
             setIsAdminLoggedIn(true);
             navigate("/adminmainpage");
-          } else {
-            toast.error("Please enter your username and password", {
-              position: "top-center",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        })
+        //   } else {
+        //     toast.error("Please enter your username and password", {
+        //       position: "top-center",
+        //       autoClose: 2000,
+        //       hideProgressBar: false,
+        //       closeOnClick: true,
+        //       pauseOnHover: true,
+        //       draggable: true,
+        //       progress: undefined,
+        //       theme: "colored",
+        //     });
+        //   }
+         })
         .catch((error) => {
           console.error("Login failed:", error);
           toast.error(
