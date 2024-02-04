@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import  { useState } from "react";
 import { RestAccount } from "../REST/REST Account/RestAccount";
 import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
 
 const defaultTheme = createTheme();
 
@@ -26,7 +27,16 @@ export default function ChangePassword() {
     const resetToken = new URLSearchParams(window.location.search).get('token');
   
     if (password !== reEnterPassword) {
-      alert('Passwords do not match. Please re-enter your password');
+      toast.error('Passwords do not match. Please re-enter your password', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
 
   try {
@@ -37,7 +47,16 @@ export default function ChangePassword() {
         }
       );
       console.log(response.data);
-      alert('Changed password successfully.')
+      toast.success('Changed password successfully.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     } catch (error) {
       console.error(error);
     }
@@ -117,6 +136,7 @@ export default function ChangePassword() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer className="foo" style={{ width: "500px", fontSize: 16 }} />
     </ThemeProvider>
   );
 }
