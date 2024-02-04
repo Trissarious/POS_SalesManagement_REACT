@@ -28,24 +28,24 @@ export default function Chart() {
       });
   }, []);
 
-  // Process transaction data and calculate total prices by hour each day
+  // Process transaction data and calculate total prices by date
   const processData = () => {
-    const hourlyTotals: { [key: string]: number } = {};
+    const dailyTotals: { [key: string]: number } = {};
 
     transactionData.forEach((transaction) => {
       const date = new Date(transaction.date_time);
-      const hourKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      const dateKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-      if (hourlyTotals[hourKey]) {
-        hourlyTotals[hourKey] += transaction.total_price;
+      if (dailyTotals[dateKey]) {
+        dailyTotals[dateKey] += transaction.total_price;
       } else {
-        hourlyTotals[hourKey] = transaction.total_price;
+        dailyTotals[dateKey] = transaction.total_price;
       }
     });
 
-    return Object.keys(hourlyTotals).map((key) => ({
+    return Object.keys(dailyTotals).map((key) => ({
       time: key,
-      amount: parseFloat(hourlyTotals[key].toFixed(2)),
+      amount: parseFloat(dailyTotals[key].toFixed(2)),
     }));
   };
 
