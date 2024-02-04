@@ -662,7 +662,7 @@ export default function Cashiering() {
                   sx={{ fontSize: "15px", fontWeight: "bold" }}
                   onClick={handleClickCloseLogout}
                 >
-                  Cancel
+                  Cancels
                 </Button>
                 <Button
                   sx={{ fontSize: "15px", fontWeight: "bold" }}
