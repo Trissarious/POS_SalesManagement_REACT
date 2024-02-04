@@ -72,7 +72,7 @@ const Transaction_Details = () => {
       const token = localStorage.getItem('cashierToken');
   
       if (!token) {
-        navigate('/logincashier');
+        navigate('/logincash');
       } else {
       }
     }, [isCashierLoggedIn, navigate]);
@@ -93,7 +93,7 @@ const Transaction_Details = () => {
         const token = localStorage.getItem('cashierToken');
     
         if (!token) {
-          navigate('/logincashier');
+          navigate('/logincash');
         } else {
         }
       }, [isCashierLoggedIn, navigate]);
@@ -334,7 +334,7 @@ const Transaction_Details = () => {
         localStorage.removeItem('cashierLoggedIn')
         localStorage.removeItem('cashierUsername');
         localStorage.removeItem('cashierBusinessName');
-        navigate('/logincashier');
+        navigate('/logincash');
     }
 
     return (

@@ -118,7 +118,7 @@ export default function TransactionHistory() {
   useEffect(() => {
     const token = localStorage.getItem("cashierLoggedIn");
     if (!token) {
-      navigate("/logincashier");
+      navigate("/logincash");
     } else {
       setIsCashierLoggedIn(true);
       axios
@@ -232,7 +232,7 @@ export default function TransactionHistory() {
     localStorage.removeItem("cashierLoggedIn");
     localStorage.removeItem("cashierUsername");
     localStorage.removeItem("cashierBusinessName");
-    navigate("/logincashier");
+    navigate("/logincash");
   };
 
   return (

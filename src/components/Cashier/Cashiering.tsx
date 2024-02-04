@@ -149,7 +149,7 @@ export default function Cashiering() {
     const token = localStorage.getItem("cashierToken");
 
     if (!token) {
-      navigate("/logincashier");
+      navigate("/logincash");
     } else {
     }
   }, [isCashierLoggedIn, navigate]);

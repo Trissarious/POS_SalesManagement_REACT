@@ -52,7 +52,7 @@ export default function CashierMainPage() {
     const storedBusinessName = localStorage.getItem("cashierBusinessName");
 
     if (!token) {
-      navigate("/logincashier");
+      navigate("/logincash");
     } else {
       setIsCashierLoggedIn(true);
       axios
@@ -81,7 +81,7 @@ export default function CashierMainPage() {
     localStorage.removeItem("cashierLoggedIn");
     localStorage.removeItem("cashierUsername");
     localStorage.removeItem("cashierBusinessName");
-    navigate("/logincashier");
+    navigate("/logincash");
   };
 
   return (
