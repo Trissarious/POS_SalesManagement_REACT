@@ -287,7 +287,7 @@ export default function TransactionHistory() {
               px: [1],
             }}
           >
-            {localStorage.getItem("cashierUsername")}{" "}
+            {localStorage.getItem("cashierBusinessName")}{" "}
             {/* Display Business Name */}
           </Toolbar>
           <Divider />
