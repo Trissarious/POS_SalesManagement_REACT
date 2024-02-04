@@ -156,7 +156,7 @@ export default function TransactionHistory() {
   const columns: GridColDef[] = [
     {
       field: "transactionid",
-      headerName: "ID",
+      headerName: "Transaction ID",
       width: 70,
       headerClassName: "column-header",
     },
