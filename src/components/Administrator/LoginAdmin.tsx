@@ -57,8 +57,7 @@ const LoginAdmin = () => {
           fname: fname,
         })
         .then((response) => {
-          // if (response.status === 200)
-   
+          if (response.status === 200) {
             const token = response.data.token;
             console.log("Username from API response:");
             localStorage.setItem("adminToken", token);
@@ -71,18 +70,18 @@ const LoginAdmin = () => {
             localStorage.setItem("adminFirstName", response.data.fname);
             setIsAdminLoggedIn(true);
             navigate("/adminmainpage");
-        //   } else {
-        //     toast.error("Please enter your username and password", {
-        //       position: "top-center",
-        //       autoClose: 2000,
-        //       hideProgressBar: false,
-        //       closeOnClick: true,
-        //       pauseOnHover: true,
-        //       draggable: true,
-        //       progress: undefined,
-        //       theme: "colored",
-        //     });
-        //   }
+          } else {
+            toast.error("Please enter your username and password", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
          })
         .catch((error) => {
           console.error("Login failed:", error);
