@@ -28,25 +28,34 @@ export default function Chart() {
       });
   }, []);
 
-  // Process transaction data and calculate total prices by date
+  // Process transaction data and calculate total prices by hour each day
   const processData = () => {
-    const dailyTotals: { [key: string]: number } = {};
+    const hourlyTotals: { [key: string]: number } = {};
 
     transactionData.forEach((transaction) => {
       const date = new Date(transaction.date_time);
-      const dateKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      const hourKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-      if (dailyTotals[dateKey]) {
-        dailyTotals[dateKey] += transaction.total_price;
+      if (hourlyTotals[hourKey]) {
+        hourlyTotals[hourKey] += transaction.total_price;
       } else {
-        dailyTotals[dateKey] = transaction.total_price;
+        hourlyTotals[hourKey] = transaction.total_price;
       }
     });
 
-    return Object.keys(dailyTotals).map((key) => ({
-      time: key,
-      amount: parseFloat(dailyTotals[key].toFixed(2)),
-    }));
+    // Sort the data by date in ascending order
+    const sortedData = Object.keys(hourlyTotals)
+      .map((key) => ({
+        time: key,
+        amount: parseFloat(hourlyTotals[key].toFixed(2)),
+      }))
+      .sort((a, b) => {
+        const dateA = new Date(a.time).getTime(); // Get time in milliseconds
+        const dateB = new Date(b.time).getTime(); // Get time in milliseconds
+        return dateA - dateB;
+      });
+
+    return sortedData;
   };
 
   const dataWithGrossSales = processData();
