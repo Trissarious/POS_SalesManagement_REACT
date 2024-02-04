@@ -16,6 +16,7 @@ export interface Transaction{
     returned: boolean,
     productid: number
     userid: number,
+    cashier: string,
 }
 
 
@@ -38,6 +39,7 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
             returned: transaction.returned,
             productid: transaction.productid,
             userid: transaction.userid,
+            cashier: transaction.cashier,
         }).then((response) => {
             setTransaction(response.data);
             console.log(response.data);
@@ -63,6 +65,7 @@ export const RestTransaction = ():[ (transactionid:number)=> void,(transactionid
             returned: transaction.returned,
             productid: transaction.productid,
             userid: transaction.userid,
+            cashier: transaction.cashier,
         }).then((response) => {
             setTransaction(response.data);
             console.log(response.data);

@@ -297,10 +297,10 @@ export default function Cashiering() {
         customer_num: customer_num,
         customer_email: customer_email,
         date_time: date_time,
+        cashier: cashier,
         product: selectedProducts.map((productid) => ({
           productid: productid,
         })),
-        cashier: cashier,
       })
       .then((res) => {
         console.log(res.data);
