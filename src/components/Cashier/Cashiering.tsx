@@ -56,7 +56,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const initialSelectedProducts: any[] | (() => any[]) = [];
 const url = "https://dilven-springboot.onrender.com/product/getAllProduct";
-const post_transaction = "https://dilven-springboot.onrender.com/transaction/postTransaction";
+const post_transaction =
+  "https://dilven-springboot.onrender.com/transaction/postTransaction";
 
 //CASHIERING ADDED
 
@@ -123,7 +124,9 @@ export default function Cashiering() {
     } else {
       setIsCashierLoggedIn(true);
       axios
-        .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
+        .get(
+          "https://dilven-springboot.onrender.com/transaction/getAllTransaction"
+        )
         .then((response) => {
           console.log(localStorage.getItem("cashierBusinessName"));
         })
@@ -226,6 +229,15 @@ export default function Cashiering() {
     }
   };
 
+  // Record Transaction
+  const [openTransact, setOpenTransact] = useState(false);
+  const handleClickOpenTransact = () => {
+    setOpenTransact(true);
+  };
+  const handleClickCloseTransact = () => {
+    setOpenTransact(false);
+  };
+
   const record_transaction = async () => {
     if (!tendered_bill) {
       toast.error(
@@ -260,47 +272,51 @@ export default function Cashiering() {
       );
       return;
     }
-    const isReadyToPay = window.confirm(
-      "Are you sure you want to proceed with the payment?"
-    );
 
-    if (isReadyToPay) {
-      for (const productid of selectedProducts) {
-        const productInCart = cart.find((item) => item.productid === productid);
-        if (productInCart) {
-          const quantityPurchased = productInCart.quantity;
+    for (const productid of selectedProducts) {
+      const productInCart = cart.find((item) => item.productid === productid);
+      if (productInCart) {
+        const quantityPurchased = productInCart.quantity;
 
-          // Decrease the product quantity in the database by the exact quantity purchased
-          await decreaseProductQuantityInDatabase(productid, quantityPurchased);
+        // Decrease the product quantity in the database by the exact quantity purchased
+        await decreaseProductQuantityInDatabase(productid, quantityPurchased);
 
-          // Increment the purchase count for the product
-          await incrementPurchaseCount(productid, quantityPurchased);
-        }
+        // Increment the purchase count for the product
+        await incrementPurchaseCount(productid, quantityPurchased);
       }
-
-      // Axios post to create record transaction
-      axios
-        .post(post_transaction, {
-          total_quantity: total_quantity,
-          total_price: total_price,
-          tendered_bill: tendered_bill,
-          balance: balance,
-          customer_name: customer_name,
-          customer_num: customer_num,
-          customer_email: customer_email,
-          date_time: date_time,
-          product: selectedProducts.map((productid) => ({
-            productid: productid,
-          })),
-          cashier: cashier
-        })
-        .then((res) => {
-          console.log(res.data);
-          alert("Transaction Complete");
-          handlePrint();
-        })
-        .catch((err) => console.log(err));
     }
+
+    // Axios post to create record transaction
+    axios
+      .post(post_transaction, {
+        total_quantity: total_quantity,
+        total_price: total_price,
+        tendered_bill: tendered_bill,
+        balance: balance,
+        customer_name: customer_name,
+        customer_num: customer_num,
+        customer_email: customer_email,
+        date_time: date_time,
+        product: selectedProducts.map((productid) => ({
+          productid: productid,
+        })),
+        cashier: cashier,
+      })
+      .then((res) => {
+        console.log(res.data);
+        toast.success("Transaction Complete", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        handlePrint();
+      })
+      .catch((err) => console.log(err));
   };
 
   // Styling the Product Table
@@ -342,7 +358,16 @@ export default function Cashiering() {
       setSelectedProducts([...selectedProducts, productid]);
       // Check if the quantity of the selected product is not zero
       if (initialProductQuantities[productid] === 0) {
-        alert("Cannot add to the cart. Pleasequantity restock.");
+        toast.error("Cannot add to the cart. Please quantity restock.", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         // Remove the product from selectedProducts
         setSelectedProducts(selectedProducts.filter((id) => id !== productid));
       }
@@ -678,48 +703,48 @@ export default function Cashiering() {
                 >
                   <div>
                     <div className="row">
-                    {/*Search Bar */}
-                    <TextField
-                      type="text"
-                      placeholder="Search products"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{
-                        width: "56.5%",
-                        height: "40px",
-                        margin: "10px 0",
-                        marginBottom: "40px",
-                        marginLeft: 15,
-                        padding: "5px",
-                        fontSize: "16px",
-                      }}
-                      inputProps={{ style: { fontSize: 16 } }}
-                      InputLabelProps={{
-                        style: { fontSize: 16 },
-                      }}
-                    />
+                      {/*Search Bar */}
+                      <TextField
+                        type="text"
+                        placeholder="Search products"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                          width: "56.5%",
+                          height: "40px",
+                          margin: "10px 0",
+                          marginBottom: "40px",
+                          marginLeft: 15,
+                          padding: "5px",
+                          fontSize: "16px",
+                        }}
+                        inputProps={{ style: { fontSize: 16 } }}
+                        InputLabelProps={{
+                          style: { fontSize: 16 },
+                        }}
+                      />
 
-                    {/* Display Cashier */}
-                    <TextField
-                      label='Cashier'
-                      value={localStorage.getItem('cashierFirstName')}
-                      onChange={(e) => setCashier(e.target.value)}
-                      style={{
-                        width: "40%",
-                        height: "40px",
-                        margin: "10px 0",
-                        marginLeft: 20,
-                        padding: "5px",
-                        fontSize: "16px",
-                        display: 'flex',
-                      }}
-                      inputProps={{ style: { fontSize: 16, color: 'green' } }}
-                      InputLabelProps={{
-                        style: { fontSize: 16, color: 'green' },
-                      }}
-                    />
+                      {/* Display Cashier */}
+                      <TextField
+                        label="Cashier"
+                        value={localStorage.getItem("cashierFirstName")}
+                        onChange={(e) => setCashier(e.target.value)}
+                        style={{
+                          width: "40%",
+                          height: "40px",
+                          margin: "10px 0",
+                          marginLeft: 20,
+                          padding: "5px",
+                          fontSize: "16px",
+                          display: "flex",
+                        }}
+                        inputProps={{ style: { fontSize: 16, color: "green" } }}
+                        InputLabelProps={{
+                          style: { fontSize: 16, color: "green" },
+                        }}
+                      />
                     </div>
-            
+
                     {/* DISPLAYS PRODUCT TABLE */}
                     <div className="container-product">
                       <div className="col-lg-7">
@@ -920,7 +945,10 @@ export default function Cashiering() {
                     <div className="row content">
                       {/* Customer Details */}
                       <div className="col-lg-8">
-                        <div className="customer-details" style={{ marginLeft: 8 }}>
+                        <div
+                          className="customer-details"
+                          style={{ marginLeft: 8 }}
+                        >
                           <TextField
                             fullWidth
                             value={customer_name}
@@ -978,7 +1006,6 @@ export default function Cashiering() {
                               style: { fontSize: 16 },
                             }}
                             style={{ marginBottom: 10 }}
-                            
                           />
                           <TextField
                             required
@@ -994,7 +1021,6 @@ export default function Cashiering() {
                               },
                             }}
                             style={{ marginBottom: 20 }}
-
                           />
                         </div>
                       </div>
@@ -1013,8 +1039,7 @@ export default function Cashiering() {
                               style: {
                                 fontSize: 20,
                                 backgroundColor: "#f7f5f5",
-                                color: 'red'
-
+                                color: "red",
                               },
                             }}
                             InputLabelProps={{
@@ -1041,7 +1066,6 @@ export default function Cashiering() {
                             }}
                             label="Total Quantity"
                             style={{ marginBottom: 10 }}
-
                           />
 
                           <TextField
@@ -1058,14 +1082,13 @@ export default function Cashiering() {
                               style: {
                                 fontSize: 20,
                                 backgroundColor: "#f7f5f5",
-                                color: 'red'
+                                color: "red",
                               },
                             }}
                             InputLabelProps={{
                               style: { fontSize: 16 },
                             }}
                             style={{ marginBottom: 10 }}
-
                           />
                           <TextField
                             value={balance.toFixed(2)}
@@ -1079,13 +1102,12 @@ export default function Cashiering() {
                               style: {
                                 fontSize: 20,
                                 backgroundColor: "#f7f5f5",
-                                color: 'green'
+                                color: "green",
                               },
                             }}
                             InputLabelProps={{
-                              style: { fontSize: 16,},
+                              style: { fontSize: 16 },
                             }}
-                            
                           />
                         </div>
                       </div>
@@ -1094,18 +1116,50 @@ export default function Cashiering() {
                         <button
                           className="btn btn-success btn-lg"
                           style={{ fontSize: 24 }}
-                          onClick={record_transaction}
+                          onClick={handleClickOpenTransact}
                         >
                           Pay Now
                         </button>
                       ) : (
                         <h1>Please add a product to the cart</h1>
                       )}
+
+                      <Dialog
+                        open={openTransact}
+                        onClose={handleClickCloseTransact}
+                      >
+                        <DialogTitle
+                          sx={{
+                            fontSize: "1.6rem",
+                            color: "red",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Perform Transaction
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText sx={{ fontSize: "1.6rem" }}>
+                            Are you sure you want to perform transaction?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            sx={{ fontSize: "15px", fontWeight: "bold" }}
+                            onClick={handleClickCloseTransact}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            sx={{ fontSize: "15px", fontWeight: "bold" }}
+                            onClick={record_transaction}
+                          >
+                            Confirm
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </div>
                     <div className="footer"></div>
-                    <ToastContainer
-                      style={{ width: "500px", fontSize: 15 }}
-                    />
+                    <ToastContainer style={{ width: "500px", fontSize: 15 }} />
                   </div>
                 </Paper>
               </Grid>
