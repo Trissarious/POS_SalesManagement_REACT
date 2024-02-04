@@ -297,7 +297,7 @@ export default function Cashiering() {
         customer_num: customer_num,
         customer_email: customer_email,
         date_time: date_time,
-        cashier: cashier,
+        cashier: localStorage.getItem("cashierFirstName"),
         product: selectedProducts.map((productid) => ({
           productid: productid,
         })),
