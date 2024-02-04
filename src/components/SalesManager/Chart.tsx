@@ -62,7 +62,7 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Typography variant='h4'sx={{ fontWeight: 600, color: 'rgb(58, 110, 112)', marginBottom: 2}}>Today</Typography>
+      <Typography variant='h4'sx={{ fontWeight: 600, color: 'rgb(58, 110, 112)', marginBottom: 2}}>This Month</Typography>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
           dataset={dataWithGrossSales}
