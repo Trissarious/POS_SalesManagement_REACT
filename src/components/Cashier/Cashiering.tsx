@@ -147,7 +147,6 @@ export default function Cashiering() {
   //CASHIERING ADDED
   useEffect(() => {
     const token = localStorage.getItem("cashierToken");
-
     if (!token) {
       navigate("/logincash");
     } else {

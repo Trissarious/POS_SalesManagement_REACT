@@ -87,6 +87,19 @@ const LoginSales  = () => {
     setShowPassword(!showPassword);
   };
 
+  const requestForAdmin = () => {
+    toast.warning('Request for administrator to create your account.', {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+  }
+
   return (
     <div>
       <Navbar/>
@@ -130,10 +143,10 @@ const LoginSales  = () => {
           
           <button className='btn-login-salesmanager' onClick={handleLogin}> Login </button>
           <br />
-        <Link to="/createaccountusers">
-          <button className='btn-register'>
+       
+          <button className='btn-register' onClick={requestForAdmin}>
           Don't Have An Account? </button > 
-        </Link>
+        
         <Link to="/forgotpassword">
             <div className="forgot-password">
               <span className='forgot-password-text'>Forgot Password?</span>
