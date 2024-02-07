@@ -234,8 +234,7 @@ export default function CreateAccountAdmin() {
       contactnum.trim() !== "" &&
       address.trim() !== "" &&
       selectedGender.trim() !== "" &&
-      email.trim() !== "" &&
-      business_name.trim() !== ""
+      email.trim() !== ""
     );
   };
 
@@ -256,7 +255,7 @@ export default function CreateAccountAdmin() {
             email: email,
             fname: fname,
             lname: lname,
-            business_name: business_name,
+            business_name: localStorage.getItem("adminBusinessName"),
             address: address,
             contactnum: contactnum,
             gender: selectedGender,
@@ -672,21 +671,6 @@ export default function CreateAccountAdmin() {
                       marginTop: "-20px",
                     }}
                   >
-                    <TextField
-                      type="text"
-                      label="Business Name"
-                      variant="outlined"
-                      value={business_name}
-                      fullWidth
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setBusiness_name(e.target.value)
-                      }
-                      inputProps={{ style: { fontSize: 16 } }}
-                      InputLabelProps={{
-                        style: { fontSize: 16 },
-                      }}
-                      style={{ marginRight: "10px" }}
-                    />
 
                     <TextField
                       type="text"
