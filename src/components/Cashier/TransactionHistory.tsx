@@ -61,6 +61,7 @@ interface Transaction {
   date_time: string;
   refunded: boolean;
   returned: boolean;
+  business: String;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -122,7 +123,11 @@ export default function TransactionHistory() {
     } else {
       setIsCashierLoggedIn(true);
       axios
-        .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
+        .get("http://localhost:8080/transaction/getAllTransaction", {
+          params: {
+            business: localStorage.getItem("cashierBusinessName")
+          }
+        })
         .then((response) => {
           console.log(localStorage.getItem("cashierBusinessName"));
         })
@@ -143,7 +148,11 @@ export default function TransactionHistory() {
   // Fetch Transactions
   useEffect(() => {
     axios
-      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
+      .get("http://localhost:8080/transaction/getAllTransaction", {
+        params: {
+          business: localStorage.getItem("cashierBusinessName")
+        }
+      })
       .then((response) => {
         setTransactions(response.data);
         console.log("response:", response.data);

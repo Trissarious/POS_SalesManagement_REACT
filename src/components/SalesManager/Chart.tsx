@@ -18,7 +18,11 @@ export default function Chart() {
 
   useEffect(() => {
     axios
-      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction")
+      .get("http://localhost:8080/transaction/getAllTransaction", {
+        params: {
+          business: localStorage.getItem("salesmanBusinessName")
+        }
+      })
       .then((response) => {
         setTransactionData(response.data);
         console.log("Transaction Data: ", response.data);

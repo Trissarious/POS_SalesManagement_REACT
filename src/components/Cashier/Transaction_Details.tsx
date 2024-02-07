@@ -118,11 +118,11 @@ const Transaction_Details = () => {
         });
       } else {
         // Send a POST request to the server
-        axios.post('https://dilven-springboot.onrender.com/user/loginsales', loginRequest)
+        axios.post('http://localhost:8080/user/loginsales', loginRequest)
         .then((response) => {
         if(response.status === 200) {
         setRefunded(true);
-        axios.put(`https://dilven-springboot.onrender.com/transaction/isRefunded?transactionid=${id}`, { refunded: true })
+        axios.put(`http://localhost:8080/transaction/isRefunded?transactionid=${id}`, { refunded: true })
         .then((response) => {
           toast.success(`Transaction ${id} has been refunded successfully.`, {
             position: "top-center",
@@ -184,11 +184,11 @@ const Transaction_Details = () => {
         });
       } else {
         // Send a POST request to the server
-        axios.post('https://dilven-springboot.onrender.com/user/loginsales', loginRequest)
+        axios.post('http://localhost:8080/user/loginsales', loginRequest)
         .then((response) => {
         if(response.status === 200) {
         setRefunded(true);
-        axios.put(`https://dilven-springboot.onrender.com/transaction/isReturned?transactionid=${id}`, { returned: true })
+        axios.put(`http://localhost:8080/transaction/isReturned?transactionid=${id}`, { returned: true })
         .then((response) => {
           toast.success(`Transaction ${id} has been returned successfully.`, {
             position: "top-center",
@@ -268,7 +268,7 @@ const Transaction_Details = () => {
     // View function
     useEffect(() => {
         if (id) {
-            axios.get(`https://dilven-springboot.onrender.com/transaction/getByTransaction?transactionid=${id}`)
+            axios.get(`http://localhost:8080/transaction/getByTransaction?transactionid=${id}`)
                 .then((response) => {
                     console.log(response.data);
                     const responseData: TransactionDetails = response.data;
@@ -278,7 +278,7 @@ const Transaction_Details = () => {
                     console.error(error);
                 });
     
-            axios.get(`https://dilven-springboot.onrender.com/transaction/${id}/products`)
+            axios.get(`http://localhost:8080/transaction/${id}/products`)
                 .then((response) => {
                     console.log('Products response:', response.data);
                     const responseData: Product[] = response.data;

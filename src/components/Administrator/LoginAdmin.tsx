@@ -50,7 +50,7 @@ const LoginAdmin = () => {
     } else {
       // Send a POST request to the server
       axios
-        .post("https://dilven-springboot.onrender.com/user/loginad", {
+        .post("http://localhost:8080/user/loginad", {
           username: username,
           password: password,
           business_name: business_name,

@@ -38,7 +38,7 @@ const LoginSales  = () => {
       });
     } else {
       // Send a POST request to the server
-      axios.post('https://dilven-springboot.onrender.com/user/loginsales', {
+      axios.post('http://localhost:8080/user/loginsales', {
         username: username,
         password: password,
         business_name: business_name,
