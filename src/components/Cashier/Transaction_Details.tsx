@@ -296,7 +296,6 @@ const Transaction_Details = () => {
         { field: 'productid', headerName: 'Product ID', flex: 1, headerClassName: 'green-column-header' },
         { field: 'productname', headerName: 'Product Name',  flex: 1, headerClassName: 'green-column-header'},
         { field: 'price', headerName: 'Price',  flex: 1, headerClassName: 'green-column-header' },
-        { field: 'quantity', headerName: 'Quantity', flex: 1, headerClassName: 'green-column-header' },
     ];
     
     const getRowId = (row: Product) => row.productid;
