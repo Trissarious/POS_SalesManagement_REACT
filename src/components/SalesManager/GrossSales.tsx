@@ -16,7 +16,7 @@ export default function GrossSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/gross-sales", {
+      .get("https://dilven-springboot.onrender.com/transaction/gross-sales", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }

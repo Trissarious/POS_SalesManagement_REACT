@@ -121,7 +121,7 @@ export default function TransactionsSales() {
     } else {
       setIsSalesManLoggedIn(true);
       axios
-        .get("http://localhost:8080/user/getAllUser")
+        .get("https://dilven-springboot.onrender.com/user/getAllUser")
         .then((response) => {
           console.log("Hello, ", storedUsername);
           console.log("Business Name:", storedBusinessName);
@@ -143,7 +143,7 @@ export default function TransactionsSales() {
   // Fetch Transactions
   useEffect(() => {
     axios
-      .get("http://localhost:8080/transaction/getAllTransaction", {
+      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }
@@ -232,7 +232,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/gross-sales", {
+      .get("https://dilven-springboot.onrender.com/transaction/gross-sales", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }
@@ -251,7 +251,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/net-sales", {
+      .get("https://dilven-springboot.onrender.com/transaction/net-sales", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }
@@ -270,7 +270,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/refunded-prices", {
+      .get("https://dilven-springboot.onrender.com/transaction/refunded-prices", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }
@@ -289,7 +289,7 @@ export default function TransactionsSales() {
   useEffect(() => {
     // Fetch the product with the highest purchase count from the API
     axios
-      .get("http://localhost:8080/transaction/returned-prices", {
+      .get("https://dilven-springboot.onrender.com/transaction/returned-prices", {
         params: {
           business: localStorage.getItem("salesmanBusinessName")
         }

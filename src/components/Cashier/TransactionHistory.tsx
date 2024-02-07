@@ -123,7 +123,7 @@ export default function TransactionHistory() {
     } else {
       setIsCashierLoggedIn(true);
       axios
-        .get("http://localhost:8080/transaction/getAllTransaction", {
+        .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction", {
           params: {
             business: localStorage.getItem("cashierBusinessName")
           }
@@ -148,7 +148,7 @@ export default function TransactionHistory() {
   // Fetch Transactions
   useEffect(() => {
     axios
-      .get("http://localhost:8080/transaction/getAllTransaction", {
+      .get("https://dilven-springboot.onrender.com/transaction/getAllTransaction", {
         params: {
           business: localStorage.getItem("cashierBusinessName")
         }

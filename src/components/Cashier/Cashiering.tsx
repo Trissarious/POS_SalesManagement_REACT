@@ -56,7 +56,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const initialSelectedProducts: any[] | (() => any[]) = [];
 const post_transaction =
-  "http://localhost:8080/transaction/postTransaction";
+  "https://dilven-springboot.onrender.com/transaction/postTransaction";
 
 //CASHIERING ADDED
 
@@ -124,7 +124,7 @@ export default function Cashiering() {
       setIsCashierLoggedIn(true);
       axios
         .get(
-          "http://localhost:8080/transaction/getAllTransaction", {
+          "https://dilven-springboot.onrender.com/transaction/getAllTransaction", {
             params: {
               business: localStorage.getItem("cashierBusinessName")
             }
@@ -183,7 +183,7 @@ export default function Cashiering() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/product/getAllProduct", {
+        const response = await axios.get("https://dilven-springboot.onrender.com/product/getAllProduct", {
           params: {
             business: localStorage.getItem("cashierBusinessName")
           }
@@ -215,7 +215,7 @@ export default function Cashiering() {
     try {
       // Make an HTTP request to update the product quantity in the database
       await axios.put(
-        `http://localhost:8080/product/decreaseQuantity/${productid}?quantityToDecrease=${quantityToDecrease}`
+        `https://dilven-springboot.onrender.com/product/decreaseQuantity/${productid}?quantityToDecrease=${quantityToDecrease}`
       );
     } catch (error) {
       console.error(error);
@@ -229,7 +229,7 @@ export default function Cashiering() {
     try {
       // Make an HTTP request to increment the purchase count in the database for the specified product
       await axios.put(
-        `http://localhost:8080/product/incrementPurchaseCount/${productid}?quantityPurchased=${quantityPurchased}`
+        `https://dilven-springboot.onrender.com/product/incrementPurchaseCount/${productid}?quantityPurchased=${quantityPurchased}`
       );
     } catch (error) {
       console.error(error);
@@ -343,7 +343,7 @@ export default function Cashiering() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/product/getAllProduct", {
+        const response = await axios.get("https://dilven-springboot.onrender.com/product/getAllProduct", {
           params: {
             business: localStorage.getItem("cashierBusinessName")
           }

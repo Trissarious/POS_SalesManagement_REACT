@@ -70,7 +70,7 @@ interface Account {
   bday: string;
 }
 
-const post_account = "http://localhost:8080/user/postUser";
+const post_account = "https://dilven-springboot.onrender.com/user/postUser";
 const Account_Type = [
   {
     value: "Cashier",
@@ -162,7 +162,7 @@ export default function CreateAccountAdmin() {
       setIsAdminLoggedIn(true);
       // Fetch user data from API
       axios
-        .get("http://localhost:8080/user/getAllUser")
+        .get("https://dilven-springboot.onrender.com/user/getAllUser")
         .then((response) => {
           // Filter users based on business_name
           const filteredUsers = response.data.filter(

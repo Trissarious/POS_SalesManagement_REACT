@@ -60,7 +60,7 @@ export default function UpdateProduct(props: Product) {
   // Delete Function
   const handleDelete = async () => {
       axios
-        .put(`http://localhost:8080/product/deleteProduct/${props.productid}`, {
+        .put(`https://dilven-springboot.onrender.com/product/deleteProduct/${props.productid}`, {
           is_deleted: true,
         })
         .then((response) => {
