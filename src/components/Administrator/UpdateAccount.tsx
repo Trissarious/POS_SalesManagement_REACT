@@ -96,12 +96,12 @@ export default function UpdateAccount(props: Account) {
         month: "2-digit",
         day: "2-digit",
       });
-      const confirmUpdate = window.confirm(
-        "Are you sure you want to update this account?"
-      );
-      if (confirmUpdate) {
-        axios
-          .put("https://dilven-springboot.onrender.com/user/putUser?userid=" + props.userid, {
+
+      axios
+        .put(
+          "https://dilven-springboot.onrender.com/user/putUser?userid=" +
+            props.userid,
+          {
             username: usernameRef.current?.value,
             password: passwordRef.current?.value,
             account_type: account_typeRef.current?.value,
@@ -113,25 +113,13 @@ export default function UpdateAccount(props: Account) {
             contactnum: contactnumRef.current?.value,
             gender: genderRef.current?.value,
             bday: formattedDate,
-          })
-          .then((res) => {
-            console.log(res.data);
-            window.location.reload();
-          })
-          .catch((err) => console.log(err));
-      }
-    } else {
-      toast.error("Please select a birth", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      setIsBday(false);
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          window.location.reload();
+        })
+        .catch((err) => console.log(err));
     }
   };
 
